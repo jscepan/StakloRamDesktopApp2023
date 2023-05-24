@@ -5,7 +5,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { IconsModule } from '../../modules/icons/icons.module';
-import { MenuModule } from '../menu/menu.module';
 
 import { SidebarComponent } from './sidebar.component';
 @NgModule({
@@ -13,7 +12,6 @@ import { SidebarComponent } from './sidebar.component';
     CommonModule,
     RouterModule,
     IconsModule,
-    MenuModule,
     MatMenuModule,
     TranslateModule,
     MatTooltipModule,
