@@ -1,0 +1,10 @@
+<div class="main-container">
+  <div
+    (click)="navigateTo(item.url)"
+    class="item"
+    *ngFor="let item of routes"
+    [ngClass]="{ selected: item.url === selectedRoute }"
+  >
+    {{ item.displayValue | translate }}
+  </div>
+</div>

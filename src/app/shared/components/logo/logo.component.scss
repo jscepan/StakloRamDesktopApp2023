@@ -1,0 +1,42 @@
+.company-content {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .upper {
+    display: flex;
+    font-size: 6vw;
+    color: rgb(90, 187, 243);
+    align-self: flex-end;
+    align-items: flex-end;
+    line-height: 0.1;
+    font-family: NevisonCasualW01Regular;
+  }
+
+  .company-name {
+    display: flex;
+    font-weight: 600;
+    align-items: flex-end;
+    font-family: vipnagorgiallaBdIt;
+
+    .first {
+      font-size: 10vw;
+      color: rgb(20, 20, 168);
+    }
+
+    .second {
+      font-size: 10vw;
+      color: rgb(90, 187, 243);
+    }
+  }
+
+  .under {
+    font-weight: 600;
+    font-style: italic;
+    font-size: 3vw;
+    color: rgb(255, 255, 255);
+    background-color: rgb(20, 20, 168);
+    font-family: FrutigerLTArabic65Bold;
+    text-align: center;
+  }
+}

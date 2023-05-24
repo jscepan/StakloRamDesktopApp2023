@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/stakloram-desktop-app2023'),
+      dir: require('path').join(__dirname, './coverage/frontend'),
       subdir: '.',
       reporters: [
         { type: 'html' },
