@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IconsModule } from '../../modules/icons/icons.module';
 
 import { SidebarComponent } from './sidebar.component';
+import { KeyboardNumericModule } from '../keyboard/numeric/keyboard-numeric.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +16,7 @@ import { SidebarComponent } from './sidebar.component';
     MatMenuModule,
     TranslateModule,
     MatTooltipModule,
+    KeyboardNumericModule,
   ],
   exports: [SidebarComponent],
   declarations: [SidebarComponent],

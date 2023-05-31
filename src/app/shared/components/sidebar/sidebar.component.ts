@@ -5,6 +5,8 @@ import { SidebarNavItemI } from './sidebar.interface';
 import { SubscriptionManager } from '../../services/subscription.manager';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { KeyboardNumericComponentService } from '../keyboard/numeric/keyboard-numeric.component.service';
+import { UOM } from '../../constants';
 
 export class NavItem {
   url: string = '';
@@ -15,6 +17,7 @@ export class NavItem {
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
+  providers: [KeyboardNumericComponentService],
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   private subs = new SubscriptionManager();
@@ -35,6 +38,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private keyboardNumericComponentService: KeyboardNumericComponentService,
     private translateService: TranslateService
   ) {}
 
@@ -59,22 +63,22 @@ export class SidebarComponent implements OnInit, OnDestroy {
     if (url === 'exit') {
       // this.ipcService.send('exitApp');
     } else if (url === 'invoice-charge') {
-      // this.invoiceNumberSubs = this.keyboardNumericComponentService
-      //   .openDialog(
-      //     this.translateService.instant('insertInvoiceNumber'),
-      //     UOM.NUMBER,
-      //     false,
-      //     this.translateService.instant('sevenDigitsNumber')
-      //   )
-      //   .subscribe((obj: { value: string; nextOperation: boolean }) => {
-      //     if (obj?.value) {
-      //       this.router.navigate(['invoice-create-edit', 'edit', obj.value]);
-      //       // this.router.navigate(['invoice-charge', obj.value]);
-      //     }
-      //     if (this.invoiceNumberSubs) {
-      //       this.invoiceNumberSubs.unsubscribe();
-      //     }
-      //   });
+      this.invoiceNumberSubs = this.keyboardNumericComponentService
+        .openDialog(
+          this.translateService.instant('insertInvoiceNumber'),
+          UOM.NUMBER,
+          false,
+          this.translateService.instant('sevenDigitsNumber')
+        )
+        .subscribe((obj: { value: string; nextOperation: boolean }) => {
+          if (obj?.value) {
+            this.router.navigate(['invoice-create-edit', 'edit', obj.value]);
+            // this.router.navigate(['invoice-charge', obj.value]);
+          }
+          if (this.invoiceNumberSubs) {
+            this.invoiceNumberSubs.unsubscribe();
+          }
+        });
     } else {
       this.router.navigate([url]);
     }

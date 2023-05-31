@@ -1,4 +1,20 @@
 <div class="container">
+  <div class="main-buttons">
+    <app-button
+      [text]="'framing' | translate"
+      [fullWidth]="true"
+      [isTransparentMode]="true"
+      (click)="navigateTo('invoice-create-edit/framing')"
+      [buttonSize]="'big'"
+    ></app-button>
+    <app-button
+      [text]="'glassing' | translate"
+      (click)="navigateTo('invoice-create-edit/glassing')"
+      [fullWidth]="true"
+      [isTransparentMode]="true"
+      [buttonSize]="'big'"
+    ></app-button>
+  </div>
   <div class="content">
     <app-logo></app-logo>
   </div>

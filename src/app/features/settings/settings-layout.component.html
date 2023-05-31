@@ -1,0 +1,12 @@
+<div class="main-container">
+  <div class="grid-container">
+    <app-button
+      [text]="item | translate"
+      (clickEvent)="navigateTo(item)"
+      [isTransparentMode]="item !== 'appSettings'"
+      *ngFor="let item of routes"
+      [fullWidth]="true"
+      class="grid-item"
+    ></app-button>
+  </div>
+</div>

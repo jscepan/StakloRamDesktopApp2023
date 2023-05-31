@@ -1,0 +1,17 @@
+.main-container {
+  height: 100%;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 10px;
+
+    .grid-item {
+      margin: 20px;
+    }
+  }
+}

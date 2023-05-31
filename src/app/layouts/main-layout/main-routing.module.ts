@@ -14,6 +14,32 @@ const routes: Routes = [
         (m) => m.DashboardModule
       ),
   },
+  {
+    path: 'invoice-create-edit',
+    loadChildren: () =>
+      import('@features/invoice-create-edit/invoice-create-edit.module').then(
+        (m) => m.InvoiceCreateEditModule
+      ),
+  },
+  // {
+  //   path: 'search',
+  //   loadChildren: () =>
+  //     import('@features/search/search.module').then((m) => m.SearchModule),
+  // },
+  {
+    path: 'settings',
+    loadChildren: () =>
+      import('@features/settings/settings-layout.module').then(
+        (m) => m.SettingsLayoutModule
+      ),
+  },
+  {
+    path: 'app-settings',
+    loadChildren: () =>
+      import('@features/settings/app-settings/app-settings.module').then(
+        (m) => m.AppSettingsModule
+      ),
+  },
 ];
 
 @NgModule({

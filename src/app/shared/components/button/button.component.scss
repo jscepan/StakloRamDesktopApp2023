@@ -221,11 +221,41 @@ button {
   }
 }
 
-// Only in case of link type of button background color should be none
-.link[disabled="true"] {
-  background: none !important; // important is used to override mat defaults
-  color: var(
-    --color-main,
-    #747474
-  ) !important; // important is used to override mat defaults
+.big {
+  min-height: 100px;
+  padding: 10 20px;
+  font-size: 32px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.middle {
+  min-height: 70px;
+  padding: 5 20px;
+  font-size: 22px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.small {
+  min-height: 40px;
+  padding: 0 20px;
+  font-size: 12px;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.is-square {
+  &.big {
+    height: 100px;
+    width: 100px;
+  }
+  &.middle {
+    height: 70px;
+    width: 70px;
+  }
+  &.small {
+    height: 40px;
+    width: 40px;
+  }
 }

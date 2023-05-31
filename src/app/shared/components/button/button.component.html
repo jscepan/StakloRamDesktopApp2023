@@ -8,6 +8,8 @@
   [class.icon-only]="!text"
   [class.full-width]="fullWidth"
   [class.full-height]="fullHeight"
+  [class]="buttonSize"
+  [class.is-square]="isSquare"
 >
   <i-feather *ngIf="isFeatherIcon && iconName" [name]="iconName"></i-feather>
   <i-feather

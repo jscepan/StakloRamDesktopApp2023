@@ -30,6 +30,10 @@ export class ButtonComponent implements OnInit {
   @Input() text: string = '';
   @Input() iconName?: string;
   @Input() iconPosition?: 'left' | 'right' = 'left';
+  @Input() buttonSize: 'big' | 'middle' | 'small' = 'big';
+  @Input() fontSize: number = 16;
+
+  @Input() isSquare: boolean = false;
 
   // at this moment there are 2 icn set in use, one created by design team, another one by feature lib
   // this condition need to be deleted as soon as they will fully switch to ours

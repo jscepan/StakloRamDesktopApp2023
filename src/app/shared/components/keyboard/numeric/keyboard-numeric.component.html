@@ -1,0 +1,138 @@
+<div class="main-container">
+  <div class="content">
+    <div class="header">
+      <div class="title">{{ title }}</div>
+    </div>
+    <div class="input-container">
+      <div class="input">
+        <form [formGroup]="valueForm">
+          <mat-form-field class="field">
+            <mat-label>{{ inputFieldTitle }}</mat-label>
+            <input
+              matInput
+              type="text"
+              #inputValue
+              (keyup)="checkIsNumber($event)"
+              formControlName="value"
+            />
+          </mat-form-field>
+        </form>
+        <div class="uom">
+          {{ uom | translate }}
+        </div>
+      </div>
+      <div class="buttons">
+        <app-button
+          class="button"
+          [iconName]="'arrow-left'"
+          [isSquare]="true"
+          [color]="'secondary'"
+          (clickEvent)="backspaceClicked()"
+        ></app-button>
+        <app-button
+          class="button"
+          *ngIf="showNextOperationButton"
+          [disabled]="valueForm.invalid"
+          [iconName]="'x'"
+          [isSquare]="true"
+          (clickEvent)="saveSelection(true)"
+        ></app-button>
+      </div>
+    </div>
+    <div class="grid-container">
+      <app-button
+        [text]="'7'"
+        [isSquare]="true"
+        (clickEvent)="numberClicked('7')"
+        class="grid-item"
+        [color]="'secondary'"
+      ></app-button>
+      <app-button
+        [text]="'8'"
+        [isSquare]="true"
+        (clickEvent)="numberClicked('8')"
+        class="grid-item"
+        [color]="'secondary'"
+      ></app-button>
+      <app-button
+        [text]="'9'"
+        [isSquare]="true"
+        (clickEvent)="numberClicked('9')"
+        class="grid-item"
+        [color]="'secondary'"
+      ></app-button>
+      <app-button
+        [text]="'4'"
+        [isSquare]="true"
+        (clickEvent)="numberClicked('4')"
+        class="grid-item"
+        [color]="'secondary'"
+      ></app-button>
+      <app-button
+        [isSquare]="true"
+        [text]="'5'"
+        (clickEvent)="numberClicked('5')"
+        class="grid-item"
+        [color]="'secondary'"
+      ></app-button>
+      <app-button
+        [text]="'6'"
+        [isSquare]="true"
+        (clickEvent)="numberClicked('6')"
+        class="grid-item"
+        [color]="'secondary'"
+      ></app-button>
+      <app-button
+        [text]="'1'"
+        [isSquare]="true"
+        (clickEvent)="numberClicked('1')"
+        class="grid-item"
+        [color]="'secondary'"
+      ></app-button>
+      <app-button
+        [text]="'2'"
+        [isSquare]="true"
+        (clickEvent)="numberClicked('2')"
+        class="grid-item"
+        [color]="'secondary'"
+      ></app-button>
+      <app-button
+        [text]="'3'"
+        [isSquare]="true"
+        (clickEvent)="numberClicked('3')"
+        class="grid-item"
+        [color]="'secondary'"
+      ></app-button>
+      <app-button
+        [text]="'0'"
+        [isSquare]="true"
+        (clickEvent)="numberClicked('0')"
+        [color]="'secondary'"
+        class="grid-item"
+      ></app-button>
+      <app-button
+        [text]="'.'"
+        [isSquare]="true"
+        (clickEvent)="numberClicked('.')"
+        [color]="'secondary'"
+        class="grid-item"
+      ></app-button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <app-button
+      [iconName]="'arrow-left'"
+      (clickEvent)="cancelSaveSelection()"
+      [isSquare]="true"
+      [color]="'danger'"
+    ></app-button>
+    <app-button
+      [disabled]="valueForm.invalid"
+      [iconName]="'check'"
+      [isSquare]="true"
+      (clickEvent)="saveSelection()"
+      [color]="'success'"
+    ></app-button>
+  </div>
+</div>
