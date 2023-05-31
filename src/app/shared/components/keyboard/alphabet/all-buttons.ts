@@ -1,7 +1,7 @@
 export class Button {
-  key: string;
-  rs: { displayValue: string; displayValueCL: string };
-  en: { displayValue: string; displayValueCL: string };
+  key!: string;
+  rs!: { displayValue: string; displayValueCL: string };
+  en!: { displayValue: string; displayValueCL: string };
 }
 
 export class KeyboardButtons {
@@ -244,6 +244,6 @@ export class KeyboardButtons {
   ];
 
   getButtonById(key: string): Button {
-    return this.ALL_BUTTONS.find((b) => b.key === key);
+    return this.ALL_BUTTONS.find((b) => b.key === key) || this.ALL_BUTTONS[0];
   }
 }

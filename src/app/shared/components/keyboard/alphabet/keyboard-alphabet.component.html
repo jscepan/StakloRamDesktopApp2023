@@ -1,1 +1,161 @@
-alphabet
+<div class="main-container">
+  <h1 *ngIf="title">{{ title }}</h1>
+  <div class="input">
+    <form [formGroup]="valueForm">
+      <mat-form-field class="field">
+        <mat-label>{{ inputFieldTitle }}</mat-label>
+        <input
+          matInput
+          #inputValue
+          formControlName="value"
+          [width]="100"
+          class="center"
+          (click)="deselectText()"
+        />
+      </mat-form-field>
+    </form>
+  </div>
+  <div class="content">
+    <div class="row-zero">
+      <div class="empty-div"></div>
+      <app-button
+        *ngFor="let buttonKey of buttonZeroRow"
+        (clickEvent)="keyClicked(getButton(buttonKey).key)"
+        [text]="
+          this.language === 'SR'
+            ? capsLockActive || shiftActive
+              ? getButton(buttonKey).rs.displayValueCL
+              : getButton(buttonKey).rs.displayValue
+            : capsLockActive || shiftActive
+            ? getButton(buttonKey).en.displayValueCL
+            : getButton(buttonKey).en.displayValue
+        "
+        [isSquare]="true"
+        [isTransparentMode]="true"
+        [buttonSize]="'middle'"
+        class="button-key"
+      ></app-button>
+      <app-button
+        class="button-key backspace"
+        [iconName]="'arrow-left'"
+        [color]="'secondary'"
+        [buttonSize]="'middle'"
+        [fullWidth]="true"
+        (clickEvent)="backspaceClicked()"
+      ></app-button>
+    </div>
+    <div class="row-first">
+      <app-button
+        (clickEvent)="specialButtonClicked('SR')"
+        [text]="'SR'"
+        [isSquare]="true"
+        [isTransparentMode]="!(language === 'SR')"
+        [buttonSize]="'middle'"
+        class="button-key"
+      ></app-button>
+      <app-button
+        (clickEvent)="specialButtonClicked('EN')"
+        [text]="'EN'"
+        [isSquare]="true"
+        [isTransparentMode]="!(language === 'EN')"
+        [buttonSize]="'middle'"
+        class="button-key language"
+      ></app-button>
+      <app-button
+        *ngFor="let buttonKey of buttonFirstRow"
+        (clickEvent)="keyClicked(getButton(buttonKey).key)"
+        [text]="
+          this.language === 'SR'
+            ? capsLockActive || shiftActive
+              ? getButton(buttonKey).rs.displayValueCL
+              : getButton(buttonKey).rs.displayValue
+            : capsLockActive || shiftActive
+            ? getButton(buttonKey).en.displayValueCL
+            : getButton(buttonKey).en.displayValue
+        "
+        [isSquare]="true"
+        [isTransparentMode]="true"
+        [buttonSize]="'middle'"
+        class="button-key"
+      ></app-button>
+    </div>
+    <div class="row-second">
+      <app-button
+        (clickEvent)="specialButtonClicked('capsLock')"
+        [text]="'Caps Lock'"
+        [isTransparentMode]="!capsLockActive"
+        [buttonSize]="'middle'"
+        [fullWidth]="true"
+        class="button-key caps-lock"
+      ></app-button>
+      <app-button
+        *ngFor="let buttonKey of buttonSecondRow"
+        (clickEvent)="keyClicked(getButton(buttonKey).key)"
+        [text]="
+          this.language === 'SR'
+            ? capsLockActive || shiftActive
+              ? getButton(buttonKey).rs.displayValueCL
+              : getButton(buttonKey).rs.displayValue
+            : capsLockActive || shiftActive
+            ? getButton(buttonKey).en.displayValueCL
+            : getButton(buttonKey).en.displayValue
+        "
+        [isSquare]="true"
+        [isTransparentMode]="true"
+        [buttonSize]="'middle'"
+        class="button-key"
+      ></app-button>
+    </div>
+    <div class="row-third">
+      <app-button
+        (clickEvent)="specialButtonClicked('shift')"
+        [text]="'Shift'"
+        [isTransparentMode]="!shiftActive"
+        [buttonSize]="'middle'"
+        [fullWidth]="true"
+        class="button-key shift"
+      ></app-button>
+      <app-button
+        *ngFor="let buttonKey of buttonThirdRow"
+        (clickEvent)="keyClicked(getButton(buttonKey).key)"
+        [text]="
+          this.language === 'SR'
+            ? capsLockActive || shiftActive
+              ? getButton(buttonKey).rs.displayValueCL
+              : getButton(buttonKey).rs.displayValue
+            : capsLockActive || shiftActive
+            ? getButton(buttonKey).en.displayValueCL
+            : getButton(buttonKey).en.displayValue
+        "
+        [isSquare]="true"
+        [isTransparentMode]="true"
+        [buttonSize]="'middle'"
+        class="button-key"
+      ></app-button>
+    </div>
+  </div>
+  <div class="row-fourth">
+    <app-button
+      (clickEvent)="specialButtonClicked('space')"
+      [text]="'space' | translate"
+      [isTransparentMode]="true"
+      [buttonSize]="'middle'"
+      class="button-key"
+      [fullWidth]="true"
+    ></app-button>
+  </div>
+  <div class="footer">
+    <app-button
+      [iconName]="'arrow-left'"
+      (clickEvent)="cancelSaveSelection()"
+      [isSquare]="true"
+      [color]="'danger'"
+    ></app-button>
+    <app-button
+      [iconName]="'check'"
+      [isSquare]="true"
+      (clickEvent)="saveSelection()"
+      [color]="'success'"
+    ></app-button>
+  </div>
+</div>
