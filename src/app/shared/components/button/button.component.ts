@@ -30,7 +30,7 @@ export class ButtonComponent implements OnInit {
   @Input() text: string = '';
   @Input() iconName?: string;
   @Input() iconPosition?: 'left' | 'right' = 'left';
-  @Input() buttonSize: 'big' | 'middle' | 'small' = 'big';
+  @Input() buttonSize: 'big' | 'middle' | 'small' | 'extrasmall' = 'big';
   @Input() fontSize: number = 16;
 
   @Input() isSquare: boolean = false;

@@ -1,0 +1,23 @@
+.main-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+
+  .grid-container {
+    display: grid;
+    padding: 10px;
+
+    .grid-item {
+      border: 1px solid rgba(0, 0, 0, 0.8);
+      padding: 5px 20px;
+      text-align: center;
+
+      &.header {
+        background-color: var(--color-brand);
+        color: var(--color-white);
+        font-weight: 600;
+        font-size: 1.2em;
+      }
+    }
+  }
+}

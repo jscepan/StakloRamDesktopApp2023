@@ -1,0 +1,33 @@
+<div class="main-container">
+  <div
+    class="grid-container"
+    style="grid-template-columns: {{ gridTemplateColumnsCssStyle }}"
+  >
+    <div class="grid-item header" *ngFor="let item of dataModel.header">
+      {{ item }}
+    </div>
+    <div class="grid-item header">{{ "edit" | translate }}</div>
+    <div class="grid-item header">{{ "delete" | translate }}</div>
+    <ng-container *ngFor="let field of dataModel.data; let i = index">
+      <div class="grid-item">
+        {{ field }}
+      </div>
+      <div class="grid-item" *ngIf="(i + 1) % dataModel.header.length === 0">
+        <app-button
+          [buttonSize]="'extrasmall'"
+          [iconName]="'edit'"
+          [color]="'secondary'"
+          (clickEvent)="clickEditData(i)"
+        ></app-button>
+      </div>
+      <div class="grid-item" *ngIf="(i + 1) % dataModel.header.length === 0">
+        <app-button
+          [buttonSize]="'extrasmall'"
+          [iconName]="'trash-2'"
+          [color]="'secondary'"
+          (clickEvent)="clickDeleteData(i)"
+        ></app-button>
+      </div>
+    </ng-container>
+  </div>
+</div>

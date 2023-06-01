@@ -1,0 +1,15 @@
+.main-container {
+  height: 100%;
+  width: 100%;
+
+  .form {
+    padding: 30px;
+    border-bottom: 1px solid var(--attributes-border-color, #efeff3);
+    display: flex;
+    flex-direction: column;
+    // height: calc(100% - 58px);
+    overflow: hidden;
+    max-height: 100%;
+    min-width: 500px;
+  }
+}

@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { TableShow } from 'src/app/shared/components/table-show/table-show.component';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
+// import { CreateEditComponentService } from './create-edit-popup/create-edit-component.service';
 
 @Component({
   selector: 'app-product-settings',
@@ -15,6 +17,8 @@ export class ProductSettingsComponent implements OnInit, OnDestroy {
 
   entities: any[] = [];
   productName: string = '';
+
+  table?: TableShow;
 
   constructor(
     private _activeRoute: ActivatedRoute,

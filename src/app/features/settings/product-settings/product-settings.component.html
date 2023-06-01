@@ -1,1 +1,22 @@
-<div class="container"></div>
+<div class="container">
+  <div class="header">
+    <app-button
+      [text]="'cancel' | translate"
+      color="secondary"
+      [buttonSize]="'small'"
+      (clickEvent)="cancel()"
+    ></app-button>
+    <app-button
+      [text]="'createNew' | translate"
+      [color]="'success'"
+      [buttonSize]="'small'"
+      (clickEvent)="createNewData()"
+    ></app-button>
+  </div>
+  <app-table-show
+    [dataModel]="table"
+    *ngIf="table"
+    (editData)="clickEditData($event)"
+    (deleteData)="clickDeleteData($event)"
+  ></app-table-show>
+</div>

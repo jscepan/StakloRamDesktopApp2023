@@ -1,0 +1,19 @@
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+mat-dialog-actions {
+  .buttons {
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    me-button {
+      margin-left: 20px;
+    }
+  }
+}
