@@ -1,0 +1,20 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Aplikacija za obracun obrade ramova i stakla",
+  "main": "server.js",
+  "scripts": {
+    "test": "Caooooo"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "mysql",
+    "restapi"
+  ],
+  "author": "Scepan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

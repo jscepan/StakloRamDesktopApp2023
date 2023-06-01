@@ -1,0 +1,13 @@
+{
+  "decimalNumberSign": ",",
+  "thousandsNumberSign": ".",
+  "dateFormat": "dd.mm.yyyy",
+  "currencyFormat": "din",
+  "currencyDisplayValue": "Din",
+  "language": "rs",
+  "minGlassSurface": "0.1",
+  "copies": "23",
+  "footer": "Hvala Vam na poverenju!",
+  "header": "STAKLO RAM PLUS S.Z.T.R. poslovnica Kruscic",
+  "printer": "Neki stampac"
+}

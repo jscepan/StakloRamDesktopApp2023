@@ -4,82 +4,18 @@ import { BaseWebService } from 'src/app/core/services/base.web-service';
 import { BASE_API_URL } from '../constants';
 
 export class AppSettings {
-  companyEmail?: string;
-  companyWebsite?: string;
-
-  invoiceMethodOfPayment?: string;
-  invoiceMethodOfPaymentForCashBill?: string;
-  invoiceTaxFreeText?: string;
-  invoicePlaceOfIssue?: string;
-  invoiceCurrency?: string;
-  invoiceCountry?: string;
-  invoiceVatRate?: number;
-  invoiceCompanyName?: string;
-  invoiceCompanyStreet?: string;
-  invoiceZipCodeCity?: string;
-  invoiceContactsPhoneFax?: string;
-  invoiceCompanyDescription?: string;
-  invoiceBankAccounts?: string;
-  invoiceComplaints?: string;
-  invoiceForeignNote?: string;
-  invoiceForeignNotes?: { key: string; value: string }[];
-
-  qrCodeShowOnInvoice?: boolean;
-  qrCodeIdentCode?: string;
-  qrCodeVersion?: string;
-  qrCodeSignSet?: string;
-  qrCodeAccountNumber?: string;
-  qrCodeCompanyName?: string;
-  qrCodeCurrency?: string;
-  qrCodePayingCodePerson?: string;
-  qrCodePayingCodeCompany?: string;
-  qrCodePayingPurpose?: string;
-
-  termoizolacGlassMinArea?: number;
-  constructionMeasureCM?: number;
-  workOrderPlaceOfIssue?: string;
-  workOrderCompanyDescription?: string;
-  workOrderHeadingLine1?: string;
-  workOrderHeadingLine2?: string;
-  workOrderHeadingLine3?: string;
-
-  keyAPI?: string;
-  requestIDcharsNumber?: number;
-  urlImportSalesUbl?: string;
-  customizationID?: string;
-  invoiceTypeCodeCommercialInvoice?: string;
-  invoiceTypeCodeAdvanceInvoice?: string;
-  documentCurrencyCode?: string;
-  schemeID?: string;
-  jbkjsPrefix?: string;
-  invoiceTaxPeriodByDateOfTurnover?: string;
-  invoiceTaxPeriodByDateOfCreate?: string;
-  invoiceTaxPeriodByDateOfPaying?: string;
-  sellerPIB?: string;
-  sellerName?: string;
-  sellerStreetName?: string;
-  sellerCity?: string;
-  sellerPostalCode?: string;
-  sellerCountry?: string;
-  sellerAccount?: string;
-  taxScheme?: string;
-  taxCountrySign?: string;
-  sellerMaticalNumber?: string;
-  sellerElectronicMail?: string;
-  paymentMeansCode?: string;
-  modelPaymentCode?: string;
-  invoiceCurrencyEInvoice?: string;
-  digitsCountForInvoice?: number;
-  digitsCountForTaxInvoice?: number;
-  standardVATRate?: number;
-  categoryForStandardVAT?: string;
-  privillegedVATRate?: number;
-  categoryForPrivillegedVAT?: string;
-  unitCodeForMeter2?: string;
-  unitCodeForMeter?: string;
-  unitCodeForHour?: string;
-  unitCodeForPieces?: string;
-  unitCodeForKilograme?: string;
+  thousandsNumberSign: '.' | ',' = '.';
+  decimalNumberSign: '.' | ',' = ',';
+  dateFormat: 'dd.mm.yyyy' | 'dd/mm/yyyy' | 'mm.dd.yyyy' | 'mm/dd/yyyy' =
+    'dd.mm.yyyy';
+  currencyFormat: string = 'din';
+  currencyDisplayValue: string = 'Din';
+  language: 'rs' | 'en' = 'rs';
+  minGlassSurface: number = 0.1;
+  copies: number = 1;
+  footer: string = 'Hvala Vam na poverenju';
+  header: string = 'STAKLO RAM';
+  printer: string = 'Neki';
 }
 
 @Injectable({

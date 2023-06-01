@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SettingsStoreService } from 'src/app/shared/services/settings-store.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 
 @Component({
@@ -22,7 +23,10 @@ export class SettingsLayoutComponent implements OnInit, OnDestroy {
     'users',
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private settingsStoreService: SettingsStoreService
+  ) {}
 
   ngOnInit(): void {}
 
