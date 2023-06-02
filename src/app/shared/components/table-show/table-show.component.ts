@@ -61,7 +61,9 @@ export class TableShowComponent implements OnInit, OnDestroy {
           cancel: this.translateService.instant('cancel'),
         },
       },
-      title: this.translateService.instant('areYouSureYouWantToDeleteThis'),
+      title: this.dataModel.rowData[i].isDeleted
+        ? this.translateService.instant('areYouSureYouWantToActivateThis')
+        : this.translateService.instant('areYouSureYouWantToDeleteThis'),
       message: '',
     });
 

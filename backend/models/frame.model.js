@@ -42,22 +42,16 @@ Frame.findById = (id, result) => {
     }
 
     if (res) {
-      result(
-        null,
-        // res[0].map((frame) => {
-        // return
-        {
-          oid: res.frame_oid,
-          name: res.frame_name,
-          uom: res.frame_uom,
-          pricePerUom: res.frame_pricePerUom,
-          cashRegisterNumber: res.frame_cashRegisterNumber,
-          code: res.frame_code,
-          frameWidthMM: res.frame_frameWidthMM,
-          isActive: res.frame_isActive,
-        }
-        // })
-      );
+      result(null, {
+        oid: res.frame_oid,
+        name: res.frame_name,
+        uom: res.frame_uom,
+        pricePerUom: res.frame_pricePerUom,
+        cashRegisterNumber: res.frame_cashRegisterNumber,
+        code: res.frame_code,
+        frameWidthMM: res.frame_frameWidthMM,
+        isActive: res.frame_isActive,
+      });
       return;
     }
 
@@ -67,7 +61,7 @@ Frame.findById = (id, result) => {
 };
 
 Frame.getAll = (result) => {
-  let query = "SELECT * FROM frame";
+  const query = "SELECT * FROM frame";
 
   sql.all(query, (err, rows) => {
     if (err) {

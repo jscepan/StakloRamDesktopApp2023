@@ -57,17 +57,33 @@ export class BaseDataStoreService<T extends BaseModel> {
     });
   }
 
-  public deleteEntity(entity: T): Observable<void> {
+  public deleteEntity(entity: T): Observable<boolean> {
     entity = { ...entity, isActive: false };
     return new Observable((subscriber) => {
       this.baseWebService
         .putRequest(this.domainName + '/' + entity.oid, entity)
-        .subscribe((deleted) => {
-          let entities = this.$entities
-            .getValue()
-            .filter((ent: T) => ent.oid != deleted.oid);
-          this.$entities.next(entities);
-          subscriber.next();
+        .subscribe(() => {
+          const ents = this.$entities.getValue().map((e) => {
+            return entity.oid === e.oid ? entity : e;
+          });
+          this.$entities.next(ents);
+          subscriber.next(true);
+          subscriber.complete();
+        });
+    });
+  }
+
+  public activateEntity(entity: T): Observable<boolean> {
+    entity = { ...entity, isActive: true };
+    return new Observable((subscriber) => {
+      this.baseWebService
+        .putRequest(this.domainName + '/' + entity.oid, entity)
+        .subscribe(() => {
+          const ents = this.$entities.getValue().map((e) => {
+            return entity.oid === e.oid ? entity : e;
+          });
+          this.$entities.next(ents);
+          subscriber.next(true);
           subscriber.complete();
         });
     });

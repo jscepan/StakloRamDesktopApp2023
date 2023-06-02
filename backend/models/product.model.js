@@ -10,17 +10,17 @@ const Product = function (product) {
 };
 
 Product.create = (domain, newProduct, result) => {
-  console.log("--------------------");
-  sql.query(
-    `INSERT INTO ${domain} SET ?`,
-    {
-      [`${domain}_name`]: newProduct.name,
-      [`${domain}_uom`]: newProduct.uom,
-      [`${domain}_pricePerUom`]: newProduct.pricePerUom,
-      [`${domain}_cashRegisterNumber`]: newProduct.cashRegisterNumber,
-      [`${domain}_isActive`]: true,
-    },
-    (err, res) => {
+  const query = `INSERT INTO ${domain} (${domain}_name, ${domain}_uom, ${domain}_pricePerUom, ${domain}_cashRegisterNumber, ${domain}_isActive) VALUES (?, ?, ?, ?, ?)`;
+  sql.run(
+    query,
+    [
+      newProduct.name,
+      newProduct.uom,
+      newProduct.pricePerUom,
+      newProduct.cashRegisterNumber,
+      true,
+    ],
+    function (err) {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -28,7 +28,7 @@ Product.create = (domain, newProduct, result) => {
       }
 
       result(null, {
-        oid: res.insertId,
+        oid: this.lastID,
         ...newProduct,
       });
     }
@@ -36,14 +36,14 @@ Product.create = (domain, newProduct, result) => {
 };
 
 Product.findById = (domain, id, result) => {
-  sql.query(`SELECT * FROM ${domain} WHERE oid = ${id}`, (err, res) => {
+  sql.get(`SELECT * FROM ${domain} WHERE oid = ?`, [id], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
 
-    if (res.length) {
+    if (res) {
       result(null, {
         oid: product[`${domain}_oid`],
         name: product[`${domain}_name`],
@@ -61,11 +61,9 @@ Product.findById = (domain, id, result) => {
 };
 
 Product.getAll = (domain, result) => {
-  console.log("--------------------");
+  const query = `SELECT * FROM ${domain}`;
 
-  let query = `SELECT * FROM ${domain} where ${domain}_isActive=true`;
-
-  sql.query(query, (err, res) => {
+  sql.all(query, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -88,8 +86,10 @@ Product.getAll = (domain, result) => {
 };
 
 Product.updateById = (domain, id, product, result) => {
-  sql.query(
-    `UPDATE ${domain} SET ${domain}_name = ?, ${domain}_uom = ?, ${domain}_pricePerUom = ?, ${domain}_cashRegisterNumber = ?, ${domain}_isActive = ? WHERE ${domain}_oid = ?`,
+  const query = `UPDATE ${domain} SET ${domain}_name = ?, ${domain}_uom = ?, ${domain}_pricePerUom = ?, ${domain}_cashRegisterNumber = ?, ${domain}_isActive = ? WHERE ${domain}_oid = ?`;
+
+  sql.run(
+    query,
     [
       product.name,
       product.uom,
@@ -98,14 +98,14 @@ Product.updateById = (domain, id, product, result) => {
       product.isActive,
       id,
     ],
-    (err, res) => {
+    function (err) {
       if (err) {
         console.log("error: ", err);
         result(null, err);
         return;
       }
 
-      if (res.affectedRows == 0) {
+      if (this.changes === 0) {
         // not found Product with the id
         result({ kind: "not_found" }, null);
         return;
@@ -119,7 +119,7 @@ Product.updateById = (domain, id, product, result) => {
 };
 
 Product.remove = (domain, id, result) => {
-  sql.query(`DELETE FROM ${domain} WHERE ${domain}_oid = ?`, id, (err, res) => {
+  sql.run(`DELETE FROM ${domain} WHERE ${domain}_oid = ?`, id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -130,22 +130,22 @@ Product.remove = (domain, id, result) => {
       // not found Product with the id
       result({ kind: "not_found" }, null);
       return;
+    } else {
+      result(
+        null,
+        true
+        // res.map((p) => {
+        //   return {
+        //     oid: p[`${domain}_oid`],
+        //     name: p[`${domain}_name`],
+        //     uom: p[`${domain}_uom`],
+        //     pricePerUom: p[`${domain}_pricePerUom`],
+        //     cashRegisterNumber: p[`${domain}_cashRegisterNumber`],
+        //     isActive: product[`${domain}_isActive`],
+        //   };
+        // })
+      );
     }
-    console.log("res OBRISANO: ");
-    console.log(res);
-    result(
-      null,
-      res.map((p) => {
-        return {
-          oid: p[`${domain}_oid`],
-          name: p[`${domain}_name`],
-          uom: p[`${domain}_uom`],
-          pricePerUom: p[`${domain}_pricePerUom`],
-          cashRegisterNumber: p[`${domain}_cashRegisterNumber`],
-          isActive: product[`${domain}_isActive`],
-        };
-      })
-    );
   });
 };
 
