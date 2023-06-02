@@ -13,12 +13,19 @@ import { ProductSettings } from './product-settings.interface';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import { GlassDataStoreService } from 'src/app/shared/services/data-store-services/glass-data-store.service';
 import { MapProductService } from './map-services/map-product.service';
+import { PasspartuColorDataStoreService } from 'src/app/shared/services/data-store-services/passpartu-color-data-store.service';
+import { MapPasspartuColorService } from './map-services/map-passpartu-color.service';
 
 @Component({
   selector: 'app-product-settings',
   templateUrl: './product-settings.component.html',
   styleUrls: ['./product-settings.component.scss'],
-  providers: [CreateEditComponentService, MapFrameService, MapProductService],
+  providers: [
+    CreateEditComponentService,
+    MapFrameService,
+    MapProductService,
+    MapPasspartuColorService,
+  ],
 })
 export class ProductSettingsComponent implements OnInit, OnDestroy {
   private subs = new SubscriptionManager();
@@ -43,9 +50,11 @@ export class ProductSettingsComponent implements OnInit, OnDestroy {
 
     private mapFrameService: MapFrameService,
     private mapProductService: MapProductService,
+    private mapPasspartuColorService: MapPasspartuColorService,
 
     private frameDataService: FrameDataStoreService,
-    private glassDataService: GlassDataStoreService
+    private glassDataService: GlassDataStoreService,
+    private passpartuColorDataService: PasspartuColorDataStoreService
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +72,12 @@ export class ProductSettingsComponent implements OnInit, OnDestroy {
         this.mapService = this.mapProductService;
         this.webService = this.glassDataService;
         this.productNameForAlert = this.translateService.instant('glass');
+        break;
+      case 'passpartuColor':
+        this.mapService = this.mapPasspartuColorService;
+        this.webService = this.passpartuColorDataService;
+        this.productNameForAlert =
+          this.translateService.instant('passpartuColor');
         break;
     }
 

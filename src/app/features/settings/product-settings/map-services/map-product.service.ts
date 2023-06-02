@@ -126,12 +126,6 @@ export class MapProductService implements ProductSettings<ProductModel> {
         ],
         isDeleted: !!!entity.isActive,
       });
-
-      // table.data.rowData.push(entity.oid);
-      // table.data.rowData.push(entity.name);
-      // table.data.rowData.push(entity.uom);
-      // table.data.rowData.push(entity.pricePerUom + '');
-      // table.data.rowData.push(entity.cashRegisterNumber + '');
     });
     return table;
   }
