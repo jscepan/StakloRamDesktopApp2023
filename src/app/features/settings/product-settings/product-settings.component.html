@@ -6,6 +6,14 @@
       [buttonSize]="'small'"
       (clickEvent)="cancel()"
     ></app-button>
+    <mat-checkbox
+      class="example-margin"
+      [checked]="showDeleted"
+      [color]="'primary'"
+      (change)="showDeletedEvent($event.checked)"
+    >
+      {{ "showDeleted" | translate }}
+    </mat-checkbox>
     <app-button
       [text]="'createNew' | translate"
       [color]="'success'"
@@ -18,5 +26,6 @@
     *ngIf="table"
     (editData)="clickEditData($event)"
     (deleteData)="clickDeleteData($event)"
+    [showDeleted]="showDeleted"
   ></app-table-show>
 </div>

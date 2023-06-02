@@ -16,7 +16,7 @@ import {
 
 export class TableShow {
   header: string[] = [];
-  data: string[] = [];
+  rowData: { data: string[]; isDeleted: boolean }[] = [];
 }
 
 @Component({
@@ -28,6 +28,7 @@ export class TableShowComponent implements OnInit, OnDestroy {
   private subs = new SubscriptionManager();
 
   @Input() dataModel!: TableShow;
+  @Input() showDeleted: boolean = false;
   @Output() editData: EventEmitter<string> = new EventEmitter<string>();
   @Output() deleteData: EventEmitter<string> = new EventEmitter<string>();
   gridTemplateColumnsCssStyle: string = 'auto ';
@@ -45,9 +46,9 @@ export class TableShowComponent implements OnInit, OnDestroy {
   }
 
   clickEditData(i: number): void {
-    this.editData.emit(
-      this.dataModel.data[i + 1 - this.dataModel.header.length]
-    );
+    // this.editData.emit(
+    //   this.dataModel.rowData[i + 1 - this.dataModel.header.length]
+    // );
   }
 
   clickDeleteData(i: number): void {
@@ -56,7 +57,7 @@ export class TableShowComponent implements OnInit, OnDestroy {
       type: {
         name: SweetAlertTypeEnum.submit,
         buttons: {
-          submit: this.translateService.instant('mark'),
+          submit: this.translateService.instant('ok'),
           cancel: this.translateService.instant('cancel'),
         },
       },
@@ -68,9 +69,7 @@ export class TableShowComponent implements OnInit, OnDestroy {
       .getDataBackFromSweetAlert()
       .subscribe((data: SweetAlertI) => {
         if (data?.confirmed) {
-          this.deleteData.emit(
-            this.dataModel.data[i + 1 - this.dataModel.header.length]
-          );
+          this.deleteData.emit(this.dataModel.rowData[i].data[0]);
         }
       });
   }

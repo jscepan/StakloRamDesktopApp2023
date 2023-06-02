@@ -1,7 +1,8 @@
 .main-container {
-  height: 100%;
+  height: 900px;
   width: 100%;
   display: flex;
+  overflow-y: auto;
 
   .grid-container {
     display: grid;
@@ -17,6 +18,10 @@
         color: var(--color-white);
         font-weight: 600;
         font-size: 1.2em;
+      }
+
+      &.is-deleted {
+        background-color: var(--color-danger);
       }
     }
   }

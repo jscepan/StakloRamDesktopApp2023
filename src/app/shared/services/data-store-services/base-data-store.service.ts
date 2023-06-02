@@ -4,7 +4,7 @@ import { BaseModel } from '../../models/base-model';
 import { BaseWebService } from '../web-services/base-web.service';
 
 @Injectable()
-export abstract class BaseDataStoreService<T extends BaseModel> {
+export class BaseDataStoreService<T extends BaseModel> {
   private $entities: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
   public readonly entities: Observable<T[]> = this.$entities.asObservable();
 

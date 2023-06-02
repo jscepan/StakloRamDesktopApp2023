@@ -6,6 +6,7 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { TableShowModule } from 'src/app/shared/components/table-show/table-show.module';
 import { CreateEditPopupModule } from './create-edit-popup/create-edit-popup.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [ProductSettingsComponent],
@@ -16,6 +17,7 @@ import { CreateEditPopupModule } from './create-edit-popup/create-edit-popup.mod
     CreateEditPopupModule,
     ButtonModule,
     TranslateModule,
+    MatCheckboxModule,
   ],
   exports: [ProductSettingsComponent],
 })

@@ -7,27 +7,41 @@
       {{ item }}
     </div>
     <div class="grid-item header">{{ "edit" | translate }}</div>
-    <div class="grid-item header">{{ "delete" | translate }}</div>
-    <ng-container *ngFor="let field of dataModel.data; let i = index">
-      <div class="grid-item">
-        {{ field }}
-      </div>
-      <div class="grid-item" *ngIf="(i + 1) % dataModel.header.length === 0">
-        <app-button
-          [buttonSize]="'extrasmall'"
-          [iconName]="'edit'"
-          [color]="'secondary'"
-          (clickEvent)="clickEditData(i)"
-        ></app-button>
-      </div>
-      <div class="grid-item" *ngIf="(i + 1) % dataModel.header.length === 0">
-        <app-button
-          [buttonSize]="'extrasmall'"
-          [iconName]="'trash-2'"
-          [color]="'secondary'"
-          (clickEvent)="clickDeleteData(i)"
-        ></app-button>
-      </div>
+    <div class="grid-item header">{{ "deleteActivate" | translate }}</div>
+    <ng-container *ngFor="let row of dataModel.rowData; let i = index">
+      <ng-container *ngIf="(showDeleted && row.isDeleted) || !row.isDeleted">
+        <div
+          class="grid-item"
+          [class.is-deleted]="row.isDeleted"
+          *ngFor="let field of row.data"
+        >
+          {{ field }}
+        </div>
+        <div class="grid-item" [class.is-deleted]="row.isDeleted">
+          <app-button
+            [buttonSize]="'extrasmall'"
+            [iconName]="'edit'"
+            [color]="'secondary'"
+            (clickEvent)="clickEditData(i)"
+          ></app-button>
+        </div>
+        <div class="grid-item" *ngIf="!row.isDeleted">
+          <app-button
+            [buttonSize]="'extrasmall'"
+            [iconName]="'trash-2'"
+            [color]="'secondary'"
+            (clickEvent)="clickDeleteData(i)"
+          ></app-button>
+        </div>
+        <div class="grid-item is-deleted" *ngIf="row.isDeleted">
+          <app-button
+            [buttonSize]="'extrasmall'"
+            [iconName]="'check'"
+            [color]="'secondary'"
+            (clickEvent)="clickDeleteData(i)"
+          ></app-button>
+        </div>
+      </ng-container>
     </ng-container>
   </div>
 </div>
