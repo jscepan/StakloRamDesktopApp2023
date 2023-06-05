@@ -1,4 +1,53 @@
 <div class="container">
-  <div class="header"></div>
-  <div class="content"></div>
+  <div class="header">
+    <app-button
+      [text]="'cancel' | translate"
+      color="secondary"
+      [buttonSize]="'small'"
+      (clickEvent)="cancel()"
+    ></app-button>
+    <app-button
+      [text]="'createNew' | translate"
+      [color]="'success'"
+      [buttonSize]="'small'"
+      (clickEvent)="createNewUser()"
+    ></app-button>
+  </div>
+  <div class="content">
+    <div class="grid-container">
+      <div class="grid-item header">{{ "code" | translate }}</div>
+      <div class="grid-item header">{{ "name" | translate }}</div>
+      <div class="grid-item header">{{ "isActive" | translate }}</div>
+      <div class="grid-item header">{{ "edit" | translate }}</div>
+      <div class="grid-item header">{{ "activateDeactivate" | translate }}</div>
+      <ng-container *ngFor="let user of users">
+        <div class="grid-item">{{ user.oid }}</div>
+        <div class="grid-item">{{ user.name }}</div>
+        <div class="grid-item">
+          <span
+            [class.inactive]="!user.isActive"
+            [class.active]="user.isActive"
+          >
+            {{ (user.isActive ? "active" : "inactive") | translate }}</span
+          >
+        </div>
+        <div class="grid-item">
+          <app-button
+            [buttonSize]="'extrasmall'"
+            [iconName]="'edit'"
+            [color]="'secondary'"
+            (clickEvent)="editUserData(user)"
+          ></app-button>
+        </div>
+        <div class="grid-item">
+          <app-button
+            [buttonSize]="'extrasmall'"
+            [iconName]="user.isActive ? 'toggle-left' : 'toggle-right'"
+            [color]="'secondary'"
+            (clickEvent)="toggleUserActivation(user)"
+          ></app-button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
 </div>

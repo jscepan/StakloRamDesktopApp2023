@@ -15,6 +15,10 @@ import { GlassDataStoreService } from 'src/app/shared/services/data-store-servic
 import { MapProductService } from './map-services/map-product.service';
 import { PasspartuColorDataStoreService } from 'src/app/shared/services/data-store-services/passpartu-color-data-store.service';
 import { MapPasspartuColorService } from './map-services/map-passpartu-color.service';
+import { PasspartuDataStoreService } from 'src/app/shared/services/data-store-services/passpartu-data-store.service';
+import { FacetingDataStoreService } from 'src/app/shared/services/data-store-services/faceting-data-store.service';
+import { MirrorDataStoreService } from 'src/app/shared/services/data-store-services/mirror-data-store.service';
+import { SandingDataStoreService } from 'src/app/shared/services/data-store-services/sanding-data-store.service';
 
 @Component({
   selector: 'app-product-settings',
@@ -54,7 +58,11 @@ export class ProductSettingsComponent implements OnInit, OnDestroy {
 
     private frameDataService: FrameDataStoreService,
     private glassDataService: GlassDataStoreService,
-    private passpartuColorDataService: PasspartuColorDataStoreService
+    private passpartuDataService: PasspartuDataStoreService,
+    private passpartuColorDataService: PasspartuColorDataStoreService,
+    private mirrorDataService: MirrorDataStoreService,
+    private facetingDataService: FacetingDataStoreService,
+    private sandingDataService: SandingDataStoreService
   ) {}
 
   ngOnInit(): void {
@@ -73,11 +81,36 @@ export class ProductSettingsComponent implements OnInit, OnDestroy {
         this.webService = this.glassDataService;
         this.productNameForAlert = this.translateService.instant('glass');
         break;
+      case 'passpartu':
+        this.mapService = this.mapProductService;
+        this.webService = this.passpartuDataService;
+        this.productNameForAlert = this.translateService.instant('passpartu');
+        break;
       case 'passpartuColor':
         this.mapService = this.mapPasspartuColorService;
         this.webService = this.passpartuColorDataService;
         this.productNameForAlert =
           this.translateService.instant('passpartuColor');
+        break;
+      case 'mirror':
+        this.mapService = this.mapProductService;
+        this.webService = this.mirrorDataService;
+        this.productNameForAlert = this.translateService.instant('mirror');
+        break;
+      case 'mirror':
+        this.mapService = this.mapProductService;
+        this.webService = this.mirrorDataService;
+        this.productNameForAlert = this.translateService.instant('mirror');
+        break;
+      case 'faceting':
+        this.mapService = this.mapProductService;
+        this.webService = this.facetingDataService;
+        this.productNameForAlert = this.translateService.instant('faceting');
+        break;
+      case 'sanding':
+        this.mapService = this.mapProductService;
+        this.webService = this.sandingDataService;
+        this.productNameForAlert = this.translateService.instant('sanding');
         break;
     }
 

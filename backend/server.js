@@ -28,7 +28,7 @@ const PORT = process.env.PORT || 45329;
 require("./routes/product.routes.js")(app);
 require("./routes/passpartuColor.routes.js")(app);
 require("./routes/frame.routes.js")(app);
-// require("./routes/user.routes.js")(app);
+require("./routes/user.routes.js")(app);
 require("./routes/settings.routes.js")(app);
 
 app.listen(PORT, () => {

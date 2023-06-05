@@ -21,11 +21,13 @@
       (clickEvent)="createNewData()"
     ></app-button>
   </div>
-  <app-table-show
-    [dataModel]="table"
-    *ngIf="table"
-    (editData)="clickEditData($event)"
-    (deleteData)="clickDeleteData($event)"
-    [showDeleted]="showDeleted"
-  ></app-table-show>
+  <div class="content">
+    <app-table-show
+      [dataModel]="table"
+      *ngIf="table"
+      (editData)="clickEditData($event)"
+      (deleteData)="clickDeleteData($event)"
+      [showDeleted]="showDeleted"
+    ></app-table-show>
+  </div>
 </div>
