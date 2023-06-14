@@ -3,19 +3,17 @@
   height: 100%;
   width: 100%;
   background-color: var(--color-white);
-  overflow-y: hidden;
-  // padding: 10px;
 
   .sidebar-container {
-    height: 100%;
     transition: flex-basis 0.3s ease;
     flex-basis: var(--sidebar-width);
   }
 
   .content {
-    height: 100%;
+    height: calc(100% - 40px);
     width: 100%;
     max-width: calc(100% - 111px);
     margin: 20px;
+    overflow:auto;
   }
 }
