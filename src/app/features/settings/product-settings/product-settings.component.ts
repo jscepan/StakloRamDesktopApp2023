@@ -136,16 +136,26 @@ export class ProductSettingsComponent implements OnInit, OnDestroy {
           .openDialog(entities)
           .subscribe((data) => {
             if (data) {
+              if (this.productName === 'passpartuColor') {
+                const passpartuOid = data.passpartu;
+                if (passpartuOid) {
+                  const passpartu =
+                    this.passpartuDataService.getEntityById(passpartuOid);
+                  data = { ...data, passpartu };
+                }
+              }
               this.subs.sink.createNewData = this.webService
-                .createNewEntity(data)
-                .subscribe(() => {
-                  this.globalService.showBasicAlert(
-                    MODE.success,
-                    this.translateService.instant('success'),
-                    this.translateService.instant(this.productNameForAlert) +
-                      ' ' +
-                      this.translateService.instant('successfullyCreated')
-                  );
+                .createNewEntity({ ...data, isActive: true })
+                .subscribe((entity) => {
+                  if (entity?.oid) {
+                    this.globalService.showBasicAlert(
+                      MODE.success,
+                      this.translateService.instant('success'),
+                      this.translateService.instant(this.productNameForAlert) +
+                        ' ' +
+                        this.translateService.instant('successfullyCreated')
+                    );
+                  }
                 });
             }
           });

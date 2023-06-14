@@ -15,7 +15,7 @@ PasspartuColor.create = (newPasspartuColor, result) => {
     [
       newPasspartuColor.oid,
       newPasspartuColor.name,
-      true,
+      newPasspartuColor.isActive,
       newPasspartuColor.passpartu.oid,
     ],
     function (err) {
@@ -27,12 +27,7 @@ PasspartuColor.create = (newPasspartuColor, result) => {
 
       result(null, {
         oid: this.lastID,
-        ...newPasspartuColor.map((pc) => {
-          return {
-            name: pc.name,
-            passpartu: newPasspartuColor.passpartu,
-          };
-        }),
+        ...newPasspartuColor
       });
     }
   );

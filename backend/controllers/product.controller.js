@@ -1,19 +1,19 @@
 const Product = require("../models/product.model.js");
 
 // Create and Save a new Product
-exports.create = (req, res) => {};
+exports.create = (req, res) => { };
 
 // Retrieve all Products from the database (with condition).
-exports.findAll = (req, res) => {};
+exports.findAll = (req, res) => { };
 
 // Find a single Product with a id
-exports.findOne = (req, res) => {};
+exports.findOne = (req, res) => { };
 
 // Update a Product identified by the id in the request
-exports.update = (req, res) => {};
+exports.update = (req, res) => { };
 
 // Delete a Product with the specified id in the request
-exports.delete = (req, res) => {};
+exports.delete = (req, res) => { };
 
 exports.create = (req, res) => {
   // Validate request
@@ -30,6 +30,7 @@ exports.create = (req, res) => {
     uom: req.body.uom,
     pricePerUom: req.body.pricePerUom,
     cashRegisterNumber: req.body.cashRegisterNumber,
+    isActive: req.body.isActive
   });
 
   // Save Product in the database

@@ -18,7 +18,7 @@ Product.create = (domain, newProduct, result) => {
       newProduct.uom,
       newProduct.pricePerUom,
       newProduct.cashRegisterNumber,
-      true,
+      newProduct.isActive,
     ],
     function (err) {
       if (err) {
@@ -26,10 +26,9 @@ Product.create = (domain, newProduct, result) => {
         result(err, null);
         return;
       }
-
       result(null, {
         oid: this.lastID,
-        ...newProduct,
+        ...newProduct
       });
     }
   );

@@ -21,7 +21,7 @@ Frame.create = (newFrame, result) => {
     newFrame.cashRegisterNumber,
     newFrame.code,
     newFrame.frameWidthMM,
-    true,
+    newFrame.isActive,
   ];
   sql.run(query, params, function (err) {
     if (err) {

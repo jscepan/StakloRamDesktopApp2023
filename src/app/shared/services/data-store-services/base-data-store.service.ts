@@ -27,7 +27,11 @@ export class BaseDataStoreService<T extends BaseModel> {
       });
   }
 
-  public createNewEntity(entity: T): Observable<void> {
+  public getEntityById(oid: string): T | undefined {
+    return this.$entities.getValue().find((e) => e.oid === oid);
+  }
+
+  public createNewEntity(entity: T): Observable<T> {
     return new Observable((subscriber) => {
       // TODO zapamti izmenu u bazi i dodeli oid
       this.baseWebService
@@ -42,7 +46,7 @@ export class BaseDataStoreService<T extends BaseModel> {
     });
   }
 
-  public editEntity(entity: T): Observable<void> {
+  public editEntity(entity: T): Observable<T> {
     return new Observable((subscriber) => {
       this.baseWebService
         .putRequest(this.domainName + '/' + entity.oid, entity)
