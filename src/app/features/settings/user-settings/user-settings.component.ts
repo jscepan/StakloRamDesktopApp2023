@@ -50,7 +50,9 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
               this.globalService.showBasicAlert(
                 MODE.success,
                 this.translateService.instant('success'),
-                this.translateService.instant('successfullyCreated')
+                this.translateService.instant('user') +
+                  ' ' +
+                  this.translateService.instant('successfullyCreated')
               );
             });
         }

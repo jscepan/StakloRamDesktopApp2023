@@ -164,26 +164,39 @@ export class ProductSettingsComponent implements OnInit, OnDestroy {
 
   clickEditData(oid: string): void {
     let entity = this.entities.find((e) => e.oid === oid);
-    this.subs.sink = this.mapService
-      .mapEntityToFrame(entity)
-      .subscribe((entities) => {
-        this.subs.sink.editData = this.createEditComponentService
-          .openDialog(entities, true)
-          .subscribe((data) => {
-            if (data) {
-              data.oid = oid;
-              this.webService.editEntity(data).subscribe(() => {
-                this.globalService.showBasicAlert(
-                  MODE.success,
-                  this.translateService.instant('success'),
-                  this.translateService.instant(this.productNameForAlert) +
-                    ' ' +
-                    this.translateService.instant('successfullyEdited')
-                );
-              });
-            }
-          });
-      });
+    if (entity?.oid) {
+      this.subs.sink = this.mapService
+        .mapEntityToFrame(entity)
+        .subscribe((entities) => {
+          this.subs.sink.editData = this.createEditComponentService
+            .openDialog(entities, true)
+            .subscribe((data) => {
+              if (data) {
+                if (this.productName === 'passpartuColor') {
+                  const passpartuOid = data.passpartu;
+                  if (passpartuOid) {
+                    const passpartu =
+                      this.passpartuDataService.getEntityById(passpartuOid);
+                    data = { ...data, passpartu };
+                  }
+                }
+
+                data.oid = oid;
+                this.webService
+                  .editEntity({ ...data, isActive: entity.isActive })
+                  .subscribe(() => {
+                    this.globalService.showBasicAlert(
+                      MODE.success,
+                      this.translateService.instant('success'),
+                      this.translateService.instant(this.productNameForAlert) +
+                        ' ' +
+                        this.translateService.instant('successfullyEdited')
+                    );
+                  });
+              }
+            });
+        });
+    }
   }
 
   clickDeleteData(oid: string): void {

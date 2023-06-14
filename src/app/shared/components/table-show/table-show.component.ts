@@ -46,9 +46,7 @@ export class TableShowComponent implements OnInit, OnDestroy {
   }
 
   clickEditData(i: number): void {
-    // this.editData.emit(
-    //   this.dataModel.rowData[i + 1 - this.dataModel.header.length]
-    // );
+    this.editData.emit(this.dataModel.rowData[i].data[0]);
   }
 
   clickDeleteData(i: number): void {
