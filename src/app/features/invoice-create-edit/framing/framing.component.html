@@ -87,7 +87,7 @@
               </mat-form-field>
               <div class="uom">{{ invoiceItemForm.value.dimensionsUom }}</div>
             </div>
-            <div
+            <!-- <div
               class="row-container dimensions"
               *ngIf="invoiceItemForm.value.dimensionsOutterWidth"
             >
@@ -121,7 +121,7 @@
                 />
               </mat-form-field>
               <div class="uom">{{ invoiceItemForm.value.dimensionsUom }}</div>
-            </div>
+            </div> -->
             <div class="item-select">
               <div class="grid-container">
                 <ng-container *ngIf="!invoiceItemForm.value.mirror">
@@ -294,6 +294,84 @@
               buttonSize="middle"
               [color]="'success'"
               (clickEvent)="stepper.next()"
+            ></app-button>
+          </div>
+        </div>
+      </mat-step>
+
+      <mat-step #stepTwo>
+        <ng-template matStepLabel>
+          <span
+            class="step-label-heading bold"
+            [class.step-label-heading-active]="stepper.selected === stepTwo"
+            [class.step-label-heading-completed]="
+              stepTwo.completed && stepper.selected !== stepTwo
+            "
+            >{{ "frames" | translate }}</span
+          >
+        </ng-template>
+
+        <div class="step-content">
+          <div class="group-container">
+            <div
+              class="row-container"
+              *ngFor="
+                let frame of invoiceItemForm.value.selectedFrames;
+                let i = index
+              "
+            >
+              <div class="frame-name">
+                <span *ngIf="frame.frame.name">{{ frame.frame.name }}</span>
+                <span *ngIf="frame.frame.code">/{{ frame.frame.code }}</span>
+                <span *ngIf="frame.colorCode">{{ frame.colorCode }}</span>
+                <span *ngIf="frame.frame.uom"
+                  >{{ ", " + ("uom" | translate)
+                  }}{{ ": " + frame.frame.uom }}</span
+                >
+                <span *ngIf="frame.frame.pricePerUom"
+                  >{{ ", " + ("ppUom" | translate)
+                  }}{{ ": " + frame.frame.pricePerUom }}</span
+                >
+              </div>
+              <app-button
+                [iconName]="'trash-2'"
+                [buttonSize]="'small'"
+                [isSquare]="true"
+                [isTransparentMode]="true"
+                (clickEvent)="removeAddedFrame(i)"
+                class="button"
+              ></app-button>
+            </div>
+            <div
+              class="row-container empty-list"
+              *ngIf="!(invoiceItemForm.value.selectedFrames.length > 0)"
+            >
+              {{ "youDidntAddAnyFrame" | translate }}
+            </div>
+            <div class="row-container">
+              <div class="add-frame-button">
+                <app-button
+                  [buttonSize]="'middle'"
+                  [text]="'addFrame' | translate"
+                  [fullWidth]="true"
+                  (clickEvent)="addNewFrameToInvoiceItem()"
+                ></app-button>
+              </div>
+            </div>
+          </div>
+          <div class="footer box-sizing-border-box">
+            <app-button
+              [text]="'previous' | translate"
+              color="secondary"
+              buttonSize="middle"
+              (clickEvent)="stepper.previous()"
+            ></app-button>
+            <app-button
+              [text]="'finish' | translate"
+              buttonSize="middle"
+              [color]="'success'"
+              [disabled]="!(invoiceItemForm.value.selectedFrames.length > 0)"
+              (clickEvent)="finish()"
             ></app-button>
           </div>
         </div>

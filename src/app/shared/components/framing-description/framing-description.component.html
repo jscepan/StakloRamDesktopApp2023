@@ -1,0 +1,59 @@
+<div class="title">
+  <span class="description" *ngIf="!dataModel.mirror?.oid"
+    >{{ "picture" | translate }}&nbsp;</span
+  >
+  <span class="description" *ngIf="dataModel.mirror?.oid"
+    >{{ "mirror" | translate }}&nbsp;</span
+  >
+  <span>:&nbsp;</span>
+  <span>{{ dataModel.dimensionsWidth | number }}</span>
+  <span>&nbsp;X&nbsp;</span>
+  <span>{{ dataModel.dimensionsHeight | number }}</span>
+  <span>&nbsp;{{ dataModel.dimensionsUom }}</span>
+  <!-- <span>,&nbsp;</span>
+  <span class="description"> {{ "count" | translate }}:&nbsp; </span>
+  <span>{{ countOfItems || 1 }}</span> -->
+</div>
+<div class="item-container" [class.inOneRow]="inOneRow">
+  <ng-container *ngIf="dataModel.passpartuColor?.oid">
+    <span [class.description]="!inOneRow">{{ "passpartu" | translate }}</span>
+    :&nbsp;{{ dataModel.passpartuColor?.name }}/{{
+      dataModel.passpartuWidth | number
+    }}{{ dataModel.passpartuWidthUom }},&nbsp;
+  </ng-container>
+  <ng-container *ngIf="dataModel.glass?.oid">
+    <span [class.description]="!inOneRow">{{ "glass" | translate }}</span>
+    :&nbsp;{{ dataModel.glass?.name }},&nbsp;
+  </ng-container>
+  <ng-container *ngIf="dataModel.mirror?.oid">
+    <span [class.description]="!inOneRow">{{ "mirror" | translate }}</span>
+    :&nbsp;{{ dataModel.mirror?.name }},&nbsp;
+    <ng-container *ngIf="dataModel.faceting?.oid">
+      <span>{{ "faceting" | translate }}</span>
+      :&nbsp;{{ dataModel.faceting?.name }},&nbsp;
+    </ng-container>
+    <ng-container *ngIf="dataModel.sanding?.oid">
+      <span>{{ "sanding" | translate }}</span>
+      :&nbsp;{{ dataModel.sanding?.name }},&nbsp;
+    </ng-container>
+  </ng-container>
+  <ng-container
+    *ngIf="dataModel.selectedFrames && dataModel.selectedFrames.length > 0"
+  >
+    <span
+      *ngIf="dataModel.selectedFrames.length === 1"
+      [class.description]="!inOneRow"
+      >{{ "frame" | translate }}</span
+    >
+    <span
+      *ngIf="dataModel.selectedFrames.length > 1"
+      [class.description]="!inOneRow"
+      >{{ "frames" | translate }}</span
+    >
+    <span>:&nbsp;</span>
+    <span *ngFor="let frame of dataModel.selectedFrames; let ind = index">
+      <span *ngIf="ind > 0">,&nbsp;</span>{{ frame.frame.code
+      }}{{ frame.colorCode }}</span
+    >
+  </ng-container>
+</div>

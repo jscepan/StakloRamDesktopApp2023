@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SelectionComponentService } from '@features/selection-popup/selection-component.service';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -21,6 +21,10 @@ import { FacetingSandingPopupService } from './faceting-sanding-selection-popup/
 import { PasspartuColorDataStoreService } from 'src/app/shared/services/data-store-services/passpartu-color-data-store.service';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import { GlobalService } from 'src/app/shared/services/global.service';
+import { FrameDataStoreService } from 'src/app/shared/services/data-store-services/frame-data-store.service';
+import { InvoiceItemCalculatorService } from 'src/app/shared/services/invoice-item-amount-calculator.service';
+import { DraftInvoicesService } from 'src/app/shared/services/data-store-services/draft-invoice-items-store.service';
+import { roundOnDigits } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-framing',
@@ -30,6 +34,7 @@ import { GlobalService } from 'src/app/shared/services/global.service';
     KeyboardNumericComponentService,
     SelectionComponentService,
     FacetingSandingPopupService,
+    InvoiceItemCalculatorService,
   ],
 })
 export class FramingComponent implements OnInit, OnDestroy {
@@ -40,6 +45,8 @@ export class FramingComponent implements OnInit, OnDestroy {
   invoiceItemForm!: FormGroup;
   countOfItems: number = 1;
 
+  invoiceOid: string | undefined;
+
   private $isOutterDimension: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
   isOutterDimension: Observable<boolean> =
@@ -47,19 +54,54 @@ export class FramingComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: Router,
+    private _activeRoute: ActivatedRoute,
     private keyboardNumericComponentService: KeyboardNumericComponentService,
     private selectPopUp: SelectionComponentService,
     private appSettingsService: SettingsStoreService,
     private glassStoreService: GlassDataStoreService,
     private passpartuColorStoreService: PasspartuColorDataStoreService,
+    private frameStoreService: FrameDataStoreService,
     private mirrorStoreService: MirrorDataStoreService,
     private facetingSandingPopupService: FacetingSandingPopupService,
     private globalService: GlobalService,
+    private invoiceItemCalculatorService: InvoiceItemCalculatorService,
+    private draftInvoicesStoreService: DraftInvoicesService,
     private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
     this.initializeForm();
+
+    this.invoiceOid =
+      this._activeRoute.snapshot.paramMap.get('invoiceOid') ?? undefined;
+    const itemOid = this._activeRoute.snapshot.paramMap.get('invoiceItemOid');
+
+    if (this.invoiceOid) {
+      this.draftInvoicesStoreService.draftInvoices.subscribe((invoices) => {
+        let inv = invoices.filter((i) => i.oid === this.invoiceOid)[0];
+        if (inv) {
+          if (itemOid) {
+            this.isEdit = true;
+
+            // TODO zavrsi ovu logiku
+            // this.invoiceItem = inv.invoiceItems.filter(
+            //   (ii) => ii.oid === itemOid
+            // )[0];
+            // if (this.invoiceItem.dimensionsOutterWidth) {
+            //   this.$isOutterDimension.next(true);
+            // }
+
+            this.initializeForm();
+          } else {
+            this.initializeForm();
+          }
+        } else {
+          this.route.navigate(['invoice-create-edit', 'framing']);
+        }
+      });
+    } else {
+      this.initializeForm();
+    }
   }
 
   initializeForm(): void {
@@ -414,8 +456,96 @@ export class FramingComponent implements OnInit, OnDestroy {
     }
   }
 
+  addNewFrameToInvoiceItem(): void {
+    this.subs.sink.addNewFrameToInvoice =
+      this.frameStoreService.entities.subscribe((frames) => {
+        this.keyboardNumericComponentService
+          .openDialog(
+            this.translateService.instant('insertFrameCode'),
+            UOM.NUMBER,
+            false,
+            this.translateService.instant('fourDigitsForFrameForColor'),
+            0,
+            true
+          )
+          .subscribe((code: { value: string; nextOperation: boolean }) => {
+            if (code && code.value) {
+              if (code.value.length === 4) {
+                const c = code.value.substring(0, 2);
+                const colorCode = code.value.substring(2, 4);
+                const frame = frames.find((f) => f.code === c);
+                if (frame) {
+                  const selectedFrames =
+                    this.invoiceItemForm.get('selectedFrames')?.value;
+                  selectedFrames.push({ frame, colorCode });
+                  this.invoiceItemForm
+                    .get('selectedFrames')
+                    ?.setValue(selectedFrames);
+                  return;
+                }
+                this.globalService.showBasicAlert(
+                  MODE.error,
+                  this.translateService.instant('wrongCode'),
+                  this.translateService.instant(
+                    'firstDigitsOfCodeHaveToBeCodeOfFrame'
+                  )
+                );
+              } else {
+                this.globalService.showBasicAlert(
+                  MODE.error,
+                  this.translateService.instant('wrongCode'),
+                  this.translateService.instant('codeCanBeFourDigitsLong')
+                );
+              }
+              this.addNewFrameToInvoiceItem();
+            }
+          });
+      });
+  }
+
+  removeAddedFrame(index: number): void {
+    const selectedFrames = this.invoiceItemForm.get('selectedFrames')?.value;
+    selectedFrames.splice(index, 1);
+    this.invoiceItemForm.get('selectedFrames')?.setValue(selectedFrames);
+  }
+
   cancel(): void {
     this.route.navigate(['/']);
+  }
+
+  finish(): void {
+    this.invoiceItemForm.patchValue({
+      amount: roundOnDigits(
+        this.invoiceItemCalculatorService.getInvoiceItemAmount(
+          this.invoiceItemForm.value
+        ),
+        2
+      ),
+    });
+    console.log('+++++++++++++++++++++++++++++');
+    console.log(
+      roundOnDigits(
+        this.invoiceItemCalculatorService.getInvoiceItemAmount(
+          this.invoiceItemForm.value
+        ),
+        2
+      )
+    );
+    if (this.isEdit) {
+      // this.draftInvoicesStoreService.editDraftInvoiceItem(
+      //   this.invoiceOid,
+      //   this.invoiceItem
+      // );
+      // this.route.navigate(['invoice-create-edit', 'edit', this.invoiceOid]);
+    } else {
+      for (let i = 0; i < this.countOfItems; i++) {
+        this.invoiceOid = this.draftInvoicesStoreService.addNewInvoiceItem(
+          { ...this.invoiceItemForm.value },
+          this.invoiceOid
+        );
+      }
+      this.route.navigate(['invoice-create-edit', 'edit', this.invoiceOid]);
+    }
   }
 
   ngOnDestroy(): void {

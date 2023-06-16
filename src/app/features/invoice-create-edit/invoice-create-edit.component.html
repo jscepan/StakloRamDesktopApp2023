@@ -21,7 +21,22 @@
       class="button"
     ></app-button>
   </div>
-  <div class="invoice-header" *ngIf="componentMode !== 'DRAFT'"></div>
+  <div class="invoice-header" *ngIf="componentMode !== 'DRAFT'">
+    <div
+      class="info success"
+      *ngIf="
+        invoice.amount > 0 && invoice.amount - invoice.advancePayment === 0
+      "
+    >
+      {{ "paid" | translate }}
+    </div>
+    <div
+      class="info danger"
+      *ngIf="invoice.amount - invoice.advancePayment > 0"
+    >
+      {{ "unpaid" | translate }}
+    </div>
+  </div>
   <div class="invoice-items">
     <div class="grid-container">
       <div class="grid-item table-header">
@@ -36,9 +51,41 @@
       <div class="grid-item table-header">
         {{ "delete" | translate }}
       </div>
+      <ng-container *ngFor="let invoiceItem of invoice.invoiceItems">
+        <div class="grid-item description">
+          <app-framing-description
+            [dataModel]="invoiceItem"
+          ></app-framing-description>
+        </div>
+        <div class="grid-item price">
+          <div class="price">
+            {{ invoiceItem.amount | number : "1.2-2" }}&nbsp;{{ currency }}
+          </div>
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'edit'"
+            buttonSize="small"
+            [isTransparentMode]="true"
+            (clickEvent)="editInvoiceItem(invoiceItem)"
+            class="button"
+            *ngIf="componentMode === 'DRAFT'"
+          ></app-button>
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'trash-2'"
+            buttonSize="small"
+            [isTransparentMode]="true"
+            (clickEvent)="deleteInvoiceItem(invoiceItem)"
+            class="button"
+            *ngIf="componentMode === 'DRAFT'"
+          ></app-button>
+        </div>
+      </ng-container>
       <div class="grid-item sum">{{ "sum" | translate }}:</div>
       <div class="grid-item price">
-        {{ 10111 | number : "1.2-2" }}&nbsp;{{ currency }}
+        {{ invoice.amount | number : "1.2-2" }}&nbsp;{{ currency }}
       </div>
       <div class="grid-item"></div>
       <div class="grid-item sum"></div>
@@ -55,6 +102,7 @@
       [text]="'print' | translate"
       color="success"
       [buttonSize]="'middle'"
+      (clickEvent)="print()"
     ></app-button>
   </div>
 </div>

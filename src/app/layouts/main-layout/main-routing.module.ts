@@ -15,6 +15,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'invoices',
+    loadChildren: () =>
+      import('@features/draft-invoices/invoices.module').then(
+        (m) => m.InvoicesModule
+      ),
+  },
+  {
     path: 'invoice-create-edit',
     loadChildren: () =>
       import('@features/invoice-create-edit/invoice-create-edit.module').then(

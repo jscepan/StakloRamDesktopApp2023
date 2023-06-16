@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="invoices" *ngIf="invoices">
+    <app-table-show
+      [dataModel]="invoices"
+      (editData)="editInvoice($event)"
+      (deleteData)="deleteInvoice($event)"
+    ></app-table-show>
+  </div>
+  <div class="footer">
+    <app-button
+      [text]="'cancel' | translate"
+      color="secondary"
+      [buttonSize]="'middle'"
+      (clickEvent)="cancel()"
+    ></app-button>
+    <app-button
+      [text]="'clearAllDraftData' | translate"
+      color="primary"
+      [buttonSize]="'middle'"
+      (clickEvent)="clear()"
+    ></app-button>
+  </div>
+</div>

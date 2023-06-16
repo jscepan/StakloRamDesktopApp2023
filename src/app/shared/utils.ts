@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Observer } from 'rxjs';
-import { BASE_API_URL, INVOICE_TYPES, UOM_TYPES } from './constants';
+import { BASE_API_URL } from './constants';
 import { BaseModel } from './models/base-model';
 
 // tslint:disable-next-line:ban-types
@@ -35,6 +35,10 @@ export function constructUrl(
 
 export function getFormatedDate(date: string): string {
   return formatDate(date, 'dd/MM/yyyy', 'en-US');
+}
+
+export function getFormatedDateAndTime(date: Date): string {
+  return formatDate(date, 'dd/MM/yyyy HH:mm', 'en-US');
 }
 
 export function getOid(_index: number, card: { oid: string }): string {
@@ -120,28 +124,12 @@ export function searchInText(searchText: string, fields: string[]): boolean {
 
 export function roundOnDigits(
   value: number,
-  numberOfDigits: number = 2
+  numberOfDigits: number = 3
 ): number {
   return (
     Math.round(value * Math.pow(10, numberOfDigits)) /
     Math.pow(10, numberOfDigits)
   );
-}
-
-export function getConstructionMeasure(
-  input: number,
-  minConstructionMeasure: number = 3
-): number {
-  let value = Math.round(input);
-  if (value < input) {
-    value++;
-  } else if (value === input) {
-    value++;
-  }
-  while (value % minConstructionMeasure !== 0) {
-    value++;
-  }
-  return value;
 }
 
 export function getDaysBetweenTwoDates(first: Date, second: Date): number {
@@ -150,16 +138,4 @@ export function getDaysBetweenTwoDates(first: Date, second: Date): number {
 
 export function compareByValue(f1: BaseModel, f2: BaseModel) {
   return f1 && f2 && f1.oid === f2.oid;
-}
-
-export function getUOMDisplayValue(uom: string): string {
-  return UOM_TYPES.filter((u) => u.value === uom)[0].displayName;
-}
-
-export function getTYPEDisplayValue(uom: string): string {
-  return INVOICE_TYPES.filter((u) => u.value === uom)[0].displayName;
-}
-
-export function getWorkOrderImageUrl(url: string): string {
-  return BASE_API_URL + '/images/' + url;
 }

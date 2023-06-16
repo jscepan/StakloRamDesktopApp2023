@@ -1,0 +1,16 @@
+.title {
+  display: flex;
+
+  .description {
+    font-weight: 600;
+  }
+}
+
+.item-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  .description {
+    font-weight: 600;
+  }
+}

@@ -1,0 +1,120 @@
+.container {
+  width: 100%;
+
+  .invoice-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+
+    .button {
+      width: 50%;
+      margin: 0 10px;
+    }
+
+    .info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--color-white);
+      font-size: 1.5em;
+      font-weight: 600;
+      border-radius: 8px;
+      width: 200px;
+      height: 80px;
+
+      &.success {
+        background-color: var(--color-success);
+      }
+
+      &.danger {
+        background-color: var(--color-danger);
+      }
+    }
+  }
+
+  .invoice-items {
+    margin: 20px 0;
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto min-content min-content min-content;
+
+      .grid-item {
+        border-bottom: 1px dotted var(--color-main-light);
+        padding: 15px;
+        text-align: start;
+        font-size: 1.3em;
+        display: flex;
+        align-self: stretch;
+
+        &.table-header {
+          font-weight: 600;
+          font-size: 1.1em;
+          text-align: center;
+          padding: 0 20px;
+        }
+
+        &.sum {
+          font-size: 1.3em;
+          font-weight: 600;
+          text-transform: uppercase;
+        }
+
+        &.price {
+          justify-content: flex-end;
+        }
+
+        .description {
+          font-weight: 600;
+        }
+
+        .price {
+          text-align: end;
+          display: flex;
+          align-self: center;
+        }
+
+        .button {
+          display: flex;
+          align-self: center;
+        }
+      }
+    }
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+
+    .form-group {
+      .element {
+        display: flex;
+        width: 40%;
+
+        &.with-additional-buttons {
+          display: flex;
+          width: 100%;
+        }
+      }
+
+      .advance-payment {
+        display: flex;
+      }
+
+      .additional-buttons {
+        display: flex;
+        app-button {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  .buttons {
+    margin: 20px 0;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
