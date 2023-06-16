@@ -1,1 +1,303 @@
-<div class="container">framing</div>
+<div class="container">
+  <form [formGroup]="invoiceItemForm" *ngIf="invoiceItemForm">
+    <mat-horizontal-stepper linear #stepper class="user-select-none">
+      <ng-template matStepperIcon="edit">
+        <i-feather
+          name="check"
+          class="step-label-heading-completed icon"
+        ></i-feather>
+      </ng-template>
+      <mat-step #stepOne>
+        <ng-template matStepLabel>
+          <span
+            class="step-label-heading bold"
+            [class.step-label-heading-active]="stepper.selected === stepOne"
+            [class.step-label-heading-completed]="
+              stepOne.completed && stepper.selected !== stepOne
+            "
+            >{{ "inputDimensions" | translate }}</span
+          >
+        </ng-template>
+
+        <div class="step-content box-sizing-border-box">
+          <h1 class="step-content-label bold">
+            {{ "inputDimensions" | translate }}
+          </h1>
+
+          <div class="group-container">
+            <div class="row-container dimensions">
+              <mat-form-field class="min-with element">
+                <mat-label
+                  [class.mark-required]="true"
+                  [class.mark-opt-required]="true"
+                >
+                  {{ "inputCount" | translate }}
+                </mat-label>
+                <input
+                  type="number"
+                  matInput
+                  (click)="insertCount()"
+                  [(ngModel)]="countOfItems"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </mat-form-field>
+              <app-button
+                [text]="
+                  ('outterDimension' | translate) +
+                  ':' +
+                  ' ' +
+                  (!(isOutterDimension | async)
+                    ? ('no' | translate)
+                    : ('yes' | translate))
+                "
+                (clickEvent)="toggleInnerOutterDimension()"
+                [isTransparentMode]="!(isOutterDimension | async)"
+                [buttonSize]="'small'"
+              ></app-button>
+            </div>
+            <div class="row-container dimensions">
+              <mat-form-field class="element">
+                <mat-label
+                  [class.mark-required]="true"
+                  [class.mark-opt-required]="true"
+                >
+                  {{ "width" | translate }}
+                </mat-label>
+                <input
+                  type="number"
+                  matInput
+                  formControlName="dimensionsWidth"
+                  (click)="insertWidthAndHeight()"
+                />
+              </mat-form-field>
+              <div class="element">X</div>
+              <mat-form-field class="element">
+                <mat-label
+                  [class.mark-required]="true"
+                  [class.mark-opt-required]="true"
+                >
+                  {{ "height" | translate }}
+                </mat-label>
+                <input
+                  type="number"
+                  matInput
+                  formControlName="dimensionsHeight"
+                  (click)="insertHeight()"
+                />
+              </mat-form-field>
+              <div class="uom">{{ invoiceItemForm.value.dimensionsUom }}</div>
+            </div>
+            <div
+              class="row-container dimensions"
+              *ngIf="invoiceItemForm.value.dimensionsOutterWidth"
+            >
+              <mat-form-field class="element">
+                <mat-label
+                  [class.mark-required]="true"
+                  [class.mark-opt-required]="true"
+                >
+                  {{ "width" | translate }}
+                </mat-label>
+                <input
+                  type="number"
+                  matInput
+                  formControlName="dimensionsOutterWidth"
+                  (click)="insertOutterWidthAndHeight()"
+                />
+              </mat-form-field>
+              <div class="element">X</div>
+              <mat-form-field class="element">
+                <mat-label
+                  [class.mark-required]="true"
+                  [class.mark-opt-required]="true"
+                >
+                  {{ "height" | translate }}
+                </mat-label>
+                <input
+                  type="number"
+                  matInput
+                  formControlName="dimensionsOutterHeight"
+                  (click)="insertOutterHeight()"
+                />
+              </mat-form-field>
+              <div class="uom">{{ invoiceItemForm.value.dimensionsUom }}</div>
+            </div>
+            <div class="item-select">
+              <div class="grid-container">
+                <ng-container *ngIf="!invoiceItemForm.value.mirror">
+                  <app-button
+                    class="grid-item"
+                    [text]="'glass' | translate"
+                    buttonSize="middle"
+                    [fullWidth]="true"
+                    (clickEvent)="selectGlass()"
+                  ></app-button>
+                  <div class="grid-item">
+                    <div
+                      class="object-name"
+                      [ngClass]="invoiceItemForm?.value.glass?.name"
+                    >
+                      <i-feather
+                        [name]="
+                          invoiceItemForm?.value.glass?.name
+                            ? 'check'
+                            : 'alert-triangle'
+                        "
+                        [class.success]="invoiceItemForm?.value.glass?.name"
+                        [class.danger]="!invoiceItemForm?.value.glass?.name"
+                      ></i-feather>
+                      {{
+                        invoiceItemForm?.value.glass?.name || "glassNotSelected"
+                          | translate
+                      }}
+                    </div>
+                  </div>
+                  <div class="grid-item">
+                    <app-button
+                      *ngIf="invoiceItemForm?.value.glass"
+                      [iconName]="'trash-2'"
+                      [buttonSize]="'small'"
+                      [isSquare]="true"
+                      [isTransparentMode]="true"
+                      (clickEvent)="removeFromInvoiceItemForm('glass')"
+                      class="button"
+                    ></app-button>
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="!invoiceItemForm?.value.mirror">
+                  <app-button
+                    class="grid-item"
+                    [text]="'passpartu' | translate"
+                    buttonSize="middle"
+                    [fullWidth]="true"
+                    (clickEvent)="selectPasspartu()"
+                  ></app-button>
+                  <div
+                    class="grid-item"
+                    [class.red]="
+                      this.invoiceItemForm?.value?.dimensionsOutterWidth &&
+                      !invoiceItemForm?.value?.passpartuColor?.name
+                    "
+                  >
+                    <div class="object-name">
+                      <i-feather
+                        [name]="
+                          invoiceItemForm?.value?.passpartuColor?.name
+                            ? 'check'
+                            : 'alert-triangle'
+                        "
+                        [class.success]="
+                          invoiceItemForm?.value?.passpartuColor?.name
+                        "
+                        [class.danger]="
+                          !invoiceItemForm?.value?.passpartuColor?.name
+                        "
+                      ></i-feather>
+                      {{
+                        invoiceItemForm?.value?.passpartuColor?.name
+                          ? invoiceItemForm?.value?.passpartuColor?.name
+                          : this.invoiceItemForm?.value?.dimensionsOutterWidth
+                          ? ("passpartuSelectionObligated" | translate)
+                          : ("passpartuNotSelected" | translate)
+                      }}
+                      <span *ngIf="invoiceItemForm?.value?.passpartuWidth">
+                        ,
+                        {{
+                          " " +
+                            ("width" | translate) +
+                            ": " +
+                            invoiceItemForm?.value?.passpartuWidth +
+                            invoiceItemForm?.value?.passpartuWidthUom
+                        }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="grid-item">
+                    <app-button
+                      *ngIf="invoiceItemForm?.value?.passpartuColor"
+                      [iconName]="'trash-2'"
+                      [buttonSize]="'small'"
+                      [isSquare]="true"
+                      [isTransparentMode]="true"
+                      (clickEvent)="removeFromInvoiceItemForm('passpartu')"
+                      class="button"
+                    ></app-button>
+                  </div>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    !invoiceItemForm.value.glass &&
+                    !invoiceItemForm.value.passpartuColor
+                  "
+                >
+                  <app-button
+                    class="grid-item"
+                    [text]="'mirror' | translate"
+                    buttonSize="middle"
+                    [fullWidth]="true"
+                    (clickEvent)="selectMirror()"
+                  ></app-button>
+                  <div class="grid-item">
+                    <div class="object-name">
+                      <i-feather
+                        [name]="
+                          invoiceItemForm.value?.mirror?.name
+                            ? 'check'
+                            : 'alert-triangle'
+                        "
+                        [class.success]="invoiceItemForm.value?.mirror?.name"
+                        [class.danger]="!invoiceItemForm.value?.mirror?.name"
+                      ></i-feather>
+                      {{
+                        invoiceItemForm.value?.mirror?.name ||
+                          "mirrorNotSelected" | translate
+                      }}
+                      <ng-container
+                        *ngIf="invoiceItemForm.value?.faceting?.name"
+                        >, {{ "faceting" | translate }}:{{
+                          invoiceItemForm.value?.faceting?.name
+                        }}</ng-container
+                      >
+                      <ng-container *ngIf="invoiceItemForm.value?.sanding?.name"
+                        >, {{ "sanding" | translate }}:{{
+                          invoiceItemForm.value?.sanding?.name
+                        }}</ng-container
+                      >
+                    </div>
+                  </div>
+                  <div class="grid-item">
+                    <app-button
+                      *ngIf="invoiceItemForm.value?.mirror"
+                      [iconName]="'trash-2'"
+                      [buttonSize]="'small'"
+                      [isSquare]="true"
+                      [isTransparentMode]="true"
+                      (clickEvent)="removeFromInvoiceItemForm('mirror')"
+                      class="button"
+                    ></app-button>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="footer box-sizing-border-box">
+            <app-button
+              [text]="'cancel' | translate"
+              color="secondary"
+              buttonSize="middle"
+              (clickEvent)="cancel()"
+            ></app-button>
+            <app-button
+              [text]="'next' | translate"
+              buttonSize="middle"
+              [color]="'success'"
+              (clickEvent)="stepper.next()"
+            ></app-button>
+          </div>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </form>
+</div>

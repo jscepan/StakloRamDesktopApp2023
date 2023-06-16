@@ -1,0 +1,20 @@
+<app-search-input (changeEvent)="searchInputEvent($event)"></app-search-input>
+
+<mat-dialog-content>
+  <ng-container *ngFor="let item of items">
+    <app-selection-item
+      class="item"
+      [dataModel]="item"
+      (click)="handleItemClick(item)"
+      *ngIf="isSearchSatisfied(item.name)"
+      [itemSize]="itemSize"
+    ></app-selection-item>
+  </ng-container>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <app-button
+    [text]="'cancel' | translate"
+    color="secondary"
+    (clickEvent)="cancelSaveSelection()"
+  ></app-button>
+</mat-dialog-actions>

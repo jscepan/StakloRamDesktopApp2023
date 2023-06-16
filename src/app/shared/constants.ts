@@ -16,12 +16,22 @@ export const DOMAIN_ROLES: string = 'roles';
 export const DOMAIN_WORK_ORDERS: string = 'workorders';
 export const DOMAIN_HISTORY: string = 'histories';
 
+export const THUMBNAIL_GLASS = 'assets/glass_thumbnail.jpg';
+export const THUMBNAIL_FRAME = 'assets/frames_thumbnail.jpg';
+export const THUMBNAIL_PASSPARTU = 'assets/passpartu_thumbnail.jpg';
+export const THUMBNAIL_MIRROR = 'assets/mirror_thumbnail.jpg';
+export const THUMBNAIL_FACETING = 'assets/faceting_thumbnail.jpg';
+export const THUMBNAIL_SANDING = 'assets/sanding_thumbnail.jpeg';
+
 // Login form content type
 export const LOGIN_FORM_CONTENT_TYPE: { 'Content-Type': string } = {
   'Content-Type': 'application/x-www-form-urlencoded',
 };
 
 ////////////////////////////////////////////////////////////////////////
+export enum SERVICE_TYPE {
+  FRAMING = 'framing',
+}
 
 export enum UOM {
   CENTIMETER = 'cm',

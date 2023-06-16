@@ -1,0 +1,75 @@
+<mat-dialog-content>
+  <div class="grid-container">
+    <app-button
+      class="grid-item"
+      [text]="'faceting' | translate"
+      buttonSize="middle"
+      [fullWidth]="true"
+      (clickEvent)="selectFaceting()"
+    ></app-button>
+    <div class="grid-item">
+      <div class="object-name">
+        <i-feather
+          [name]="faceting?.name ? 'check' : 'alert-triangle'"
+          [class.success]="faceting?.name"
+          [class.danger]="!faceting?.name"
+        ></i-feather>
+        {{ faceting?.name || "facetingNotSelected" | translate }}
+      </div>
+    </div>
+    <div class="grid-item">
+      <app-button
+        *ngIf="faceting"
+        [iconName]="'trash-2'"
+        [buttonSize]="'small'"
+        [isSquare]="true"
+        [isTransparentMode]="true"
+        (clickEvent)="removeFromInvoiceItem('faceting')"
+        class="button"
+      ></app-button>
+    </div>
+
+    <app-button
+      class="grid-item"
+      [text]="'sanding' | translate"
+      buttonSize="middle"
+      [fullWidth]="true"
+      (clickEvent)="selectSanding()"
+    ></app-button>
+    <div class="grid-item">
+      <div class="object-name">
+        <i-feather
+          [name]="sanding?.name ? 'check' : 'alert-triangle'"
+          [class.success]="sanding?.name"
+          [class.danger]="!sanding?.name"
+        ></i-feather>
+        {{ sanding?.name || "sandingNotSelected" | translate }}
+      </div>
+    </div>
+    <div class="grid-item">
+      <app-button
+        *ngIf="sanding"
+        [iconName]="'trash-2'"
+        [buttonSize]="'small'"
+        [isSquare]="true"
+        [isTransparentMode]="true"
+        (clickEvent)="removeFromInvoiceItem('sanding')"
+        class="button"
+      ></app-button>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <app-button
+    [text]="'cancel' | translate"
+    color="secondary"
+    [buttonSize]="'middle'"
+    (clickEvent)="cancelSaveSelection()"
+  ></app-button>
+  <app-button
+    [text]="'ok' | translate"
+    color="success"
+    [buttonSize]="'middle'"
+    (clickEvent)="saveSelection()"
+  ></app-button>
+</mat-dialog-actions>

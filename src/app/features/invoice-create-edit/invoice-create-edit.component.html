@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="invoice-header" *ngIf="isDraft">
+  <div class="invoice-header" *ngIf="componentMode === 'DRAFT'">
     <app-button
       [iconName]="'plus'"
       [iconPosition]="'left'"
@@ -21,7 +21,7 @@
       class="button"
     ></app-button>
   </div>
-  <div class="invoice-header" *ngIf="!isDraft"></div>
+  <div class="invoice-header" *ngIf="componentMode !== 'DRAFT'"></div>
   <div class="invoice-items">
     <div class="grid-container">
       <div class="grid-item table-header">

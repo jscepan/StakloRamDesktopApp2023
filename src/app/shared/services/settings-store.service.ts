@@ -13,6 +13,8 @@ export class AppSettings {
   language: 'rs' | 'en' = 'rs';
   minGlassSurface: number = 0.1;
   copies: number = 1;
+  defaultDimensionsWidth: number = 20;
+  defaultDimensionsHeight: number = 30;
   footer: string = 'Hvala Vam na poverenju';
   header: string = 'STAKLO RAM';
   printer: string = 'Neki';

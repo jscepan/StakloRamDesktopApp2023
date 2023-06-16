@@ -38,6 +38,8 @@
   "dateFormat": "Format datuma",
   "debts": "Dugovanja",
   "decimalNumberSign": "Graničnik decimala",
+  "defaultDimensionsWidth": "Podrazumevana širina",
+  "defaultDimensionsHeight": "Podrazumevana visina",
   "defaultFrameWidth": "Podrazumevana širina rama (mm)",
   "defaultUom": "Osnovna jedinica mere",
   "delete": "Obriši",

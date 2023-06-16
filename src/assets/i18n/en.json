@@ -38,6 +38,8 @@
   "dateFormat": "Date format",
   "debts": "Debts",
   "decimalNumberSign": "Decimal number sign",
+  "defaultDimensionsWidth": "Default dimensions width",
+  "defaultDimensionsHeight": "Default dimensions height",
   "defaultFrameWidth": "Default frame width (mm)",
   "defaultUom": "Default unit of measure",
   "delete": "Delete",
