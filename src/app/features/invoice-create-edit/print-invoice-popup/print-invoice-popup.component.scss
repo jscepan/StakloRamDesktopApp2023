@@ -1,0 +1,40 @@
+mat-dialog-content {
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--attributes-border-color, #efeff3);
+  display: flex;
+  flex-wrap: wrap;
+  height: calc(100% - 100px);
+  max-height: 100%;
+  font-size: 2em;
+
+  .print-preview {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    .content {
+      display: flex;
+      justify-content: center;
+      app-invoice-printed {
+        border: 1px dashed var(--color-black);
+      }
+    }
+  }
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.additional-buttons {
+  margin-bottom: 20px;
+}
+.button {
+  margin-right: 20px;
+}
+.created-by {
+  margin: 20px 0;
+}

@@ -15,6 +15,9 @@ export class AppSettings {
   copies: number = 1;
   defaultDimensionsWidth: number = 20;
   defaultDimensionsHeight: number = 30;
+  increaseButtonOneValue: number = 1000;
+  increaseButtonTwoValue: number = 200;
+  increaseButtonThreeValue: number = 100;
   footer: string = 'Hvala Vam na poverenju';
   header: string = 'STAKLO RAM';
   printer: string = 'Neki';

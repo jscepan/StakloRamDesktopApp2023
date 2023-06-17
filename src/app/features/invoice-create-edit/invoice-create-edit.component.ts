@@ -1,17 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import { InvoiceItemModel } from 'src/app/shared/models/invoice-item.model';
 import { InvoiceModel } from 'src/app/shared/models/invoice-model';
 import { DraftInvoicesService } from 'src/app/shared/services/data-store-services/draft-invoice-items-store.service';
+import { GlobalService } from 'src/app/shared/services/global.service';
 import { SettingsStoreService } from 'src/app/shared/services/settings-store.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
+import { InvoiceWebService } from 'src/app/shared/services/web-services/invoice.web.service';
+import { PrintInvoicePopupService } from './print-invoice-popup/print-invoice-popup-component.service';
 
 @Component({
   selector: 'app-invoice-create-edit',
   templateUrl: './invoice-create-edit.component.html',
   styleUrls: ['./invoice-create-edit.component.scss'],
-  providers: [],
+  providers: [InvoiceWebService, PrintInvoicePopupService],
 })
 export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   private subs = new SubscriptionManager();
@@ -26,7 +31,10 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private route: Router,
     private _activeRoute: ActivatedRoute,
     private draftInvoicesStoreService: DraftInvoicesService,
-
+    private invoiceWebService: InvoiceWebService,
+    private globalService: GlobalService,
+    private translateService: TranslateService,
+    private printInvoicePopupComponentService: PrintInvoicePopupService,
     private appSettingsService: SettingsStoreService
   ) {}
 
@@ -35,25 +43,31 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     if (oid?.startsWith('draft')) {
       this.componentMode = 'DRAFT';
     }
-    this.componentMode === 'DRAFT'
-      ? (this.subs.sink =
-          this.draftInvoicesStoreService.draftInvoices.subscribe((invoices) => {
-            const invoice = invoices.filter((i) => i.oid === oid)[0];
-            if (invoice) {
+    if (this.componentMode === 'DRAFT') {
+      this.subs.sink = this.draftInvoicesStoreService.draftInvoices.subscribe(
+        (invoices) => {
+          const invoice = invoices.filter((i) => i.oid === oid)[0];
+          if (invoice) {
+            this.invoice = invoice;
+            this.initializeForm();
+            this.setInvoiceAmount();
+          }
+        }
+      );
+    } else {
+      if (oid) {
+        this.subs.sink = this.invoiceWebService
+          .getEntityByOid(oid)
+          .subscribe((invoice) => {
+            if (invoice && invoice.oid) {
               this.invoice = invoice;
               this.initializeForm();
-              this.setInvoiceAmount();
             }
-          }))
-      : console.log('ostaloooo');
-    //  (this.subs.sink = this.invoiceWebService
-    //     .getEntityByOid(oid)
-    //     .subscribe((invoice) => {
-    //       if (invoice && invoice.oid) {
-    //         this.invoice = invoice;
-    //         this.initializeForm();
-    //       }
-    //     }));
+          });
+      } else {
+        this.route.navigate(['/']);
+      }
+    }
 
     this.subs.sink = this.appSettingsService.settings.subscribe((settings) => {
       this.currency = settings?.currencyDisplayValue ?? '';
@@ -106,44 +120,45 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   }
 
   print(): void {
-    // this.subs.sink.printInvoice = this.printInvoicePopupComponentService
-    //   .openDialog(this.invoice)
-    //   .subscribe((invoice: InvoiceModel) => {
-    //     if (invoice) {
-    //       this.invoice.advancePayment = invoice.advancePayment;
-    //       this.invoice.buyerName = invoice.buyerName;
-    //       this.invoice.user = invoice.user;
-    //       // TODO
-    //       if (this.isDraft) {
-    //         this.subs.sink = this.invoiceWebService
-    //           .createEntity(this.invoice)
-    //           .subscribe((invoice) => {
-    //             if (invoice && invoice.oid && +invoice.oid > 999999) {
-    //               this.invoice.oid = invoice.oid;
-    //               this.globalService.showBasicAlert(
-    //                 MODE.success,
-    //                 this.translateService.instant('invoiceCreated'),
-    //                 this.translateService.instant('invoiceSuccessfullyCreated')
-    //               );
-    //               this.route.navigate(['/']);
-    //             }
-    //           });
-    //       } else {
-    //         this.subs.sink = this.invoiceWebService
-    //           .updateEntity(this.invoice)
-    //           .subscribe((invoice) => {
-    //             if (invoice) {
-    //               this.invoice.oid = invoice.oid;
-    //               this.globalService.showBasicAlert(
-    //                 MODE.success,
-    //                 this.translateService.instant('invoiceUpdated'),
-    //                 this.translateService.instant('invoiceSuccessfullyUpdated')
-    //               );
-    //             }
-    //           });
-    //       }
-    //     }
-    //   });
+    this.subs.sink.printInvoice = this.printInvoicePopupComponentService
+      .openDialog(this.invoice)
+      .subscribe((invoice: InvoiceModel) => {
+        if (invoice) {
+          this.invoice.advancePayment = invoice.advancePayment;
+          this.invoice.buyerName = invoice.buyerName ?? '';
+          this.invoice.user = invoice.user;
+          // TODO
+          if (this.componentMode === 'DRAFT') {
+            this.subs.sink = this.invoiceWebService
+              .createEntity(this.invoice)
+              .subscribe((invoice) => {
+                if (invoice && invoice.oid) {
+                  // TODO obrisi fakturu iz draft moda
+                  this.invoice.oid = invoice.oid;
+                  this.globalService.showBasicAlert(
+                    MODE.success,
+                    this.translateService.instant('invoiceCreated'),
+                    this.translateService.instant('invoiceSuccessfullyCreated')
+                  );
+                  this.route.navigate(['/']);
+                }
+              });
+          } else {
+            this.subs.sink = this.invoiceWebService
+              .updateEntity(this.invoice)
+              .subscribe((invoice) => {
+                if (invoice) {
+                  this.invoice.oid = invoice.oid;
+                  this.globalService.showBasicAlert(
+                    MODE.success,
+                    this.translateService.instant('invoiceUpdated'),
+                    this.translateService.instant('invoiceSuccessfullyUpdated')
+                  );
+                }
+              });
+          }
+        }
+      });
   }
 
   ngOnDestroy(): void {

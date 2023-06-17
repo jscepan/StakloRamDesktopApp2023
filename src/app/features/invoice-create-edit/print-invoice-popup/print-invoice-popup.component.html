@@ -1,0 +1,108 @@
+<mat-dialog-content>
+  <form [formGroup]="invoiceForm" *ngIf="invoiceForm">
+    <div class="form-group">
+      <div class="element buyer-name">
+        <mat-form-field class="element">
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "buyerName" | translate }}
+          </mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="buyerName"
+            (click)="insertName()"
+          />
+        </mat-form-field>
+      </div>
+      <div class="element advance-payment">
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "advancePayment" | translate }}
+          </mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="advancePayment"
+            placeholder="{{ 'advancePayment' | translate }}"
+            (click)="insertAdvancePayment()"
+          />
+        </mat-form-field>
+        <div class="additional-buttons">
+          <app-button
+            [text]="'all' | translate"
+            [buttonSize]="'middle'"
+            [isTransparentMode]="true"
+            (clickEvent)="increasePaymentFor(invoice.amount)"
+            class="button"
+          ></app-button>
+          <app-button
+            [text]="'+' + increaseButtonOneValue"
+            [buttonSize]="'middle'"
+            [isTransparentMode]="true"
+            (clickEvent)="increasePaymentFor(increaseButtonOneValue)"
+            class="button"
+          ></app-button>
+          <app-button
+            [text]="'+' + increaseButtonTwoValue"
+            [buttonSize]="'middle'"
+            [isTransparentMode]="true"
+            (clickEvent)="increasePaymentFor(increaseButtonTwoValue)"
+            class="button"
+          ></app-button>
+          <app-button
+            [text]="'+' + increaseButtonThreeValue"
+            [buttonSize]="'middle'"
+            [isTransparentMode]="true"
+            (clickEvent)="increasePaymentFor(increaseButtonThreeValue)"
+            class="button"
+          ></app-button>
+        </div>
+      </div>
+      <div class="created-by">
+        {{ "createdBy" | translate }}
+      </div>
+      <div class="users">
+        <ng-container *ngFor="let user of users | async">
+          <app-button
+            *ngIf="user.isActive"
+            [text]="user.name"
+            [isTransparentMode]="user.oid !== currentUser?.oid"
+            (clickEvent)="selectCurrentUser(user)"
+            [buttonSize]="'middle'"
+            class="button"
+          ></app-button>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+  <div class="print-preview">
+    <h3>{{ "printPreview" | translate }}</h3>
+    <!-- <div class="content">
+      <app-invoice-printed
+        *ngIf="invoice"
+        [dataModel]="invoice"
+      ></app-invoice-printed>
+    </div> -->
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <app-button
+    [text]="'cancel' | translate"
+    color="secondary"
+    [buttonSize]="'middle'"
+    (clickEvent)="cancelSaveSelection()"
+  ></app-button>
+  <app-button
+    [text]="'print' | translate"
+    color="success"
+    [buttonSize]="'middle'"
+    (clickEvent)="saveSelection()"
+    [disabled]="invoiceForm.invalid"
+  ></app-button>
+</mat-dialog-actions>
