@@ -40,7 +40,7 @@ import { roundOnDigits } from 'src/app/shared/utils';
 export class FramingComponent implements OnInit, OnDestroy {
   private subs = new SubscriptionManager();
 
-  isEdit: boolean = false;
+  componentMode: 'DRAFT' | 'EDIT' | 'REGULAR' = 'REGULAR';
   @ViewChild('stepper') stepper!: MatStepper;
   invoiceItemForm!: FormGroup;
   countOfItems: number = 1;
@@ -70,18 +70,25 @@ export class FramingComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.initializeForm();
-
     this.invoiceOid =
       this._activeRoute.snapshot.paramMap.get('invoiceOid') ?? undefined;
     const itemOid = this._activeRoute.snapshot.paramMap.get('invoiceItemOid');
+    if (itemOid?.startsWith('draft')) {
+      this.componentMode = 'DRAFT';
+    } else if (this.invoiceOid) {
+      this.componentMode = 'EDIT';
+    } else {
+      this.componentMode = 'REGULAR';
+    }
+
+    this.initializeForm();
 
     if (this.invoiceOid) {
       this.draftInvoicesStoreService.draftInvoices.subscribe((invoices) => {
         let inv = invoices.filter((i) => i.oid === this.invoiceOid)[0];
         if (inv) {
           if (itemOid) {
-            this.isEdit = true;
+            // this.isEdit = true;
 
             // TODO zavrsi ovu logiku
             // this.invoiceItem = inv.invoiceItems.filter(
@@ -123,11 +130,11 @@ export class FramingComponent implements OnInit, OnDestroy {
         ]),
         dimensionsUom: new FormControl(UOM.CENTIMETER, [Validators.required]),
         dimensionsOutterWidth: new FormControl(
-          settings?.defaultDimensionsWidth,
+          0, //  settings?.defaultDimensionsWidth,
           []
         ),
         dimensionsOutterHeight: new FormControl(
-          settings?.defaultDimensionsHeight,
+          0, //  settings?.defaultDimensionsHeight,
           []
         ),
         glass: new FormControl(undefined, []),
@@ -138,32 +145,32 @@ export class FramingComponent implements OnInit, OnDestroy {
         faceting: new FormControl(undefined, []),
         sanding: new FormControl(undefined, []),
         selectedFrames: new FormControl([], []),
-        amount: new FormControl(SERVICE_TYPE.FRAMING, [Validators.required]),
+        amount: new FormControl(0, [Validators.required]),
       });
     });
 
     this.subs.sink = this.isOutterDimension.subscribe((selected) => {
-      if (selected) {
-        this.invoiceItemForm.patchValue({
-          dimensionsOutterWidth: this.invoiceItemForm.value
-            .dimensionsOutterWidth
-            ? this.invoiceItemForm.value.dimensionsOutterWidth
-            : this.invoiceItemForm.value.dimensionsWidth,
-        });
-        this.invoiceItemForm.patchValue({
-          dimensionsOutterHeight: this.invoiceItemForm.value
-            .dimensionsOutterHeight
-            ? this.invoiceItemForm.value.dimensionsOutterHeight
-            : this.invoiceItemForm.value.dimensionsHeight,
-        });
-      } else {
-        this.invoiceItemForm.patchValue({
-          dimensionsOutterWidth: 0,
-        });
-        this.invoiceItemForm.patchValue({
-          dimensionsOutterHeight: 0,
-        });
-      }
+      // if (selected) {
+      //   this.invoiceItemForm.patchValue({
+      //     dimensionsOutterWidth: this.invoiceItemForm.value
+      //       .dimensionsOutterWidth
+      //       ? this.invoiceItemForm.value.dimensionsOutterWidth
+      //       : this.invoiceItemForm.value.dimensionsWidth,
+      //   });
+      //   this.invoiceItemForm.patchValue({
+      //     dimensionsOutterHeight: this.invoiceItemForm.value
+      //       .dimensionsOutterHeight
+      //       ? this.invoiceItemForm.value.dimensionsOutterHeight
+      //       : this.invoiceItemForm.value.dimensionsHeight,
+      //   });
+      // } else {
+      //   this.invoiceItemForm.patchValue({
+      //     dimensionsOutterWidth: 0,
+      //   });
+      //   this.invoiceItemForm.patchValue({
+      //     dimensionsOutterHeight: 0,
+      //   });
+      // }
     });
   }
 
@@ -293,14 +300,8 @@ export class FramingComponent implements OnInit, OnDestroy {
             if (oid) {
               this.invoiceItemForm.patchValue({
                 glass: glasses.filter((g) => g.oid === oid)[0],
-              });
-              this.invoiceItemForm.patchValue({
                 mirror: undefined,
-              });
-              this.invoiceItemForm.patchValue({
                 faceting: undefined,
-              });
-              this.invoiceItemForm.patchValue({
                 sanding: undefined,
               });
             }
@@ -333,19 +334,13 @@ export class FramingComponent implements OnInit, OnDestroy {
             if (oid) {
               this.invoiceItemForm.patchValue({
                 passpartuColor: passpartues.filter((g) => g.oid === oid)[0],
+                mirror: undefined,
+                faceting: undefined,
+                sanding: undefined,
               });
               if (!this.invoiceItemForm.value.dimensionsOutterWidth) {
                 this.selectPasspartuWidth();
               }
-              this.invoiceItemForm.patchValue({
-                mirror: undefined,
-              });
-              this.invoiceItemForm.patchValue({
-                faceting: undefined,
-              });
-              this.invoiceItemForm.patchValue({
-                sanding: undefined,
-              });
             }
           });
       });
@@ -364,8 +359,6 @@ export class FramingComponent implements OnInit, OnDestroy {
         if (data?.value) {
           this.invoiceItemForm.patchValue({
             passpartuWidth: parseFloat(data.value),
-          });
-          this.invoiceItemForm.patchValue({
             passpartuWidthUom: UOM.CENTIMETER,
           });
         }
@@ -401,11 +394,7 @@ export class FramingComponent implements OnInit, OnDestroy {
             if (oid) {
               this.invoiceItemForm.patchValue({
                 mirror: mirrors.filter((g) => g.oid === oid)[0],
-              });
-              this.invoiceItemForm.patchValue({
                 glass: undefined,
-              });
-              this.invoiceItemForm.patchValue({
                 passpartuColor: undefined,
               });
               this.openFacetingAndSandingSelectPopup();
@@ -425,8 +414,6 @@ export class FramingComponent implements OnInit, OnDestroy {
         if (data) {
           this.invoiceItemForm.patchValue({
             faceting: data.faceting,
-          });
-          this.invoiceItemForm.patchValue({
             sanding: data.sanding,
           });
         }
@@ -441,15 +428,15 @@ export class FramingComponent implements OnInit, OnDestroy {
         });
         break;
       case 'passpartu':
+        this.invoiceItemForm.patchValue({
+          passpartuColor: undefined,
+          passpartuWidth: undefined,
+        });
         break;
       case 'mirror':
         this.invoiceItemForm.patchValue({
           mirror: undefined,
-        });
-        this.invoiceItemForm.patchValue({
           faceting: undefined,
-        });
-        this.invoiceItemForm.patchValue({
           sanding: undefined,
         });
         break;
@@ -522,16 +509,7 @@ export class FramingComponent implements OnInit, OnDestroy {
         2
       ),
     });
-    console.log('+++++++++++++++++++++++++++++');
-    console.log(
-      roundOnDigits(
-        this.invoiceItemCalculatorService.getInvoiceItemAmount(
-          this.invoiceItemForm.value
-        ),
-        2
-      )
-    );
-    if (this.isEdit) {
+    if (this.componentMode === 'EDIT') {
       // this.draftInvoicesStoreService.editDraftInvoiceItem(
       //   this.invoiceOid,
       //   this.invoiceItem

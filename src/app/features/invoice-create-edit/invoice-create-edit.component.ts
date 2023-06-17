@@ -16,7 +16,7 @@ import { SubscriptionManager } from 'src/app/shared/services/subscription.manage
 export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   private subs = new SubscriptionManager();
 
-  componentMode: 'DRAFT' | 'EDIT' | 'REGULAR' = 'REGULAR';
+  componentMode: 'DRAFT' | 'EDIT' = 'DRAFT';
   currency: string = '';
 
   invoiceForm!: FormGroup;
