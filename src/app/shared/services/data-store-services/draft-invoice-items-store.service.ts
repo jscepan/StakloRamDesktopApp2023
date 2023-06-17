@@ -56,23 +56,25 @@ export class DraftInvoicesService {
     invoiceItem: InvoiceItemModel
   ): void {
     if (invoiceOid) {
-      const items: InvoiceModel[] = this.$draftInvoices.getValue();
-      let x = items.map((i) => {
-        if (i.oid === invoiceOid) {
-          i.invoiceItems.map((ii) => {
-            if (ii.oid === invoiceItem.oid) {
-              return invoiceItem;
-            } else {
-              return ii;
-            }
-          });
-          return i;
-        } else {
-          return i;
-        }
-      });
+      const items: InvoiceModel[] = this.$draftInvoices
+        .getValue()
+        .map((item) => {
+          if (item.oid === invoiceOid) {
+            const updatedInvoiceItems = item?.invoiceItems.map((invItem) => {
+              if (invItem.oid === invoiceItem.oid) {
+                return invoiceItem;
+              } else {
+                return invItem;
+              }
+            });
+            item.invoiceItems = updatedInvoiceItems;
 
-      this.$draftInvoices.next(x);
+            return item;
+          } else {
+            return item;
+          }
+        });
+      this.$draftInvoices.next(items);
     }
   }
 

@@ -25,6 +25,7 @@ import { FrameDataStoreService } from 'src/app/shared/services/data-store-servic
 import { InvoiceItemCalculatorService } from 'src/app/shared/services/invoice-item-amount-calculator.service';
 import { DraftInvoicesService } from 'src/app/shared/services/data-store-services/draft-invoice-items-store.service';
 import { roundOnDigits } from 'src/app/shared/utils';
+import { InvoiceItemModel } from 'src/app/shared/models/invoice-item.model';
 
 @Component({
   selector: 'app-framing',
@@ -40,12 +41,14 @@ import { roundOnDigits } from 'src/app/shared/utils';
 export class FramingComponent implements OnInit, OnDestroy {
   private subs = new SubscriptionManager();
 
-  componentMode: 'DRAFT' | 'EDIT' | 'REGULAR' = 'REGULAR';
+  componentMode: 'CREATE_NEW' | 'ADD_DRAFT' | 'EDIT_DRAFT' | 'EDIT' =
+    'CREATE_NEW';
   @ViewChild('stepper') stepper!: MatStepper;
   invoiceItemForm!: FormGroup;
   countOfItems: number = 1;
 
   invoiceOid: string | undefined;
+  invoiceItemOid?: string | null;
 
   private $isOutterDimension: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
@@ -72,82 +75,64 @@ export class FramingComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.invoiceOid =
       this._activeRoute.snapshot.paramMap.get('invoiceOid') ?? undefined;
-    const itemOid = this._activeRoute.snapshot.paramMap.get('invoiceItemOid');
-    if (itemOid?.startsWith('draft')) {
-      this.componentMode = 'DRAFT';
+    this.invoiceItemOid =
+      this._activeRoute.snapshot.paramMap.get('invoiceItemOid');
+    if (
+      this.invoiceOid?.startsWith('draft') &&
+      this.invoiceItemOid?.startsWith('draft')
+    ) {
+      this.componentMode = 'EDIT_DRAFT';
+    } else if (this.invoiceOid?.startsWith('draft')) {
+      this.componentMode = 'ADD_DRAFT';
     } else if (this.invoiceOid) {
       this.componentMode = 'EDIT';
     } else {
-      this.componentMode = 'REGULAR';
+      this.componentMode = 'CREATE_NEW';
     }
 
     this.initializeForm();
-
-    if (this.invoiceOid) {
-      this.draftInvoicesStoreService.draftInvoices.subscribe((invoices) => {
-        let inv = invoices.filter((i) => i.oid === this.invoiceOid)[0];
-        if (inv) {
-          if (itemOid) {
-            // this.isEdit = true;
-
-            // TODO zavrsi ovu logiku
-            // this.invoiceItem = inv.invoiceItems.filter(
-            //   (ii) => ii.oid === itemOid
-            // )[0];
-            // if (this.invoiceItem.dimensionsOutterWidth) {
-            //   this.$isOutterDimension.next(true);
-            // }
-
-            this.initializeForm();
-          } else {
-            this.initializeForm();
-          }
-        } else {
-          this.route.navigate(['invoice-create-edit', 'framing']);
-        }
-      });
-    } else {
-      this.initializeForm();
-    }
   }
 
   initializeForm(): void {
     // TODO: napravi logiku za this.countOfItems kada je edit...
 
-    this.subs.sink = this.appSettingsService.settings.subscribe((settings) => {
-      this.invoiceItemForm = new FormGroup({
-        title: new FormControl(SERVICE_TYPE.FRAMING, [Validators.required]),
-        serviceType: new FormControl(SERVICE_TYPE.FRAMING, [
-          Validators.required,
-        ]),
-        dimensionsWidth: new FormControl(settings?.defaultDimensionsWidth, [
-          Validators.required,
-          Validators.min(1),
-        ]),
-        dimensionsHeight: new FormControl(settings?.defaultDimensionsHeight, [
-          Validators.required,
-          Validators.min(1),
-        ]),
-        dimensionsUom: new FormControl(UOM.CENTIMETER, [Validators.required]),
-        dimensionsOutterWidth: new FormControl(
-          0, //  settings?.defaultDimensionsWidth,
-          []
-        ),
-        dimensionsOutterHeight: new FormControl(
-          0, //  settings?.defaultDimensionsHeight,
-          []
-        ),
-        glass: new FormControl(undefined, []),
-        passpartuWidth: new FormControl(undefined, []),
-        passpartuWidthUom: new FormControl(undefined, []),
-        passpartuColor: new FormControl(undefined, []),
-        mirror: new FormControl(undefined, []),
-        faceting: new FormControl(undefined, []),
-        sanding: new FormControl(undefined, []),
-        selectedFrames: new FormControl([], []),
-        amount: new FormControl(0, [Validators.required]),
-      });
-    });
+    this.subs.sink = this.generateInvoiceItem().subscribe(
+      (invoiceItem: InvoiceItemModel) => {
+        this.invoiceItemForm = new FormGroup({
+          oid: new FormControl(invoiceItem.oid, [Validators.required]),
+          title: new FormControl(invoiceItem.title, [Validators.required]),
+          serviceType: new FormControl(SERVICE_TYPE.FRAMING, [
+            Validators.required,
+          ]),
+          dimensionsWidth: new FormControl(invoiceItem.dimensionsWidth, [
+            Validators.required,
+            Validators.min(1),
+          ]),
+          dimensionsHeight: new FormControl(invoiceItem.dimensionsHeight, [
+            Validators.required,
+            Validators.min(1),
+          ]),
+          dimensionsUom: new FormControl(invoiceItem.dimensionsUom, [
+            Validators.required,
+          ]),
+          dimensionsOutterWidth: new FormControl(
+            invoiceItem.dimensionsOutterWidth
+          ),
+          dimensionsOutterHeight: new FormControl(
+            invoiceItem.dimensionsOutterHeight
+          ),
+          glass: new FormControl(invoiceItem.glass, []),
+          passpartuWidth: new FormControl(invoiceItem.passpartuWidth, []),
+          passpartuWidthUom: new FormControl(invoiceItem.passpartuWidthUom, []),
+          passpartuColor: new FormControl(invoiceItem.passpartuColor, []),
+          mirror: new FormControl(invoiceItem.mirror, []),
+          faceting: new FormControl(invoiceItem.faceting, []),
+          sanding: new FormControl(invoiceItem.sanding, []),
+          selectedFrames: new FormControl(invoiceItem.selectedFrames, []),
+          amount: new FormControl(invoiceItem.amount, [Validators.required]),
+        });
+      }
+    );
 
     this.subs.sink = this.isOutterDimension.subscribe((selected) => {
       // if (selected) {
@@ -166,11 +151,63 @@ export class FramingComponent implements OnInit, OnDestroy {
       // } else {
       //   this.invoiceItemForm.patchValue({
       //     dimensionsOutterWidth: 0,
-      //   });
-      //   this.invoiceItemForm.patchValue({
       //     dimensionsOutterHeight: 0,
       //   });
       // }
+    });
+  }
+
+  generateInvoiceItem(): Observable<InvoiceItemModel> {
+    return new Observable((subscriber) => {
+      this.subs.sink = this.appSettingsService.settings.subscribe(
+        (settings) => {
+          let invoiceItem: InvoiceItemModel = {
+            oid: '',
+            title: '',
+            serviceType: SERVICE_TYPE.FRAMING,
+            dimensionsWidth: settings?.defaultDimensionsWidth || 20,
+            dimensionsHeight: settings?.defaultDimensionsHeight || 30,
+            dimensionsUom: UOM.CENTIMETER,
+            dimensionsOutterWidth: 0,
+            dimensionsOutterHeight: 0,
+            glass: undefined,
+            passpartuWidth: undefined,
+            passpartuWidthUom: undefined,
+            passpartuColor: undefined,
+            mirror: undefined,
+            faceting: undefined,
+            sanding: undefined,
+            selectedFrames: [],
+            amount: 0,
+          };
+
+          if (this.componentMode === 'EDIT') {
+            // TODO idi na api i uzmi fakturu...
+          } else if (this.componentMode === 'EDIT_DRAFT') {
+            this.subs.sink =
+              this.draftInvoicesStoreService.draftInvoices.subscribe(
+                (invoices) => {
+                  const inv = invoices.filter(
+                    (i) => i.oid === this.invoiceOid
+                  )[0];
+
+                  if (inv) {
+                    invoiceItem = inv.invoiceItems.filter(
+                      (ii) => ii.oid === this.invoiceItemOid
+                    )[0];
+                    subscriber.next(invoiceItem);
+                    subscriber.complete();
+                  } else {
+                    this.route.navigate(['invoice-create-edit', 'framing']);
+                  }
+                }
+              );
+          } else {
+            subscriber.next(invoiceItem);
+            subscriber.complete();
+          }
+        }
+      );
     });
   }
 
@@ -497,7 +534,11 @@ export class FramingComponent implements OnInit, OnDestroy {
   }
 
   cancel(): void {
-    this.route.navigate(['/']);
+    if (this.componentMode === 'CREATE_NEW') {
+      this.route.navigate(['/']);
+    } else {
+      this.route.navigate(['invoice-create-edit', 'edit', this.invoiceOid]);
+    }
   }
 
   finish(): void {
@@ -509,13 +550,20 @@ export class FramingComponent implements OnInit, OnDestroy {
         2
       ),
     });
-    if (this.componentMode === 'EDIT') {
-      // this.draftInvoicesStoreService.editDraftInvoiceItem(
-      //   this.invoiceOid,
-      //   this.invoiceItem
-      // );
-      // this.route.navigate(['invoice-create-edit', 'edit', this.invoiceOid]);
-    } else {
+    if (this.componentMode === 'EDIT_DRAFT') {
+      if (this.invoiceOid) {
+        this.draftInvoicesStoreService.editDraftInvoiceItem(
+          this.invoiceOid,
+          this.invoiceItemForm.value
+        );
+        this.route.navigate(['invoice-create-edit', 'edit', this.invoiceOid]);
+      }
+    } else if (this.componentMode === 'EDIT') {
+      // TODO
+    } else if (
+      this.componentMode === 'CREATE_NEW' ||
+      this.componentMode === 'ADD_DRAFT'
+    ) {
       for (let i = 0; i < this.countOfItems; i++) {
         this.invoiceOid = this.draftInvoicesStoreService.addNewInvoiceItem(
           { ...this.invoiceItemForm.value },

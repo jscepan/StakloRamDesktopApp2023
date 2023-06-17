@@ -57,13 +57,6 @@ export class InvoiceItemCalculatorService {
       framesPrice +
       facetingPrice +
       sandingPrice;
-    console.log('glassPrice: ' + glassPrice);
-    console.log('passpartuPrice: ' + passpartuPrice);
-    console.log('mirrorPrice: ' + mirrorPrice);
-    console.log('framesPrice: ' + framesPrice);
-    console.log('facetingPrice: ' + facetingPrice);
-    console.log('sandingPrice: ' + sandingPrice);
-    console.log('grossAmount: ' + grossAmount);
     return roundOnDigits(grossAmount);
   }
 

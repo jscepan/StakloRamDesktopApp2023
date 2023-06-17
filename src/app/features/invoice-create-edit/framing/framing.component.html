@@ -39,6 +39,9 @@
                   (click)="insertCount()"
                   [(ngModel)]="countOfItems"
                   [ngModelOptions]="{ standalone: true }"
+                  [disabled]="
+                    componentMode === 'EDIT_DRAFT' || componentMode === 'EDIT'
+                  "
                 />
               </mat-form-field>
               <app-button
