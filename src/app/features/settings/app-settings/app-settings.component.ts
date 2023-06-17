@@ -213,6 +213,36 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
           },
         },
         {
+          type: 'number',
+          required: true,
+          errorMessage: 'string',
+          value: settings.increaseButtonOneValue,
+          label: {
+            key: 'increaseButtonOneValue',
+            value: this.translateService.instant('increaseButtonOneValue'),
+          },
+        },
+        {
+          type: 'number',
+          required: true,
+          errorMessage: 'string',
+          value: settings.increaseButtonTwoValue,
+          label: {
+            key: 'increaseButtonTwoValue',
+            value: this.translateService.instant('increaseButtonTwoValue'),
+          },
+        },
+        {
+          type: 'number',
+          required: true,
+          errorMessage: 'string',
+          value: settings.increaseButtonThreeValue,
+          label: {
+            key: 'increaseButtonThreeValue',
+            value: this.translateService.instant('increaseButtonThreeValue'),
+          },
+        },
+        {
           type: 'string',
           required: true,
           errorMessage: 'string',

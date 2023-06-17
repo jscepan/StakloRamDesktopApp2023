@@ -4,8 +4,8 @@ import { BaseWebService } from 'src/app/core/services/base.web-service';
 import { BASE_API_URL } from '../constants';
 
 export class AppSettings {
-  thousandsNumberSign: '.' | ',' = '.';
   decimalNumberSign: '.' | ',' = ',';
+  thousandsNumberSign: '.' | ',' = '.';
   dateFormat: 'dd.mm.yyyy' | 'dd/mm/yyyy' | 'mm.dd.yyyy' | 'mm/dd/yyyy' =
     'dd.mm.yyyy';
   currencyFormat: string = 'din';
