@@ -200,38 +200,47 @@ InvoiceItem.getAll = (invoiceOid, result) => {
       });
       if (ii.length) {
         let condition = "";
+        const par = [];
         for (i = 0; i < ii.length; i++) {
-          i === 0
-            ? (condition += ii[i].oid)
-            : (condition +=
-                " OR invoiceitem_has_frame.invoiceItem_invoiceItem_oid=" +
-                ii[i].oid);
+          // i === 0
+          //   ?
+          par.push(ii[i].oid);
+          // :
+          if (i > 0)
+            condition +=
+              " OR invoiceitem_has_frame.invoiceItem_invoiceItem_oid=?";
         }
-        sql.all(
-          `SELECT * FROM invoiceitem_has_frame JOIN frame on invoiceitem_has_frame.frame_frame_oid=frame.frame_oid WHERE invoiceitem_has_frame.invoiceItem_invoiceItem_oid=?`,
-          [condition],
-          (errFrame, resFrame) => {
-            ii.forEach((item) => {
-              resFrame.forEach((frame) => {
-                if (item.oid === frame.invoiceItem_invoiceItem_oid) {
-                  item.selectedFrames.push({
-                    frame: {
-                      oid: frame.frame_frame_oid,
-                      name: frame.frame_name,
-                      uom: frame.frame_uom,
-                      pricePerUom: frame.frame_pricePerUom,
-                      cashRegisterNumber: frame.frame_cashRegisterNumber,
-                      code: frame.frame_code,
-                      frameWidthMM: frame.frame_frameWidthMM,
-                    },
-                    colorCode: frame.colorCode,
-                  });
-                }
-              });
+        console.log("condition: " + par);
+        console.log("condition: " + condition);
+        const query =
+          `SELECT * FROM invoiceitem_has_frame JOIN frame on invoiceitem_has_frame.frame_frame_oid=frame.frame_oid WHERE invoiceitem_has_frame.invoiceItem_invoiceItem_oid=?` +
+          condition;
+        console.log("query: " + query);
+        sql.all(query, par, (errFrame, resFrame) => {
+          console.log("idemo da radimo");
+          console.log(ii);
+          ii.forEach((item) => {
+            resFrame.forEach((frame) => {
+              if (item.oid === frame.invoiceItem_invoiceItem_oid) {
+                item.selectedFrames.push({
+                  frame: {
+                    oid: frame.frame_frame_oid,
+                    name: frame.frame_name,
+                    uom: frame.frame_uom,
+                    pricePerUom: frame.frame_pricePerUom,
+                    cashRegisterNumber: frame.frame_cashRegisterNumber,
+                    code: frame.frame_code,
+                    frameWidthMM: frame.frame_frameWidthMM,
+                  },
+                  colorCode: frame.colorCode,
+                });
+                console.log("push");
+              }
             });
-            result(ii);
-          }
-        );
+          });
+          console.log("vracam result");
+          result(ii);
+        });
       } else {
         result(ii);
       }

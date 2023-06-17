@@ -40,9 +40,9 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const oid = this._activeRoute.snapshot.paramMap.get('invoiceOid');
-    if (oid?.startsWith('draft')) {
-      this.componentMode = 'DRAFT';
-    }
+
+    this.componentMode = oid?.startsWith('draft') ? 'DRAFT' : 'EDIT';
+
     if (this.componentMode === 'DRAFT') {
       this.subs.sink = this.draftInvoicesStoreService.draftInvoices.subscribe(
         (invoices) => {
