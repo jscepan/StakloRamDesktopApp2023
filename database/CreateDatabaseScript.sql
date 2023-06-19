@@ -109,3 +109,4 @@ CREATE TABLE IF NOT EXISTS `user` (
   `user_isActive` INTEGER
 );
 INSERT INTO `user` VALUES (1,'Milan',1),(2,'Igor',1);
+INSERT INTO sqlite_sequence (name, seq) VALUES ('invoice', 999999);

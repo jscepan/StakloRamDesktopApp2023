@@ -7,7 +7,7 @@ module.exports = (app) => {
   router.post("/", invoices.create);
 
   // Retrieve all Invoice
-  router.get("/", invoices.findAll);
+  router.post("/search", invoices.findAll);
 
   // Retrieve a single Invoice with id
   router.get("/:id", invoices.findOne);

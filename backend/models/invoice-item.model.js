@@ -210,15 +210,10 @@ InvoiceItem.getAll = (invoiceOid, result) => {
             condition +=
               " OR invoiceitem_has_frame.invoiceItem_invoiceItem_oid=?";
         }
-        console.log("condition: " + par);
-        console.log("condition: " + condition);
         const query =
           `SELECT * FROM invoiceitem_has_frame JOIN frame on invoiceitem_has_frame.frame_frame_oid=frame.frame_oid WHERE invoiceitem_has_frame.invoiceItem_invoiceItem_oid=?` +
           condition;
-        console.log("query: " + query);
         sql.all(query, par, (errFrame, resFrame) => {
-          console.log("idemo da radimo");
-          console.log(ii);
           ii.forEach((item) => {
             resFrame.forEach((frame) => {
               if (item.oid === frame.invoiceItem_invoiceItem_oid) {
@@ -234,11 +229,9 @@ InvoiceItem.getAll = (invoiceOid, result) => {
                   },
                   colorCode: frame.colorCode,
                 });
-                console.log("push");
               }
             });
           });
-          console.log("vracam result");
           result(ii);
         });
       } else {

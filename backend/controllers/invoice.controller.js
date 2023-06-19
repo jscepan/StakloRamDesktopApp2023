@@ -46,7 +46,22 @@ exports.create = (req, res) => {
 
 // Retrieve all Invoices from the database (with condition).
 exports.findAll = (req, res) => {
-  Invoice.getAll((err, data) => {
+  // Create a Invoice
+  const invoiceSearchModel = {
+    buyerName: req.body.buyerName,
+    dateFrom: req.body.dateFrom,
+    dateTo: req.body.dateTo,
+    ordering: req.body.ordering,
+    advancePaymentFrom: req.body.advancePaymentFrom,
+    advancePaymentTo: req.body.advancePaymentTo,
+  };
+
+  const skip = req.query.skip; // Dobijanje vrednosti parametra "skip" iz zahteva
+  const top = req.query.top; // Dobijanje vrednosti parametra "top" iz zahteva
+  invoiceSearchModel.skip = skip;
+  invoiceSearchModel.top = top;
+
+  Invoice.getAll(invoiceSearchModel, (err, data) => {
     if (err)
       res.status(500).send({
         message:

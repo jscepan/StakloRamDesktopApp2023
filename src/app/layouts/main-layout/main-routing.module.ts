@@ -28,11 +28,11 @@ const routes: Routes = [
         (m) => m.InvoiceCreateEditModule
       ),
   },
-  // {
-  //   path: 'search',
-  //   loadChildren: () =>
-  //     import('@features/search/search.module').then((m) => m.SearchModule),
-  // },
+  {
+    path: 'search',
+    loadChildren: () =>
+      import('@features/search/search.module').then((m) => m.SearchModule),
+  },
   {
     path: 'invoice-charge',
     loadChildren: () =>

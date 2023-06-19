@@ -12,6 +12,13 @@ const Invoice = function (invoice) {
   this.user = invoice.user;
 };
 
+const InvoiceSearchModel = function (searchModel) {
+  this.buyerName = searchModel.buyerName;
+  this.dateFrom = searchModel.dateFrom;
+  this.dateTo = searchModel.dateTo;
+  this.ordering = searchModel.ordering;
+};
+
 Invoice.create = (newInvoice, result) => {
   const invoiceSql = `INSERT INTO invoice (invoice_createDate, invoice_amount, invoice_advancePayment, invoice_buyerName, user_user_oid)
   VALUES (?, ?, ?, ?, ?)`;
@@ -86,28 +93,120 @@ Invoice.findById = (id, result) => {
   );
 };
 
-Invoice.getAll = (result) => {
-  let query = "SELECT * FROM invoice";
-
-  sql.query(query, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
+Invoice.getAll = (searchModel, result) => {
+  let whereClausule = "";
+  let buyerNameQuery = "";
+  if (searchModel.buyerName) {
+    whereClausule += " WHERE ";
+    buyerNameQuery = ` invoice_buyerName COLLATE NOCASE LIKE '%${searchModel.buyerName}%'`;
+  }
+  let dateFromQuery = "";
+  if (searchModel.dateFrom) {
+    if (!whereClausule) {
+      whereClausule += " WHERE ";
+    } else {
+      dateFromQuery += " AND ";
     }
-    result(
-      null,
-      res.map((invoice) => {
-        return {
-          oid: invoice.invoice_oid,
-          createDate: invoice.invoice_createDate,
-          amount: invoice.invoice_amount,
-          advancePayment: invoice.invoice_advancePayment,
-          buyerName: invoice.invoice_buyerName,
-        };
-      })
-    );
+    dateFromQuery += ` invoice_createDate >= '${searchModel.dateFrom}'`;
+  }
+  let dateToQuery = "";
+  if (searchModel.dateTo) {
+    if (!whereClausule) {
+      whereClausule += " WHERE ";
+    } else {
+      dateToQuery += " AND ";
+    }
+    dateToQuery += ` invoice_createDate <= '${searchModel.dateTo}'`;
+  }
+  let advancePaymentFromQuery = "";
+  if (searchModel.advancePaymentFrom) {
+    if (!whereClausule) {
+      whereClausule += " WHERE ";
+    } else {
+      advancePaymentFromQuery += " AND ";
+    }
+    advancePaymentFromQuery +=
+      " invoice_advancePayment >= " + searchModel.advancePaymentFrom;
+  }
+  let advancePaymentToQuery = "";
+  if (searchModel.advancePaymentTo) {
+    if (!whereClausule) {
+      whereClausule += " WHERE ";
+    } else {
+      advancePaymentToQuery += " AND ";
+    }
+    advancePaymentToQuery +=
+      " invoice_advancePayment <= " + searchModel.advancePaymentTo;
+  }
+  const order = searchModel.ordering === "ASC" ? " ASC " : " DESC ";
+  const orderingQuery = ` ORDER BY invoice_createDate ${order}, invoice_buyerName ${order}`;
+  let paginationQuery = ` LIMIT ${searchModel.top} OFFSET ${searchModel.skip}`;
+  let query =
+    "SELECT * FROM invoice" +
+    whereClausule +
+    buyerNameQuery +
+    dateFromQuery +
+    dateToQuery +
+    advancePaymentFromQuery +
+    advancePaymentToQuery +
+    orderingQuery +
+    paginationQuery;
+
+  let countQuery =
+    "SELECT COUNT(*) FROM invoice" +
+    whereClausule +
+    buyerNameQuery +
+    dateFromQuery +
+    dateToQuery +
+    advancePaymentFromQuery +
+    advancePaymentToQuery;
+
+  let promises = [];
+  const getCount = new Promise((resolve, reject) => {
+    sql.all(countQuery, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        reject(err);
+        return;
+      } else {
+        response.totalCount = res[0]["COUNT(*)"];
+        resolve();
+      }
+    });
   });
+
+  promises.push(getCount);
+
+  const response = { entities: [], nextID: 1, totalCount: 1 };
+  const getResults = new Promise((resolve, reject) => {
+    sql.all(query, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        reject(err);
+        return;
+      } else {
+        response.entities = res.map((invoice) => {
+          return {
+            oid: invoice.invoice_oid,
+            createDate: invoice.invoice_createDate,
+            amount: invoice.invoice_amount,
+            advancePayment: invoice.invoice_advancePayment,
+            buyerName: invoice.invoice_buyerName,
+          };
+        });
+        resolve();
+      }
+    });
+  });
+
+  promises.push(getResults);
+  Promise.all(promises)
+    .then(() => {
+      result(null, response);
+    })
+    .catch((err) => {
+      result(err, null);
+    });
 };
 
 Invoice.updateById = (invoice, result) => {

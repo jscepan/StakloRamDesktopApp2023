@@ -1,19 +1,19 @@
 const PasspartuColor = require("../models/passpartuColor.model.js");
 
 // Create and Save a new PasspartuColor
-exports.create = (req, res) => { };
+exports.create = (req, res) => {};
 
 // Retrieve all PasspartuColors from the database (with condition).
-exports.findAll = (req, res) => { };
+exports.findAll = (req, res) => {};
 
 // Find a single PasspartuColor with a id
-exports.findOne = (req, res) => { };
+exports.findOne = (req, res) => {};
 
 // Update a PasspartuColor identified by the id in the request
-exports.update = (req, res) => { };
+exports.update = (req, res) => {};
 
 // Delete a PasspartuColor with the specified id in the request
-exports.delete = (req, res) => { };
+exports.delete = (req, res) => {};
 
 exports.create = (req, res) => {
   // Validate request
@@ -33,8 +33,6 @@ exports.create = (req, res) => {
 
   // Save PasspartuColor in the database
   PasspartuColor.create(passpartuColor, (err, data) => {
-    console.log('passpartuColorpasspartuColorpasspartuColor');
-    console.log(passpartuColor);
     if (err)
       res.status(500).send({
         message:

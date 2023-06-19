@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Type } from '@angular/core';
+import { plainToClass } from 'class-transformer';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ArrayResponseI } from 'src/app/core/interfaces/array-response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -36,6 +38,28 @@ export class BaseWebService {
         return res as T;
       })
     );
+  }
+
+  postRequestForArray<T, K>(
+    url: string,
+    data: K,
+    classType: Type<T>
+  ): Observable<ArrayResponseI<T>> {
+    const options = this.addOptionsForRequest();
+    return this.http
+      .post<ArrayResponseI<T>>(this.URL_PREFIX + url, data, options)
+      .pipe(
+        map((res) => {
+          const result: ArrayResponseI<T> = {
+            entities: res.entities
+              ? res.entities.map((entity: T) => plainToClass(classType, entity))
+              : [],
+            nextID: res.nextID,
+            totalCount: res.totalCount,
+          };
+          return result;
+        })
+      );
   }
 
   putRequest<T>(url: string, data: T): Observable<T> {

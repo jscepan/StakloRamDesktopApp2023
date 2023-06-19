@@ -11,6 +11,7 @@ import { SettingsStoreService } from 'src/app/shared/services/settings-store.ser
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { InvoiceWebService } from 'src/app/shared/services/web-services/invoice.web.service';
 import { PrintInvoicePopupService } from './print-invoice-popup/print-invoice-popup-component.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-invoice-create-edit',
@@ -35,6 +36,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private globalService: GlobalService,
     private translateService: TranslateService,
     private printInvoicePopupComponentService: PrintInvoicePopupService,
+    private location: Location,
     private appSettingsService: SettingsStoreService
   ) {}
 
@@ -90,7 +92,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   }
 
   cancel(): void {
-    this.route.navigate(['/']);
+    this.location.back();
   }
 
   editInvoiceItem(invoiceItem: InvoiceItemModel): void {

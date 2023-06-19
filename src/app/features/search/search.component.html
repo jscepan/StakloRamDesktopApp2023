@@ -1,0 +1,97 @@
+<div class="container">
+  <div class="footer">
+    <mat-form-field class="min-with element">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "dateFrom" | translate }}
+      </mat-label>
+      <input
+        type="date"
+        matInput
+        [(ngModel)]="dateFrom"
+        [ngModelOptions]="{ standalone: true }"
+      />
+    </mat-form-field>
+    <mat-form-field class="min-with element">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "dateTo" | translate }}
+      </mat-label>
+      <input
+        type="date"
+        matInput
+        [(ngModel)]="dateTo"
+        [ngModelOptions]="{ standalone: true }"
+      />
+    </mat-form-field>
+    <mat-form-field class="min-with element">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "buyerName" | translate }}
+      </mat-label>
+      <input
+        type="text"
+        matInput
+        (click)="insertBuyerName()"
+        [(ngModel)]="buyerName"
+        [ngModelOptions]="{ standalone: true }"
+      />
+    </mat-form-field>
+    <mat-form-field class="min-with element">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "advancePaymentFrom" | translate }}
+      </mat-label>
+      <input
+        type="number"
+        matInput
+        (click)="insertAdvancePayment('from')"
+        [(ngModel)]="advancePaymentFrom"
+        [ngModelOptions]="{ standalone: true }"
+      />
+    </mat-form-field>
+    <mat-form-field class="min-with element">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "advancePaymentTo" | translate }}
+      </mat-label>
+      <input
+        type="number"
+        matInput
+        (click)="insertAdvancePayment('to')"
+        [(ngModel)]="advancePaymentTo"
+        [ngModelOptions]="{ standalone: true }"
+      />
+    </mat-form-field>
+    <mat-form-field class="min-with">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "sortBy" | translate }}
+      </mat-label>
+      <mat-select [(ngModel)]="ordering">
+        <mat-option value="ASC">{{ "asc" | translate }}</mat-option>
+        <mat-option value="DESC">{{ "desc" | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="buttons">
+      <app-button
+        [text]="'useFilter' | translate"
+        color="primary"
+        [buttonSize]="'small'"
+        (clickEvent)="useFilter()"
+      ></app-button>
+      <app-button
+        [text]="'cancel' | translate"
+        color="secondary"
+        [buttonSize]="'small'"
+        (clickEvent)="cancel()"
+      ></app-button>
+    </div>
+  </div>
+  <div
+    class="invoices"
+    *ngIf="invoices"
+    scrollToBottom
+    (bottomReached)="bottomReachedHandler()"
+  >
+    <app-table-show
+      [dataModel]="invoices"
+      (editData)="editInvoice($event)"
+      (deleteData)="deleteInvoice($event)"
+    ></app-table-show>
+  </div>
+</div>

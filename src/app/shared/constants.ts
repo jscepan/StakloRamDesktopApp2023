@@ -23,6 +23,8 @@ export const THUMBNAIL_MIRROR = 'assets/images/mirror_thumbnail.jpg';
 export const THUMBNAIL_FACETING = 'assets/images/faceting_thumbnail.jpg';
 export const THUMBNAIL_SANDING = 'assets/images/sanding_thumbnail.jpg';
 
+export const NUMBER_OF_ITEMS_ON_PAGE: number = 50;
+
 // Login form content type
 export const LOGIN_FORM_CONTENT_TYPE: { 'Content-Type': string } = {
   'Content-Type': 'application/x-www-form-urlencoded',
