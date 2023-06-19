@@ -136,6 +136,9 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
               .subscribe((invoice) => {
                 if (invoice && invoice.oid) {
                   // TODO obrisi fakturu iz draft moda
+                  this.draftInvoicesStoreService.removeDraftInvoice(
+                    this.invoice.oid
+                  );
                   this.invoice.oid = invoice.oid;
                   this.globalService.showBasicAlert(
                     MODE.success,
