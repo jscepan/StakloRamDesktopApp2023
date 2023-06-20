@@ -297,6 +297,11 @@
               buttonSize="middle"
               [color]="'success'"
               (clickEvent)="stepper.next()"
+              [disabled]="
+                ((isOutterDimension | async) &&
+                  !invoiceItemForm?.value?.passpartuColor?.name) ||
+                false
+              "
             ></app-button>
           </div>
         </div>

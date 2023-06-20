@@ -145,6 +145,8 @@ export class FramingComponent implements OnInit, OnDestroy {
             .dimensionsOutterHeight
             ? this.invoiceItemForm.value.dimensionsOutterHeight
             : this.invoiceItemForm.value.dimensionsHeight,
+          passpartuWidth: undefined,
+          passpartuWidthUom: undefined,
         });
       } else {
         this.invoiceItemForm.patchValue({
