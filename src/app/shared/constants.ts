@@ -5,16 +5,7 @@ import { environment } from 'src/environments/environment';
 export const BASE_API_URL: string = environment.baseApiUrl;
 
 export const DOMAIN_BUYERS: string = 'buyers';
-export const DOMAIN_COUNTRIES: string = 'countries';
-export const DOMAIN_USERS: string = 'users';
-export const DOMAIN_INCOMES: string = 'incomes';
-export const DOMAIN_OUTCOMES: string = 'outcomes';
-export const DOMAIN_CITY: string = 'cities';
-export const DOMAIN_IMAGES: string = 'images';
-export const DOMAIN_INVOICES: string = 'invoices';
-export const DOMAIN_ROLES: string = 'roles';
-export const DOMAIN_WORK_ORDERS: string = 'workorders';
-export const DOMAIN_HISTORY: string = 'histories';
+export const BARCODE_PREFIX: string = 'br_sr';
 
 export const THUMBNAIL_GLASS = 'assets/images/glass_thumbnail.jpg';
 export const THUMBNAIL_FRAME = 'assets/images/frames_thumbnail.jpg';

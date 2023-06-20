@@ -1,0 +1,76 @@
+<div class="invoice-printed-container">
+  <div class="header">
+    {{ header }}
+  </div>
+
+  <div class="barcode" *ngIf="dataModel">
+    <ngx-barcode
+      [bc-value]="prefix + dataModel.oid"
+      *ngIf="dataModel.oid"
+    ></ngx-barcode>
+  </div>
+
+  <div class="invoice-number">
+    {{ "invoiceNumber" | translate }}: {{ dataModel.oid }}
+  </div>
+  <div class="buyer" *ngIf="dataModel.buyerName">
+    {{ "buyer" | translate }}: {{ dataModel.buyerName }}
+  </div>
+  <div class="created-by" *ngIf="dataModel.user?.name">
+    {{ "createdBy" | translate }}&nbsp;{{ dataModel?.user?.name }}
+  </div>
+  <div class="date">
+    {{ "date" | translate }}: {{ dataModel.createDate | date : "dd/MM/yyyy" }}
+  </div>
+  <div class="invoice-items">
+    <div
+      class="item"
+      *ngFor="let item of dataModel.invoiceItems; let i = index"
+    >
+      <div class="item-content">
+        <div class="number">
+          {{ i + 1 }}.&nbsp;{{ getInvoiceItemHeader(item) }}
+        </div>
+        <div class="description">{{ item.title }}</div>
+      </div>
+      <div class="amount">
+        {{ item.amount | number : "1.2-2" }} {{ currencyDisplay }}
+      </div>
+    </div>
+  </div>
+  <div class="amounts">
+    <div class="gross-amount">
+      {{ "total" | translate }}:
+      {{ dataModel.amount | number : "1.2-2" }}
+      {{ currencyDisplay }}
+    </div>
+    <div
+      class="advance-payment"
+      *ngIf="dataModel.amount - dataModel.advancePayment !== 0"
+    >
+      {{ "advancePayment" | translate }}:
+      {{ dataModel.advancePayment | number : "1.2-2" }}
+      {{ currencyDisplay }}
+    </div>
+    <div
+      class="rest-payment"
+      *ngIf="dataModel.amount - dataModel.advancePayment !== 0"
+    >
+      {{ "restPayment" | translate }}:
+      {{ dataModel.amount - dataModel.advancePayment | number : "1.2-2" }}
+      {{ currencyDisplay }}
+    </div>
+  </div>
+  <div
+    class="cash-register-container"
+    *ngIf="dataModel.amount - dataModel.advancePayment === 0"
+  >
+    <div class="title">{{ "cashRegisterReport" | translate }}:</div>
+    <div class="item-description" *ngFor="let item of getItemsDescription()">
+      {{ item }}
+    </div>
+  </div>
+  <div class="footer" *ngIf="dataModel.amount - dataModel.advancePayment !== 0">
+    {{ footer }}
+  </div>
+</div>

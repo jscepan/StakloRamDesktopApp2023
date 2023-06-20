@@ -549,6 +549,9 @@ export class FramingComponent implements OnInit, OnDestroy {
 
   finish(): void {
     this.invoiceItemForm.patchValue({
+      title: this.invoiceItemCalculatorService.getInvoiceItemTitle(
+        this.invoiceItemForm.value
+      ),
       amount: roundOnDigits(
         this.invoiceItemCalculatorService.getInvoiceItemAmount(
           this.invoiceItemForm.value

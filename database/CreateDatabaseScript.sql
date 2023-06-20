@@ -62,10 +62,10 @@ CREATE TABLE IF NOT EXISTS `invoiceitem` (
   FOREIGN KEY (`sanding_sanding_oid`) REFERENCES `sanding` (`sanding_oid`)
 );
 CREATE TABLE IF NOT EXISTS `invoiceitem_has_frame` (
+  `invoiceitem_has_frame_oid` INTEGER PRIMARY KEY AUTOINCREMENT,
   `invoiceItem_invoiceItem_oid` INTEGER NOT NULL,
   `frame_frame_oid` INTEGER NOT NULL,
   `colorCode` TEXT,
-  PRIMARY KEY (`invoiceItem_invoiceItem_oid`,`frame_frame_oid`),
   FOREIGN KEY (`frame_frame_oid`) REFERENCES `frame` (`frame_oid`),
   FOREIGN KEY (`invoiceItem_invoiceItem_oid`) REFERENCES `invoiceitem` (`invoiceitem_oid`)
 );

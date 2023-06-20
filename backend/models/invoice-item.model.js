@@ -53,31 +53,44 @@ InvoiceItem.create = (newInvoiceItem, invoiceOid, result) => {
         newInvoiceItem.selectedFrames &&
         newInvoiceItem.selectedFrames.length > 0
       ) {
+        function resolvePromisesSequentially(promises, index) {
+          if (index === promises.length) {
+            // Svi promisi su razrešeni, izvršavamo željenu logiku
+            result(null, { ...newInvoiceItem, oid: this.lastID });
+            return;
+          }
+
+          promises[index]()
+            .then(() => {
+              resolvePromisesSequentially(promises, index + 1);
+            })
+            .catch((err) => {
+              result(err, null);
+            });
+        }
+
         let promises = [];
         newInvoiceItem.selectedFrames.forEach((f) => {
           const frameQuery =
             "INSERT INTO invoiceitem_has_frame (invoiceItem_invoiceItem_oid, frame_frame_oid, colorCode) VALUES (?,?,?)";
           promises.push(
-            new Promise((resolve, reject) => {
-              const frameParams = [this.lastID, f.frame.oid, f.colorCode];
-              sql.run(frameQuery, frameParams, (err) => {
-                if (err) {
-                  console.log("error invoiceitem_has_frame: ", err);
-                  reject(err);
-                } else {
-                  resolve();
-                }
-              });
-            })
+            () =>
+              new Promise((resolve, reject) => {
+                const frameParams = [this.lastID, f.frame.oid, f.colorCode];
+                sql.run(frameQuery, frameParams, (err) => {
+                  if (err) {
+                    console.log("error invoiceitem_has_frame: ", err);
+                    reject(err);
+                  } else {
+                    resolve();
+                  }
+                });
+              })
           );
         });
-        Promise.all(promises)
-          .then(() => {
-            result(null, { ...newInvoiceItem, oid: this.lastID });
-          })
-          .catch((err) => {
-            result(err, null);
-          });
+
+        // Razrešavamo promisi redom
+        resolvePromisesSequentially(promises, 0);
       } else {
         result({ ...newInvoiceItem, oid: this.lastID });
       }

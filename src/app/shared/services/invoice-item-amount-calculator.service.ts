@@ -6,20 +6,22 @@ import { ProductModel } from '../models/product-model';
 import { SettingsStoreService } from './settings-store.service';
 import { UOM } from '../constants';
 import { roundOnDigits } from '../utils';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class InvoiceItemCalculatorService {
   minGlassSurface: number = 0;
 
-  constructor(private appSettings: SettingsStoreService) {
+  constructor(
+    private appSettings: SettingsStoreService,
+    private translateService: TranslateService
+  ) {
     this.appSettings.settings.subscribe((sett) => {
       this.minGlassSurface = sett?.minGlassSurface ?? 0;
     });
   }
 
   public getInvoiceItemAmount(invoiceItem: InvoiceItemModel): number {
-    console.log('------------invoiceItem-------------');
-    console.log(invoiceItem);
     let glassPrice = 0;
     let passpartuPrice = 0;
     let mirrorPrice = 0;
@@ -162,7 +164,6 @@ export class InvoiceItemCalculatorService {
           item.glass.uom
         );
         if (item.glass.uom === UOM.METER2 && surface < this.minGlassSurface) {
-          console.log('POVRSINA JE MANJA');
           surface = this.minGlassSurface;
         }
         let glassPrice = (item?.glass?.pricePerUom || 1) * surface;
@@ -491,5 +492,60 @@ export class InvoiceItemCalculatorService {
       }
     }
     return value;
+  }
+
+  getInvoiceItemTitle(invoiceItem: InvoiceItemModel): string {
+    let title = '';
+    if (invoiceItem.passpartuColor?.oid) {
+      title +=
+        this.translateService.instant('passpartu') +
+        ': ' +
+        invoiceItem.passpartuColor.name +
+        '/' +
+        invoiceItem.passpartuWidth +
+        invoiceItem.passpartuWidthUom +
+        ', ';
+    }
+    if (invoiceItem.glass?.oid) {
+      title +=
+        this.translateService.instant('glass') +
+        ': ' +
+        invoiceItem.glass.name +
+        ', ';
+    }
+    if (invoiceItem.mirror?.oid) {
+      title +=
+        this.translateService.instant('mirror') +
+        ': ' +
+        invoiceItem.mirror.name +
+        ', ';
+      if (invoiceItem.faceting?.oid) {
+        title +=
+          this.translateService.instant('faceting') +
+          ': ' +
+          invoiceItem.faceting.name +
+          ', ';
+      }
+      if (invoiceItem.sanding?.oid) {
+        title +=
+          this.translateService.instant('sanding') +
+          ': ' +
+          invoiceItem.sanding.name +
+          ', ';
+      }
+    }
+    if (invoiceItem.selectedFrames.length === 1) {
+      title += this.translateService.instant('frame');
+    } else {
+      title += this.translateService.instant('frames');
+    }
+    title += ': ';
+    invoiceItem.selectedFrames.forEach((frame, index) => {
+      if (index > 0) {
+        title += ', ';
+      }
+      title += `${frame.frame.code}${frame.colorCode}`;
+    });
+    return title;
   }
 }
