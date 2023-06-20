@@ -135,25 +135,23 @@ export class FramingComponent implements OnInit, OnDestroy {
     );
 
     this.subs.sink = this.isOutterDimension.subscribe((selected) => {
-      // if (selected) {
-      //   this.invoiceItemForm.patchValue({
-      //     dimensionsOutterWidth: this.invoiceItemForm.value
-      //       .dimensionsOutterWidth
-      //       ? this.invoiceItemForm.value.dimensionsOutterWidth
-      //       : this.invoiceItemForm.value.dimensionsWidth,
-      //   });
-      //   this.invoiceItemForm.patchValue({
-      //     dimensionsOutterHeight: this.invoiceItemForm.value
-      //       .dimensionsOutterHeight
-      //       ? this.invoiceItemForm.value.dimensionsOutterHeight
-      //       : this.invoiceItemForm.value.dimensionsHeight,
-      //   });
-      // } else {
-      //   this.invoiceItemForm.patchValue({
-      //     dimensionsOutterWidth: 0,
-      //     dimensionsOutterHeight: 0,
-      //   });
-      // }
+      if (selected) {
+        this.invoiceItemForm.patchValue({
+          dimensionsOutterWidth: this.invoiceItemForm.value
+            .dimensionsOutterWidth
+            ? this.invoiceItemForm.value.dimensionsOutterWidth
+            : this.invoiceItemForm.value.dimensionsWidth,
+          dimensionsOutterHeight: this.invoiceItemForm.value
+            .dimensionsOutterHeight
+            ? this.invoiceItemForm.value.dimensionsOutterHeight
+            : this.invoiceItemForm.value.dimensionsHeight,
+        });
+      } else {
+        this.invoiceItemForm.patchValue({
+          dimensionsOutterWidth: 0,
+          dimensionsOutterHeight: 0,
+        });
+      }
     });
   }
 
@@ -183,6 +181,9 @@ export class FramingComponent implements OnInit, OnDestroy {
 
           if (this.componentMode === 'EDIT') {
             // TODO idi na api i uzmi fakturu...
+            if (invoiceItem.dimensionsOutterWidth) {
+              this.$isOutterDimension.next(true);
+            }
           } else if (this.componentMode === 'EDIT_DRAFT') {
             this.subs.sink =
               this.draftInvoicesStoreService.draftInvoices.subscribe(
@@ -195,6 +196,9 @@ export class FramingComponent implements OnInit, OnDestroy {
                     invoiceItem = inv.invoiceItems.filter(
                       (ii) => ii.oid === this.invoiceItemOid
                     )[0];
+                    if (invoiceItem.dimensionsOutterWidth) {
+                      this.$isOutterDimension.next(true);
+                    }
                     subscriber.next(invoiceItem);
                     subscriber.complete();
                   } else {

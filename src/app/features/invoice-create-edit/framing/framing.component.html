@@ -90,7 +90,7 @@
               </mat-form-field>
               <div class="uom">{{ invoiceItemForm.value.dimensionsUom }}</div>
             </div>
-            <!-- <div
+            <div
               class="row-container dimensions"
               *ngIf="invoiceItemForm.value.dimensionsOutterWidth"
             >
@@ -99,7 +99,7 @@
                   [class.mark-required]="true"
                   [class.mark-opt-required]="true"
                 >
-                  {{ "width" | translate }}
+                  {{ "outterWidth" | translate }}
                 </mat-label>
                 <input
                   type="number"
@@ -114,7 +114,7 @@
                   [class.mark-required]="true"
                   [class.mark-opt-required]="true"
                 >
-                  {{ "height" | translate }}
+                  {{ "outterHeight" | translate }}
                 </mat-label>
                 <input
                   type="number"
@@ -124,7 +124,7 @@
                 />
               </mat-form-field>
               <div class="uom">{{ invoiceItemForm.value.dimensionsUom }}</div>
-            </div> -->
+            </div>
             <div class="item-select">
               <div class="grid-container">
                 <ng-container *ngIf="!invoiceItemForm.value.mirror">
