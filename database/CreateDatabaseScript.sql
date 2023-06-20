@@ -1,4 +1,3 @@
-ATTACH DATABASE 'radnja.db' AS radnja;
 CREATE TABLE IF NOT EXISTS `faceting` (
   `faceting_oid` INTEGER PRIMARY KEY AUTOINCREMENT,
   `faceting_name` TEXT,
@@ -40,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `invoice` (
 CREATE TABLE IF NOT EXISTS `invoiceitem` (
   `invoiceitem_oid` INTEGER PRIMARY KEY AUTOINCREMENT,
   `invoiceitem_title` TEXT,
+  `invoiceitem_serviceType` TEXT,
   `invoiceitem_amount` REAL,
   `invoiceitem_dimensionsWidth` REAL,
   `invoiceitem_dimensionsHeight` REAL,
