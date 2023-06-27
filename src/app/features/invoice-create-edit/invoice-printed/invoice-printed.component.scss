@@ -11,25 +11,37 @@
     padding: 15px 0;
   }
 
-  .barcode {
+  .invoice-title {
+    display: flex;
+    border-bottom: 1px dotted black;
+    justify-content: space-between;
+
+    .invoice-data-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .invoice-number {
+        padding: 5px 0;
+      }
+
+      .buyer {
+        padding: 5px 0;
+      }
+
+      .created-by {
+        padding: 5px 0;
+      }
+
+      .date {
+        padding: 5px 0;
+      }
+    }
+  }
+
+  .qr-code {
     display: flex;
     justify-content: center;
-  }
-
-  .invoice-number {
-    padding: 5px 0;
-  }
-
-  .buyer {
-    padding: 5px 0;
-  }
-
-  .created-by {
-    padding: 5px 0;
-  }
-
-  .date {
-    border-bottom: 1px dotted black;
   }
 
   .invoice-items {

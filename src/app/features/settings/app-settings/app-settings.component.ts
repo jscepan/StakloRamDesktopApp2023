@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import { Entity } from 'src/app/shared/components/form/form.component';
+import { QRCodeErrorCorrectionLevel } from 'src/app/shared/constants';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import {
   AppSettings,
@@ -130,6 +131,32 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
           label: {
             key: 'currencyDisplayValue',
             value: this.translateService.instant('currencyDisplayValue'),
+          },
+        },
+        {
+          type: 'number',
+          required: true,
+          errorMessage: 'string',
+          value: settings.qrCodeSizeInPixel,
+          label: {
+            key: 'qrCodeSizeInPixel',
+            value: this.translateService.instant('qrCodeSizeInPixel'),
+          },
+        },
+        {
+          type: 'select',
+          required: true,
+          errorMessage: 'string',
+          value: settings.qrCodeErrorCorrectionLevel,
+          optionalValues: Object.keys(QRCodeErrorCorrectionLevel).map(
+            (value) => ({
+              key: value,
+              value: this.translateService.instant(value),
+            })
+          ),
+          label: {
+            key: 'qrCodeErrorCorrectionLevel',
+            value: this.translateService.instant('qrCodeErrorCorrectionLevel'),
           },
         },
         // {

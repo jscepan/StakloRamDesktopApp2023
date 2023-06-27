@@ -2,25 +2,30 @@
   <div class="header">
     {{ header }}
   </div>
+  <div class="invoice-title">
+    <div class="invoice-data-container">
+      <div class="invoice-number">
+        {{ "invoiceNumber" | translate }}: {{ dataModel.oid }}
+      </div>
+      <div class="buyer" *ngIf="dataModel.buyerName">
+        {{ "buyer" | translate }}: {{ dataModel.buyerName }}
+      </div>
+      <div class="created-by" *ngIf="dataModel.user?.name">
+        {{ "createdBy" | translate }}&nbsp;{{ dataModel?.user?.name }}
+      </div>
+      <div class="date">
+        {{ "date" | translate }}:
+        {{ dataModel.createDate | date : "dd/MM/yyyy" }}
+      </div>
+    </div>
 
-  <div class="barcode" *ngIf="dataModel">
-    <ngx-barcode
-      [bc-value]="prefix + dataModel.oid"
-      *ngIf="dataModel.oid"
-    ></ngx-barcode>
-  </div>
-
-  <div class="invoice-number">
-    {{ "invoiceNumber" | translate }}: {{ dataModel.oid }}
-  </div>
-  <div class="buyer" *ngIf="dataModel.buyerName">
-    {{ "buyer" | translate }}: {{ dataModel.buyerName }}
-  </div>
-  <div class="created-by" *ngIf="dataModel.user?.name">
-    {{ "createdBy" | translate }}&nbsp;{{ dataModel?.user?.name }}
-  </div>
-  <div class="date">
-    {{ "date" | translate }}: {{ dataModel.createDate | date : "dd/MM/yyyy" }}
+    <div class="qr-code">
+      <qrcode
+        [qrdata]="getQrCodeDataForInvoice()"
+        [width]="qrCodeSizeInPixel"
+        [errorCorrectionLevel]="qrCodeErrorCorrectionLevel"
+      ></qrcode>
+    </div>
   </div>
   <div class="invoice-items">
     <div

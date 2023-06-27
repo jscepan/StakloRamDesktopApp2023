@@ -6,7 +6,11 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { BARCODE_PREFIX, SERVICE_TYPE } from 'src/app/shared/constants';
+import {
+  BARCODE_PREFIX,
+  QRCodeErrorCorrectionLevel,
+  SERVICE_TYPE,
+} from 'src/app/shared/constants';
 import { InvoiceItemModel } from 'src/app/shared/models/invoice-item.model';
 import { InvoiceModel } from 'src/app/shared/models/invoice-model';
 import { InvoiceItemCalculatorService } from 'src/app/shared/services/invoice-item-amount-calculator.service';
@@ -27,6 +31,10 @@ export class InvoicePrintedComponent
   prefix: string = BARCODE_PREFIX;
 
   @Input() dataModel!: InvoiceModel;
+  qrCodeSizeInPixel: number = 100;
+  qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel =
+    QRCodeErrorCorrectionLevel.EXTRALARGE_levelH;
+
   header: string = '';
   footer: string = '';
   currencyDisplay: string = '';
@@ -43,11 +51,19 @@ export class InvoicePrintedComponent
       this.header = settings?.header ?? '';
       this.footer = settings?.footer ?? '';
       this.currencyDisplay = settings?.currencyDisplayValue ?? '';
+      this.qrCodeSizeInPixel = settings?.qrCodeSizeInPixel ?? 130;
+      this.qrCodeErrorCorrectionLevel =
+        settings?.qrCodeErrorCorrectionLevel ??
+        QRCodeErrorCorrectionLevel.EXTRALARGE_levelH;
     });
   }
 
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
+  }
+
+  getQrCodeDataForInvoice(): string {
+    return this.prefix + this.dataModel.oid;
   }
 
   getInvoiceItemHeader(item: InvoiceItemModel): string {

@@ -36,3 +36,10 @@ export enum UOM {
   NUMBER = 'num',
   PIECES = 'kom',
 }
+
+export enum QRCodeErrorCorrectionLevel {
+  SMALL_levelL = 'L',
+  MEDIUM_levelM = 'M',
+  LARGE_levelQ = 'Q',
+  EXTRALARGE_levelH = 'H',
+}

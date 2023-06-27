@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { BaseWebService } from 'src/app/core/services/base.web-service';
-import { BASE_API_URL } from '../constants';
+import { BASE_API_URL, QRCodeErrorCorrectionLevel } from '../constants';
 
 export class AppSettings {
   decimalNumberSign: '.' | ',' = ',';
@@ -10,6 +10,9 @@ export class AppSettings {
     'dd.mm.yyyy';
   currencyFormat: string = 'din';
   currencyDisplayValue: string = 'Din';
+  qrCodeSizeInPixel: number = 130;
+  qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel =
+    QRCodeErrorCorrectionLevel.EXTRALARGE_levelH;
   language: 'rs' | 'en' = 'rs';
   minGlassSurface: number = 0.1;
   copies: number = 1;
