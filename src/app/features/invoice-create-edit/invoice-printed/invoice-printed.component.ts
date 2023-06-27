@@ -199,6 +199,8 @@ export class InvoicePrintedComponent
           num++;
         }
       });
+    console.log('-----------------items------------------');
+    console.log(items);
     return items;
   }
 

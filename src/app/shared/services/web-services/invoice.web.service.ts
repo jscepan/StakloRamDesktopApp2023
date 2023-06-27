@@ -60,4 +60,5 @@ export class InvoiceSearchModel {
   advancePaymentFrom?: number;
   advancePaymentTo?: number;
   ordering: 'ASC' | 'DESC' = 'DESC';
+  showPaidUnpaid: 'ALL' | 'PAID' | 'UNPAID' = 'ALL';
 }

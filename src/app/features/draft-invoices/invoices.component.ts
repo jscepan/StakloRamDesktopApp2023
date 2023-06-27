@@ -5,7 +5,10 @@ import { TableShow } from 'src/app/shared/components/table-show/table-show.compo
 import { InvoiceModel } from 'src/app/shared/models/invoice-model';
 import { DraftInvoicesService } from 'src/app/shared/services/data-store-services/draft-invoice-items-store.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
-import { getFormatedDateAndTime } from 'src/app/shared/utils';
+import {
+  getDisplayNumberAsString,
+  getFormatedDateAndTime,
+} from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-invoices',
@@ -49,7 +52,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
         data: [
           entity.oid,
           getFormatedDateAndTime(entity.createDate),
-          entity.advancePayment + '',
+          getDisplayNumberAsString(entity.advancePayment),
           entity.buyerName ?? '',
         ],
         isDeleted: false,

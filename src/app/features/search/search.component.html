@@ -1,5 +1,19 @@
 <div class="container">
   <div class="footer">
+    <div class="buttons">
+      <app-button
+        [text]="'useFilter' | translate"
+        color="primary"
+        [buttonSize]="'small'"
+        (clickEvent)="useFilter()"
+      ></app-button>
+      <!-- <app-button
+        [text]="'cancel' | translate"
+        color="secondary"
+        [buttonSize]="'small'"
+        (clickEvent)="cancel()"
+      ></app-button> -->
+    </div>
     <mat-form-field class="min-with element">
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
         {{ "dateFrom" | translate }}
@@ -34,6 +48,16 @@
         [ngModelOptions]="{ standalone: true }"
       />
     </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "showPaidUnpaid" | translate }}
+      </mat-label>
+      <mat-select [(ngModel)]="showPaidUnpaid">
+        <mat-option value="ALL">{{ "all" | translate }}</mat-option>
+        <mat-option value="PAID">{{ "paid" | translate }}</mat-option>
+        <mat-option value="UNPAID">{{ "unpaid" | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
     <mat-form-field class="min-with element">
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
         {{ "advancePaymentFrom" | translate }}
@@ -67,20 +91,6 @@
         <mat-option value="DESC">{{ "desc" | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <div class="buttons">
-      <app-button
-        [text]="'useFilter' | translate"
-        color="primary"
-        [buttonSize]="'small'"
-        (clickEvent)="useFilter()"
-      ></app-button>
-      <app-button
-        [text]="'cancel' | translate"
-        color="secondary"
-        [buttonSize]="'small'"
-        (clickEvent)="cancel()"
-      ></app-button>
-    </div>
   </div>
   <div
     class="invoices"

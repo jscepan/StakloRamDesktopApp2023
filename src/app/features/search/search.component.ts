@@ -9,7 +9,10 @@ import { NUMBER_OF_ITEMS_ON_PAGE, UOM } from 'src/app/shared/constants';
 import { InvoiceModel } from 'src/app/shared/models/invoice-model';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { InvoiceWebService } from 'src/app/shared/services/web-services/invoice.web.service';
-import { getFormatedDateAndTime } from 'src/app/shared/utils';
+import {
+  getDisplayNumberAsString,
+  getFormatedDateAndTime,
+} from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-search',
@@ -36,6 +39,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   buyerName: string = '';
   dateFrom!: Date;
   dateTo!: Date;
+  showPaidUnpaid: 'ALL' | 'PAID' | 'UNPAID' = 'ALL';
   ordering: 'ASC' | 'DESC' = 'DESC';
   advancePaymentFrom!: number;
   advancePaymentTo!: number;
@@ -54,7 +58,9 @@ export class SearchComponent implements OnInit, OnDestroy {
         header: [
           this.translateService.instant('code'),
           this.translateService.instant('date'),
+          this.translateService.instant('amount'),
           this.translateService.instant('advancePayment'),
+          this.translateService.instant('restPayment'),
           this.translateService.instant('buyerName'),
         ],
         rowData: [],
@@ -64,7 +70,9 @@ export class SearchComponent implements OnInit, OnDestroy {
           data: [
             entity.oid,
             getFormatedDateAndTime(entity.createDate),
-            entity.advancePayment + '',
+            getDisplayNumberAsString(entity.amount),
+            getDisplayNumberAsString(entity.advancePayment),
+            getDisplayNumberAsString(entity.amount - entity.advancePayment),
             entity.buyerName ?? '',
           ],
           isDeleted: false,
@@ -111,6 +119,7 @@ export class SearchComponent implements OnInit, OnDestroy {
           advancePaymentFrom: this.advancePaymentFrom,
           advancePaymentTo: this.advancePaymentTo,
           ordering: this.ordering,
+          showPaidUnpaid: this.showPaidUnpaid,
         },
         this.nextResultCounter,
         NUMBER_OF_ITEMS_ON_PAGE
@@ -133,6 +142,7 @@ export class SearchComponent implements OnInit, OnDestroy {
             advancePaymentFrom: this.advancePaymentFrom,
             advancePaymentTo: this.advancePaymentTo,
             ordering: this.ordering,
+            showPaidUnpaid: this.showPaidUnpaid,
           },
           this.nextResultCounter,
           NUMBER_OF_ITEMS_ON_PAGE

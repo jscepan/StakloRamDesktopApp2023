@@ -4,6 +4,7 @@ import { Entity } from 'src/app/shared/components/form/form.component';
 import { TableShow } from 'src/app/shared/components/table-show/table-show.component';
 import { FrameModel } from 'src/app/shared/models/frame-model';
 import { MapProductService } from './map-product.service';
+import { getDisplayNumberAsString } from 'src/app/shared/utils';
 
 @Injectable()
 // implements ProductSettings<FrameModel>
@@ -149,9 +150,9 @@ export class MapFrameService extends MapProductService {
           entity.code,
           entity.name,
           entity.uom,
-          entity.pricePerUom + '',
-          entity.frameWidthMM + '',
-          entity.cashRegisterNumber + '',
+          getDisplayNumberAsString(entity.pricePerUom),
+          getDisplayNumberAsString(entity.frameWidthMM),
+          getDisplayNumberAsString(entity.cashRegisterNumber),
         ],
         isDeleted: !!!entity.isActive,
       });

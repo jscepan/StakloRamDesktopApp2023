@@ -52,6 +52,7 @@ exports.findAll = (req, res) => {
     dateFrom: req.body.dateFrom,
     dateTo: req.body.dateTo,
     ordering: req.body.ordering,
+    showPaidUnpaid: req.body.showPaidUnpaid,
     advancePaymentFrom: req.body.advancePaymentFrom,
     advancePaymentTo: req.body.advancePaymentTo,
   };

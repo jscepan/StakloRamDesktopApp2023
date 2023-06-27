@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 export const BASE_API_URL: string = environment.baseApiUrl;
 
 export const DOMAIN_BUYERS: string = 'buyers';
-export const BARCODE_PREFIX: string = 'br_sr';
+export const BARCODE_PREFIX: string = 'StakloRamPlusBackaPalankaRacunBroj';
 
 export const THUMBNAIL_GLASS = 'assets/images/glass_thumbnail.jpg';
 export const THUMBNAIL_FRAME = 'assets/images/frames_thumbnail.jpg';
@@ -15,11 +15,6 @@ export const THUMBNAIL_FACETING = 'assets/images/faceting_thumbnail.jpg';
 export const THUMBNAIL_SANDING = 'assets/images/sanding_thumbnail.jpg';
 
 export const NUMBER_OF_ITEMS_ON_PAGE: number = 50;
-
-// Login form content type
-export const LOGIN_FORM_CONTENT_TYPE: { 'Content-Type': string } = {
-  'Content-Type': 'application/x-www-form-urlencoded',
-};
 
 ////////////////////////////////////////////////////////////////////////
 export enum SERVICE_TYPE {

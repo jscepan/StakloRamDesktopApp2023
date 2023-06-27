@@ -5,6 +5,7 @@ import { Entity } from 'src/app/shared/components/form/form.component';
 import { TableShow } from 'src/app/shared/components/table-show/table-show.component';
 import { ProductModel } from 'src/app/shared/models/product-model';
 import { ProductSettings } from '../product-settings.interface';
+import { getDisplayNumberAsString } from 'src/app/shared/utils';
 
 @Injectable()
 export class MapProductService implements ProductSettings<ProductModel> {
@@ -121,8 +122,8 @@ export class MapProductService implements ProductSettings<ProductModel> {
           entity.oid,
           entity.name,
           entity.uom,
-          entity.pricePerUom + '',
-          entity.cashRegisterNumber + '',
+          getDisplayNumberAsString(entity.pricePerUom),
+          getDisplayNumberAsString(entity.cashRegisterNumber),
         ],
         isDeleted: !!!entity.isActive,
       });

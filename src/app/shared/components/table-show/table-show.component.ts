@@ -16,7 +16,10 @@ import {
 
 export class TableShow {
   header: string[] = [];
-  rowData: { data: string[]; isDeleted: boolean }[] = [];
+  rowData: {
+    data: string[];
+    isDeleted: boolean;
+  }[] = [];
 }
 
 @Component({

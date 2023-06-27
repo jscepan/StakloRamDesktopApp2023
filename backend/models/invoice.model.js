@@ -138,10 +138,29 @@ Invoice.getAll = (searchModel, result) => {
     advancePaymentToQuery +=
       " invoice_advancePayment <= " + searchModel.advancePaymentTo;
   }
+  let amountQuery = "";
+
+  if (searchModel.showPaidUnpaid === "PAID") {
+    if (!whereClausule) {
+      whereClausule += " WHERE ";
+    } else {
+      amountQuery += " AND ";
+    }
+    amountQuery += `invoice_advancePayment=invoice_amount`;
+  } else if (searchModel.showPaidUnpaid === "UNPAID") {
+    if (!whereClausule) {
+      whereClausule += " WHERE ";
+    } else {
+      amountQuery += " AND ";
+    }
+    amountQuery += `invoice_advancePayment<invoice_amount`;
+  } else {
+    amountQuery = "";
+  }
   const order = searchModel.ordering === "ASC" ? " ASC " : " DESC ";
   const orderingQuery = ` ORDER BY invoice_createDate ${order}, invoice_buyerName ${order}`;
   let paginationQuery = ` LIMIT ${searchModel.top} OFFSET ${searchModel.skip}`;
-  let query =
+  const query =
     "SELECT * FROM invoice" +
     whereClausule +
     buyerNameQuery +
@@ -149,17 +168,19 @@ Invoice.getAll = (searchModel, result) => {
     dateToQuery +
     advancePaymentFromQuery +
     advancePaymentToQuery +
+    amountQuery +
     orderingQuery +
     paginationQuery;
 
-  let countQuery =
+  const countQuery =
     "SELECT COUNT(*) FROM invoice" +
     whereClausule +
     buyerNameQuery +
     dateFromQuery +
     dateToQuery +
     advancePaymentFromQuery +
-    advancePaymentToQuery;
+    advancePaymentToQuery +
+    amountQuery;
 
   let promises = [];
   const getCount = new Promise((resolve, reject) => {
@@ -210,24 +231,24 @@ Invoice.getAll = (searchModel, result) => {
 };
 
 Invoice.updateById = (invoice, result) => {
-  sql.query(
+  sql.run(
     "UPDATE invoice SET invoice_createDate = ?, invoice_amount = ?, invoice_advancePayment = ?, invoice_buyerName = ?, user_user_oid = ? WHERE invoice_oid = ?",
     [
-      new Date(invoice.createDate).toISOString().slice(0, 19).replace("T", " "),
+      invoice.createDate,
       invoice.amount,
       invoice.advancePayment,
       invoice.buyerName,
       invoice.user.oid,
       invoice.oid,
     ],
-    (err, res) => {
+    function (err) {
       if (err) {
         console.log("error: ", err);
         result(null, err);
         return;
       }
 
-      if (res.affectedRows == 0) {
+      if (this.changes === 0) {
         // not found Invoice with the id
         result({ kind: "not_found" }, null);
         return;

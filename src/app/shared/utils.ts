@@ -139,3 +139,11 @@ export function getDaysBetweenTwoDates(first: Date, second: Date): number {
 export function compareByValue(f1: BaseModel, f2: BaseModel) {
   return f1 && f2 && f1.oid === f2.oid;
 }
+
+export function getDisplayNumberAsString(value?: number): string {
+  if (typeof value === 'number') {
+    return value.toLocaleString('de-DE');
+  } else {
+    return '';
+  }
+}
