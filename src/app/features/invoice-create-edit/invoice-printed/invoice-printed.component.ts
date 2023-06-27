@@ -8,8 +8,11 @@ import {
 } from '@angular/core';
 import {
   BARCODE_PREFIX,
+  DateFormat,
   QRCodeErrorCorrectionLevel,
   SERVICE_TYPE,
+  getDateFormatEnumByKey,
+  getQRCodeErrorCorrectionLevelEnumByKey,
 } from 'src/app/shared/constants';
 import { InvoiceItemModel } from 'src/app/shared/models/invoice-item.model';
 import { InvoiceModel } from 'src/app/shared/models/invoice-model';
@@ -39,6 +42,8 @@ export class InvoicePrintedComponent
   footer: string = '';
   currencyDisplay: string = '';
 
+  dateFormat: DateFormat = DateFormat.DAY_MONTH_YEAR_CROSS;
+
   constructor(
     private settingsService: SettingsStoreService,
     private cdRef: ChangeDetectorRef,
@@ -53,8 +58,12 @@ export class InvoicePrintedComponent
       this.currencyDisplay = settings?.currencyDisplayValue ?? '';
       this.qrCodeSizeInPixel = settings?.qrCodeSizeInPixel ?? 130;
       this.qrCodeErrorCorrectionLevel =
-        settings?.qrCodeErrorCorrectionLevel ??
-        QRCodeErrorCorrectionLevel.EXTRALARGE_levelH;
+        getQRCodeErrorCorrectionLevelEnumByKey(
+          settings?.qrCodeErrorCorrectionLevel
+        ) ?? QRCodeErrorCorrectionLevel.EXTRALARGE_levelH;
+      this.dateFormat =
+        getDateFormatEnumByKey(settings?.dateFormat) ??
+        DateFormat.DAY_MONTH_YEAR_CROSS;
     });
   }
 
@@ -199,8 +208,6 @@ export class InvoicePrintedComponent
           num++;
         }
       });
-    console.log('-----------------items------------------');
-    console.log(items);
     return items;
   }
 

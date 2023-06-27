@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { SelectionPopupModule } from '@features/selection-popup/selection-popup.module';
 import { FramingDescriptionModule } from 'src/app/shared/components/framing-description/framing-description.module';
 import { PrintInvoicePopupModule } from './print-invoice-popup/print-invoice-popup.module';
+import { CustomNumberPipeModule } from 'src/app/core/pipes/custom-number-pipe.module';
 
 @NgModule({
   declarations: [InvoiceCreateEditComponent],
@@ -25,6 +26,7 @@ import { PrintInvoicePopupModule } from './print-invoice-popup/print-invoice-pop
     SelectionPopupModule,
     FramingDescriptionModule,
     PrintInvoicePopupModule,
+    CustomNumberPipeModule,
   ],
   exports: [InvoiceCreateEditComponent],
   providers: [],

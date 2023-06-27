@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { BaseWebService } from 'src/app/core/services/base.web-service';
-import { BASE_API_URL, QRCodeErrorCorrectionLevel } from '../constants';
+import {
+  BASE_API_URL,
+  DateFormat,
+  QRCodeErrorCorrectionLevel,
+  getDateFormatEnumByKey,
+} from '../constants';
+import { formatDate } from '@angular/common';
 
 export class AppSettings {
   decimalNumberSign: '.' | ',' = ',';
   thousandsNumberSign: '.' | ',' = '.';
-  dateFormat: 'dd.mm.yyyy' | 'dd/mm/yyyy' | 'mm.dd.yyyy' | 'mm/dd/yyyy' =
-    'dd.mm.yyyy';
+  dateFormat: DateFormat = DateFormat.DAY_MONTH_YEAR_DOT;
   currencyFormat: string = 'din';
   currencyDisplayValue: string = 'Din';
   qrCodeSizeInPixel: number = 130;
@@ -71,5 +76,21 @@ export class SettingsStoreService {
           }
         });
     });
+  }
+
+  public getFormatedDate(date: string): string {
+    const dateFormat = getDateFormatEnumByKey(
+      this.settings$.getValue()?.dateFormat
+    );
+    let d;
+    dateFormat ? (d = formatDate(date, dateFormat, 'en-US')) : (d = date);
+    return d;
+  }
+
+  public getFormatedDateAndTime(date: Date): string {
+    const dateFormat = getDateFormatEnumByKey(
+      this.settings$.getValue()?.dateFormat
+    );
+    return formatDate(date, `${dateFormat} HH:mm`, 'en-US');
   }
 }

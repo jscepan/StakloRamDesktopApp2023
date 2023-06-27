@@ -6,9 +6,9 @@
     >{{ "mirror" | translate }}&nbsp;</span
   >
   <span>:&nbsp;</span>
-  <span>{{ dataModel.dimensionsWidth | number }}</span>
+  <span>{{ dataModel.dimensionsWidth | customNumber }}</span>
   <span>&nbsp;X&nbsp;</span>
-  <span>{{ dataModel.dimensionsHeight | number }}</span>
+  <span>{{ dataModel.dimensionsHeight | customNumber }}</span>
   <span>&nbsp;{{ dataModel.dimensionsUom }}</span>
   <!-- <span>,&nbsp;</span>
   <span class="description"> {{ "count" | translate }}:&nbsp; </span>
@@ -18,7 +18,7 @@
   <ng-container *ngIf="dataModel.passpartuColor?.oid">
     <span [class.description]="!inOneRow">{{ "passpartu" | translate }}</span>
     :&nbsp;{{ dataModel.passpartuColor?.name }}/{{
-      dataModel.passpartuWidth | number
+      dataModel.passpartuWidth | customNumber
     }}{{ dataModel.passpartuWidthUom }},&nbsp;
   </ng-container>
   <ng-container *ngIf="dataModel.glass?.oid">

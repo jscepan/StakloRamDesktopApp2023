@@ -38,3 +38,30 @@ export enum QRCodeErrorCorrectionLevel {
   LARGE_levelQ = 'Q',
   EXTRALARGE_levelH = 'H',
 }
+
+export enum DateFormat {
+  DAY_MONTH_YEAR_DOT = 'dd.MM.yyyy',
+  DAY_MONTH_YEAR_CROSS = 'dd/MM/yyyy',
+  MONTH_DAY_YEAR_DOT = 'MM.dd.yyyy',
+  MONTH_DAY_YEAR_CROSS = 'MM/dd/yyyy',
+}
+
+export function getDateFormatEnumByKey(key?: string): DateFormat | undefined {
+  let value;
+  if (key) {
+    value = (DateFormat as Record<string, DateFormat>)[key];
+  }
+  return value;
+}
+
+export function getQRCodeErrorCorrectionLevelEnumByKey(
+  key?: string
+): QRCodeErrorCorrectionLevel | undefined {
+  let value;
+  if (key) {
+    value = (
+      QRCodeErrorCorrectionLevel as Record<string, QRCodeErrorCorrectionLevel>
+    )[key];
+  }
+  return value;
+}

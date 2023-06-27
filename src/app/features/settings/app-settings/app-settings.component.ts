@@ -3,7 +3,10 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import { Entity } from 'src/app/shared/components/form/form.component';
-import { QRCodeErrorCorrectionLevel } from 'src/app/shared/constants';
+import {
+  DateFormat,
+  QRCodeErrorCorrectionLevel,
+} from 'src/app/shared/constants';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import {
   AppSettings,
@@ -102,12 +105,12 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
           required: true,
           errorMessage: 'string',
           value: settings.dateFormat,
-          optionalValues: [
-            { key: 'dd.mm.yyyy', value: 'dd.mm.yyyy' },
-            { key: 'dd/mm/yyyy', value: 'dd/mm/yyyy' },
-            { key: 'mm.dd.yyyy', value: 'mm.dd.yyyy' },
-            { key: 'mm/dd/yyyy', value: 'mm/dd/yyyy' },
-          ],
+          optionalValues: Object.keys(DateFormat).map((key) => ({
+            key,
+            value: this.translateService.instant(
+              DateFormat[key as keyof typeof DateFormat]
+            ),
+          })),
           label: {
             key: 'dateFormat',
             value: this.translateService.instant('dateFormat'),

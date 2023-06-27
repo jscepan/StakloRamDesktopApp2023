@@ -7,12 +7,10 @@ import { KeyboardNumericComponentService } from 'src/app/shared/components/keybo
 import { TableShow } from 'src/app/shared/components/table-show/table-show.component';
 import { NUMBER_OF_ITEMS_ON_PAGE, UOM } from 'src/app/shared/constants';
 import { InvoiceModel } from 'src/app/shared/models/invoice-model';
+import { SettingsStoreService } from 'src/app/shared/services/settings-store.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { InvoiceWebService } from 'src/app/shared/services/web-services/invoice.web.service';
-import {
-  getDisplayNumberAsString,
-  getFormatedDateAndTime,
-} from 'src/app/shared/utils';
+import { getDisplayNumberAsString } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-search',
@@ -49,6 +47,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private webService: InvoiceWebService,
     private keyboardAlphabetComponentService: KeyboardAlphabetComponentService,
     private keyboardNumericComponentService: KeyboardNumericComponentService,
+    private settingsService: SettingsStoreService,
     private translateService: TranslateService
   ) {}
 
@@ -69,7 +68,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         table.rowData.push({
           data: [
             entity.oid,
-            getFormatedDateAndTime(entity.createDate),
+            this.settingsService.getFormatedDateAndTime(entity.createDate),
             getDisplayNumberAsString(entity.amount),
             getDisplayNumberAsString(entity.advancePayment),
             getDisplayNumberAsString(entity.amount - entity.advancePayment),

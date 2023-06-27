@@ -4,11 +4,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { TableShow } from 'src/app/shared/components/table-show/table-show.component';
 import { InvoiceModel } from 'src/app/shared/models/invoice-model';
 import { DraftInvoicesService } from 'src/app/shared/services/data-store-services/draft-invoice-items-store.service';
+import { SettingsStoreService } from 'src/app/shared/services/settings-store.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
-import {
-  getDisplayNumberAsString,
-  getFormatedDateAndTime,
-} from 'src/app/shared/utils';
+import { getDisplayNumberAsString } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-invoices',
@@ -24,6 +22,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   constructor(
     private route: Router,
     private draftInvoicesStoreService: DraftInvoicesService,
+    private settingsService: SettingsStoreService,
     private translateService: TranslateService
   ) {}
 
@@ -51,7 +50,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
       table.rowData.push({
         data: [
           entity.oid,
-          getFormatedDateAndTime(entity.createDate),
+          this.settingsService.getFormatedDateAndTime(entity.createDate),
           getDisplayNumberAsString(entity.advancePayment),
           entity.buyerName ?? '',
         ],

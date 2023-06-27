@@ -7,6 +7,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { KeyboardNumericComponentService } from '../keyboard/numeric/keyboard-numeric.component.service';
 import { UOM } from '../../constants';
+import { Location } from '@angular/common';
 
 export class NavItem {
   url: string = '';
@@ -39,6 +40,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private keyboardNumericComponentService: KeyboardNumericComponentService,
+    private location: Location,
     private translateService: TranslateService
   ) {}
 
@@ -73,7 +75,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
         .subscribe((obj: { value: string; nextOperation: boolean }) => {
           if (obj?.value) {
             this.router.navigate(['invoice-create-edit', 'edit', obj.value]);
-            // this.router.navigate(['invoice-charge', obj.value]);
           }
           if (this.invoiceNumberSubs) {
             this.invoiceNumberSubs.unsubscribe();

@@ -15,7 +15,7 @@
       </div>
       <div class="date">
         {{ "date" | translate }}:
-        {{ dataModel.createDate | date : "dd/MM/yyyy" }}
+        {{ dataModel.createDate | date : dateFormat }}
       </div>
     </div>
 
@@ -39,14 +39,14 @@
         <div class="description">{{ item.title }}</div>
       </div>
       <div class="amount">
-        {{ item.amount | number : "1.2-2" }} {{ currencyDisplay }}
+        {{ item.amount | customNumber : 2 }} {{ currencyDisplay }}
       </div>
     </div>
   </div>
   <div class="amounts">
     <div class="gross-amount">
       {{ "total" | translate }}:
-      {{ dataModel.amount | number : "1.2-2" }}
+      {{ dataModel.amount | customNumber : 2 }}
       {{ currencyDisplay }}
     </div>
     <div
@@ -54,7 +54,7 @@
       *ngIf="dataModel.amount - dataModel.advancePayment !== 0"
     >
       {{ "advancePayment" | translate }}:
-      {{ dataModel.advancePayment | number : "1.2-2" }}
+      {{ dataModel.advancePayment | customNumber : 2 }}
       {{ currencyDisplay }}
     </div>
     <div
@@ -62,7 +62,7 @@
       *ngIf="dataModel.amount - dataModel.advancePayment !== 0"
     >
       {{ "restPayment" | translate }}:
-      {{ dataModel.amount - dataModel.advancePayment | number : "1.2-2" }}
+      {{ dataModel.amount - dataModel.advancePayment | customNumber : 2 }}
       {{ currencyDisplay }}
     </div>
   </div>

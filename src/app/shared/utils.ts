@@ -33,14 +33,6 @@ export function constructUrl(
   return endpoint + queryParamsStr;
 }
 
-export function getFormatedDate(date: string): string {
-  return formatDate(date, 'dd/MM/yyyy', 'en-US');
-}
-
-export function getFormatedDateAndTime(date: Date): string {
-  return formatDate(date, 'dd/MM/yyyy HH:mm', 'en-US');
-}
-
 export function getOid(_index: number, card: { oid: string }): string {
   return card.oid;
 }

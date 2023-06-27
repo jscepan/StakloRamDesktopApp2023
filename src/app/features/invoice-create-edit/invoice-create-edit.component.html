@@ -59,7 +59,7 @@
         </div>
         <div class="grid-item price">
           <div class="price">
-            {{ invoiceItem.amount | number : "1.2-2" }}&nbsp;{{ currency }}
+            {{ invoiceItem.amount | customNumber : 2 }}&nbsp;{{ currency }}
           </div>
         </div>
         <div class="grid-item">
@@ -85,7 +85,7 @@
       </ng-container>
       <div class="grid-item sum">{{ "sum" | translate }}:</div>
       <div class="grid-item price">
-        {{ invoice.amount | number : "1.2-2" }}&nbsp;{{ currency }}
+        {{ invoice.amount | customNumber : 2 }}&nbsp;{{ currency }}
       </div>
       <div class="grid-item"></div>
       <div class="grid-item sum"></div>

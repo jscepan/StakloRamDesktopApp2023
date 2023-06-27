@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import { InvoiceItemModel } from 'src/app/shared/models/invoice-item.model';
@@ -58,14 +58,17 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
       );
     } else {
       if (oid) {
-        this.subs.sink = this.invoiceWebService
-          .getEntityByOid(oid)
-          .subscribe((invoice) => {
+        this.subs.sink = this.invoiceWebService.getEntityByOid(oid).subscribe(
+          (invoice) => {
             if (invoice && invoice.oid) {
               this.invoice = invoice;
               this.initializeForm();
             }
-          });
+          },
+          () => {
+            this.route.navigate(['/']);
+          }
+        );
       } else {
         this.route.navigate(['/']);
       }

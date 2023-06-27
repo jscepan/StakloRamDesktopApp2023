@@ -33,13 +33,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('@features/search/search.module').then((m) => m.SearchModule),
   },
-  {
-    path: 'invoice-charge',
-    loadChildren: () =>
-      import('@features/invoice-charge/invoice-charge.module').then(
-        (m) => m.InvoiceChargeModule
-      ),
-  },
+  // {
+  //   path: 'invoice-charge',
+  //   loadChildren: () =>
+  //     import('@features/invoice-charge/invoice-charge.module').then(
+  //       (m) => m.InvoiceChargeModule
+  //     ),
+  // },
   {
     path: 'settings',
     loadChildren: () =>
