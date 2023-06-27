@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LanguageService } from 'src/app/language.service';
-import { SidebarNavItemI } from './sidebar.interface';
 import { SubscriptionManager } from '../../services/subscription.manager';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -74,7 +72,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
         )
         .subscribe((obj: { value: string; nextOperation: boolean }) => {
           if (obj?.value) {
-            this.router.navigate(['invoice-create-edit', 'edit', obj.value]);
+            if (this.router.url.startsWith('/invoice-create-edit')) {
+              this.router.navigate(['invoice-create-edit', 'edit', obj.value]);
+              setTimeout(() => {
+                window.location.reload();
+              }, 0);
+            } else {
+              this.router.navigate(['invoice-create-edit', 'edit', obj.value]);
+            }
           }
           if (this.invoiceNumberSubs) {
             this.invoiceNumberSubs.unsubscribe();
