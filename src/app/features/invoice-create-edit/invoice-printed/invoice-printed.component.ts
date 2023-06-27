@@ -20,6 +20,7 @@ import { InvoiceItemCalculatorService } from 'src/app/shared/services/invoice-it
 import { SettingsStoreService } from 'src/app/shared/services/settings-store.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { TranslateService } from '@ngx-translate/core';
+import { getDisplayNumberAsString } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-invoice-printed',
@@ -99,7 +100,7 @@ export class InvoicePrintedComponent
           items.push(
             num +
               ') ' +
-              item.length +
+              getDisplayNumberAsString(item.length) +
               ' ' +
               item.uom +
               ' X ' +
@@ -120,7 +121,7 @@ export class InvoicePrintedComponent
           items.push(
             num +
               ') ' +
-              item.length +
+              getDisplayNumberAsString(item.length) +
               ' ' +
               item.uom +
               ' X ' +
@@ -139,7 +140,7 @@ export class InvoicePrintedComponent
           items.push(
             num +
               ') ' +
-              item.length +
+              getDisplayNumberAsString(item.length) +
               ' ' +
               item.uom +
               ' X ' +
@@ -158,7 +159,7 @@ export class InvoicePrintedComponent
           items.push(
             num +
               ') ' +
-              item.length +
+              getDisplayNumberAsString(item.length) +
               ' ' +
               item.uom +
               ' X ' +
@@ -177,7 +178,7 @@ export class InvoicePrintedComponent
           items.push(
             num +
               ') ' +
-              item.length +
+              getDisplayNumberAsString(item.length) +
               ' ' +
               item.uom +
               ' X ' +
@@ -196,7 +197,7 @@ export class InvoicePrintedComponent
           items.push(
             num +
               ') ' +
-              item.length +
+              getDisplayNumberAsString(item.length) +
               ' ' +
               item.uom +
               ' X ' +

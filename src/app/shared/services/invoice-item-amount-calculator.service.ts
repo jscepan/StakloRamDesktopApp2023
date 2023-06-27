@@ -501,10 +501,10 @@ export class InvoiceItemCalculatorService {
         this.translateService.instant('passpartu') +
         ': ' +
         invoiceItem.passpartuColor.name +
-        '/' +
-        invoiceItem.passpartuWidth +
-        invoiceItem.passpartuWidthUom +
-        ', ';
+        (invoiceItem.passpartuWidth && invoiceItem.passpartuWidthUom
+          ? '/' + invoiceItem.passpartuWidth + invoiceItem.passpartuWidthUom
+          : '');
+      (', ');
     }
     if (invoiceItem.glass?.oid) {
       title +=

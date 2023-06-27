@@ -17,8 +17,10 @@
 <div class="item-container" [class.inOneRow]="inOneRow">
   <ng-container *ngIf="dataModel.passpartuColor?.oid">
     <span [class.description]="!inOneRow">{{ "passpartu" | translate }}</span>
-    :&nbsp;{{ dataModel.passpartuColor?.name }}/{{
-      dataModel.passpartuWidth | customNumber
+    :&nbsp;{{ dataModel.passpartuColor?.name
+    }}<span *ngIf="dataModel.passpartuWidth && dataModel.passpartuWidthUom"
+      >/</span
+    >{{ dataModel.passpartuWidth | customNumber
     }}{{ dataModel.passpartuWidthUom }},&nbsp;
   </ng-container>
   <ng-container *ngIf="dataModel.glass?.oid">

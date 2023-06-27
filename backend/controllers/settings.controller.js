@@ -1,4 +1,6 @@
 const fs = require("fs");
+// const printer = require("printer");
+
 // const { app } = require("electron");
 
 // Find a single Settings with a id
@@ -6,6 +8,10 @@ exports.find = (req, res) => {};
 
 // Update a Settings identified by the id in the request
 exports.update = (req, res) => {};
+
+exports.findPrinters = (req, res) => {};
+
+exports.updatePrinters = (req, res) => {};
 
 const path = require("path");
 
@@ -35,4 +41,15 @@ exports.update = (req, res) => {
   const filePath = path.join(__dirname, "../config/settings.json");
   fs.writeFileSync(filePath, JSON.stringify(req.body));
   res.send(req.body);
+};
+
+exports.findPrinters = (req, res) => {
+  // const availablePrinters = printer.getPrinters();
+  // console.log("availablePrintersavailablePrintersavailablePrinters");
+  // console.log(availablePrinters);
+  res.send(["xxx", "yyyy"]);
+};
+
+exports.updatePrinters = (req, res) => {
+  res.send({ message: "Zadani štampač je postavljen." });
 };

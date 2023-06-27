@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { BaseWebService } from 'src/app/core/services/base.web-service';
 import {
-  BASE_API_URL,
   DateFormat,
   QRCodeErrorCorrectionLevel,
   getDateFormatEnumByKey,
 } from '../constants';
 import { formatDate } from '@angular/common';
+import { AppSettingsWebService } from './web-services/app-settings.service';
 
 export class AppSettings {
   decimalNumberSign: '.' | ',' = ',';
@@ -43,15 +42,17 @@ export class SettingsStoreService {
   private readonly _dataLoaded = new BehaviorSubject<boolean>(false);
   readonly dataLoaded$ = this._dataLoaded.asObservable();
 
-  constructor(public baseWebService: BaseWebService) {
-    this.baseWebService
-      .getRequest<AppSettings>(`${BASE_API_URL + '/settings'}`, AppSettings)
-      .subscribe((settings) => {
-        if (settings) {
-          this.settings$.next(settings);
-          this._dataLoaded.next(true);
-        }
-      });
+  constructor(public baseWebService: AppSettingsWebService<AppSettings>) {
+    this.baseWebService.getSettings().subscribe((settings) => {
+      if (settings) {
+        this.settings$.next(settings);
+        this._dataLoaded.next(true);
+      }
+    });
+    this.baseWebService.getPrinters().subscribe((printers) => {
+      console.log('printersprintersprintersprintersprinters');
+      console.log(printers);
+    });
   }
 
   getSettings(): AppSettings | undefined {
@@ -61,20 +62,14 @@ export class SettingsStoreService {
   updateSettings(settings: AppSettings): Observable<boolean> {
     this._dataLoaded.next(false);
     return new Observable((subscriber) => {
-      this.baseWebService
-        .putRequest<AppSettings, AppSettings>(
-          `${BASE_API_URL + '/settings'}`,
-          settings,
-          AppSettings
-        )
-        .subscribe((settings) => {
-          if (settings) {
-            this.settings$.next(settings);
-            this._dataLoaded.next(true);
-            subscriber.next(true);
-            subscriber.complete();
-          }
-        });
+      this.baseWebService.updateSettings(settings).subscribe((settings) => {
+        if (settings) {
+          this.settings$.next(settings);
+          this._dataLoaded.next(true);
+          subscriber.next(true);
+          subscriber.complete();
+        }
+      });
     });
   }
 

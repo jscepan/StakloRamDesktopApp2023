@@ -15,4 +15,8 @@ export class AppSettingsWebService<AppSettings> {
   updateSettings(data: AppSettings): Observable<AppSettings> {
     return this.baseWebService.putRequest<AppSettings>('settings', data);
   }
+
+  getPrinters(): Observable<string[]> {
+    return this.baseWebService.getRequest<string[]>('settings/printers');
+  }
 }

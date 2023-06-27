@@ -9,5 +9,9 @@ module.exports = (app) => {
   // Update a Settings with id
   router.put("/", settings.update);
 
+  router.get("/printers", settings.findPrinters);
+
+  router.put("/printers/default", settings.updatePrinters);
+
   app.use("/settings", router);
 };

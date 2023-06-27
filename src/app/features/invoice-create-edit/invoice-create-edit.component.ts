@@ -12,6 +12,7 @@ import { SubscriptionManager } from 'src/app/shared/services/subscription.manage
 import { InvoiceWebService } from 'src/app/shared/services/web-services/invoice.web.service';
 import { PrintInvoicePopupService } from './print-invoice-popup/print-invoice-popup-component.service';
 import { Location } from '@angular/common';
+import { SERVICE_TYPE } from 'src/app/shared/constants';
 
 @Component({
   selector: 'app-invoice-create-edit',
@@ -167,6 +168,20 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
           }
         }
       });
+  }
+
+  getInvoiceItemHeader(item: InvoiceItemModel): string {
+    let header = '';
+    if (item.serviceType === SERVICE_TYPE.FRAMING) {
+      if (item.mirror?.oid) {
+        header += this.translateService.instant('mirror');
+      } else {
+        header += this.translateService.instant('picture');
+      }
+      header += `: ${item.dimensionsWidth} X ${item.dimensionsHeight} ${item.dimensionsUom}`;
+    }
+
+    return header;
   }
 
   ngOnDestroy(): void {
