@@ -1,5 +1,5 @@
 const fs = require("fs");
-// const printer = require("printer");
+const { exec } = require("child_process");
 
 // const { app } = require("electron");
 
@@ -11,13 +11,11 @@ exports.update = (req, res) => {};
 
 exports.findPrinters = (req, res) => {};
 
-exports.updatePrinters = (req, res) => {};
-
 const path = require("path");
 
 const Setting = function (settings) {
-  this.thousandsNumberSign = settings.thousandsNumberSign;
   this.decimalNumberSign = settings.decimalNumberSign;
+  this.thousandsNumberSign = settings.thousandsNumberSign;
   this.dateFormat = settings.dateFormat;
   this.currencyFormat = settings.currencyFormat;
   this.currencyDisplayValue = settings.currencyDisplayValue;
@@ -26,6 +24,11 @@ const Setting = function (settings) {
   this.language = settings.language;
   this.minGlassSurface = settings.minGlassSurface;
   this.copies = settings.copies;
+  this.defaultDimensionsWidth = settings.defaultDimensionsWidth;
+  this.defaultDimensionsHeight = settings.defaultDimensionsHeight;
+  this.increaseButtonOneValue = settings.increaseButtonOneValue;
+  this.increaseButtonTwoValue = settings.increaseButtonTwoValue;
+  this.increaseButtonThreeValue = settings.increaseButtonThreeValue;
   this.footer = settings.footer;
   this.header = settings.header;
   this.printer = settings.printer;
@@ -44,12 +47,25 @@ exports.update = (req, res) => {
 };
 
 exports.findPrinters = (req, res) => {
-  // const availablePrinters = printer.getPrinters();
-  // console.log("availablePrintersavailablePrintersavailablePrinters");
-  // console.log(availablePrinters);
-  res.send(["xxx", "yyyy"]);
-};
-
-exports.updatePrinters = (req, res) => {
-  res.send({ message: "Zadani štampač je postavljen." });
+  exec("wmic printer list brief", (err, stdout, stderr) => {
+    if (err) {
+      // node couldn't execute the command
+      return;
+    }
+    // list of printers with brief details
+    // console.log(stdout);
+    // the *entire* stdout and stderr (buffered)
+    stdout = stdout.split("  ");
+    var printers = [];
+    j = 0;
+    stdout = stdout.filter((item) => item);
+    for (i = 0; i < stdout.length; i++) {
+      if (stdout[i] == " \r\r\n" || stdout[i] == "\r\r\n") {
+        printers[j] = stdout[i + 1];
+        j++;
+      }
+    }
+    // list of only printers name
+    res.send(printers);
+  });
 };

@@ -7,6 +7,7 @@ import {
 } from '../constants';
 import { formatDate } from '@angular/common';
 import { AppSettingsWebService } from './web-services/app-settings.service';
+import { finalize } from 'rxjs/operators';
 
 export class AppSettings {
   decimalNumberSign: '.' | ',' = ',';
@@ -39,24 +40,32 @@ export class SettingsStoreService {
   public settings: Observable<AppSettings | undefined> =
     this.settings$.asObservable();
 
+  private printers$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
+    []
+  );
+  public printers: Observable<string[]> = this.printers$.asObservable();
+
   private readonly _dataLoaded = new BehaviorSubject<boolean>(false);
   readonly dataLoaded$ = this._dataLoaded.asObservable();
 
   constructor(public baseWebService: AppSettingsWebService<AppSettings>) {
-    this.baseWebService.getSettings().subscribe((settings) => {
-      if (settings) {
-        this.settings$.next(settings);
-        this._dataLoaded.next(true);
-      }
-    });
-    this.baseWebService.getPrinters().subscribe((printers) => {
-      console.log('printersprintersprintersprintersprinters');
-      console.log(printers);
-    });
-  }
-
-  getSettings(): AppSettings | undefined {
-    return this.settings$.getValue();
+    this.baseWebService
+      .getPrinters()
+      .pipe(
+        finalize(() => {
+          this.baseWebService.getSettings().subscribe((settings) => {
+            if (settings) {
+              this.settings$.next(settings);
+              this._dataLoaded.next(true);
+            }
+          });
+        })
+      )
+      .subscribe((printers) => {
+        if (printers) {
+          this.printers$.next(printers);
+        }
+      });
   }
 
   updateSettings(settings: AppSettings): Observable<boolean> {

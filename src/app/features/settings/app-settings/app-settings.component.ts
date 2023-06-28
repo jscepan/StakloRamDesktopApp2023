@@ -24,6 +24,7 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
 
   items: Entity[] = [];
   settings?: AppSettings;
+  printers: string[] = [];
 
   constructor(
     private appSettingsService: SettingsStoreService,
@@ -33,6 +34,11 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.subs.sink.printSettings = this.appSettingsService.printers.subscribe(
+      (printers) => {
+        this.printers = printers;
+      }
+    );
     this.subs.sink.settings = this.appSettingsService.settings.subscribe(
       (settings) => {
         this.settings = settings;
@@ -59,7 +65,8 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
   }
 
   mapFormData(settings?: AppSettings): void {
-    if (settings)
+    if (settings) {
+      this.items = [];
       this.items.push(
         {
           type: 'select',
@@ -89,17 +96,6 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             value: this.translateService.instant('thousandsNumberSign'),
           },
         },
-        // {
-        //   type: 'select',
-        //   required: true,
-        //   errorMessage: 'string',
-        //   value: settings.formatSettings.numberFormat,
-        //   optionalValues: [
-        //     { key: '.000', value: '.000' },
-        //     { key: '.00', value: '.00' },
-        //   ],
-        //   label: { key: 'numberFormat', value: 'numberFormat' },
-        // },
         {
           type: 'select',
           required: true,
@@ -162,32 +158,6 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             value: this.translateService.instant('qrCodeErrorCorrectionLevel'),
           },
         },
-        // {
-        //   type: 'select',
-        //   required: true,
-        //   errorMessage: 'string',
-        //   value: settings.applicationDesign.buttonSize,
-        //   optionalValues: [
-        //     { key: 'big', value: 'big' },
-        //     { key: 'middle', value: 'middle' },
-        //     { key: 'small', value: 'small' },
-        //   ],
-        //   label: { key: 'buttonSize', value: 'buttonSize' },
-        // },
-        // {
-        //   type: 'number',
-        //   required: true,
-        //   errorMessage: 'string',
-        //   value: settings.applicationDesign.fontSize,
-        //   label: { key: 'fontSize', value: 'fontSize' },
-        // },
-        // {
-        //   type: 'number',
-        //   required: true,
-        //   errorMessage: 'string',
-        //   value: settings.applicationDesign.fontSizeList,
-        //   label: { key: 'fontSizeList', value: 'fontSizeList' },
-        // },
         {
           type: 'select',
           required: true,
@@ -293,16 +263,31 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
           },
         },
         {
-          type: 'string',
+          type: 'select',
           required: true,
           errorMessage: 'string',
           value: settings.printer,
+          optionalValues: this.printers.map((value) => {
+            return { key: value, value: value };
+          }),
           label: {
             key: 'printer',
             value: this.translateService.instant('printer'),
           },
         }
+
+        // {
+        //   type: 'string',
+        //   required: true,
+        //   errorMessage: 'string',
+        //   value: settings.printer,
+        //   label: {
+        //     key: 'printer',
+        //     value: this.translateService.instant('printer'),
+        //   },
+        // }
       );
+    }
   }
 
   ngOnDestroy(): void {

@@ -11,7 +11,5 @@ module.exports = (app) => {
 
   router.get("/printers", settings.findPrinters);
 
-  router.put("/printers/default", settings.updatePrinters);
-
   app.use("/settings", router);
 };
