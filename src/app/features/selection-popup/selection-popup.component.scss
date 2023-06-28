@@ -1,16 +1,18 @@
-mat-dialog-content {
+.header {
   padding: 10px;
+}
+
+.content {
   border-bottom: 1px solid var(--attributes-border-color, #efeff3);
   display: flex;
   flex-wrap: wrap;
-  height: calc(100% - 215px);
+  height: calc(100% - 230px);
   max-height: 100%;
+  overflow-y: auto;
 }
 
-mat-dialog-actions {
+.actions {
   min-height: 38px;
-  padding-top: 20px;
-  padding-bottom: 0px;
   flex-shrink: 0;
   display: flex;
   padding: 30px;

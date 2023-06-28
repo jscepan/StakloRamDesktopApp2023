@@ -18,9 +18,9 @@ export class KeyboardNumericComponentService {
     inputFieldTitle: string,
     value: number = 0,
     codeInput: boolean = false
-  ): Observable<{ value: string; nextOperation: boolean }> {
+  ): Observable<{ value: number; nextOperation: boolean }> {
     return new Observable(
-      (observer: Subscriber<{ value: string; nextOperation: boolean }>) => {
+      (observer: Subscriber<{ value: number; nextOperation: boolean }>) => {
         const config: MatDialogConfig = new MatDialogConfig();
 
         config.data = {
@@ -36,7 +36,7 @@ export class KeyboardNumericComponentService {
           .open(KeyboardNumericComponent, config)
           .afterClosed()
           .subscribe(
-            (data: { value: string; nextOperation: boolean }) => {
+            (data: { value: number; nextOperation: boolean }) => {
               observer.next(data);
               observer.complete();
             },

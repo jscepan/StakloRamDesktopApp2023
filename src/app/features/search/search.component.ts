@@ -165,7 +165,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.translateService.instant('insertValue'),
         (type === 'from' ? this.advancePaymentFrom : this.advancePaymentTo) ?? 0
       )
-      .subscribe((data: { value: string; nextOperation: boolean }) => {
+      .subscribe((data: { value: number; nextOperation: boolean }) => {
         if (data.value) {
           type === 'from'
             ? (this.advancePaymentFrom = +data.value)

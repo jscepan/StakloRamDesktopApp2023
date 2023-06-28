@@ -1,6 +1,8 @@
-<app-search-input (changeEvent)="searchInputEvent($event)"></app-search-input>
+<div class="header">
+  <app-search-input (changeEvent)="searchInputEvent($event)"></app-search-input>
+</div>
 
-<mat-dialog-content>
+<div class="content">
   <ng-container *ngFor="let item of items">
     <app-selection-item
       class="item"
@@ -10,11 +12,12 @@
       [itemSize]="itemSize"
     ></app-selection-item>
   </ng-container>
-</mat-dialog-content>
-<mat-dialog-actions>
+</div>
+<div class="actions">
   <app-button
     [text]="'cancel' | translate"
     color="secondary"
     (clickEvent)="cancelSaveSelection()"
+    [buttonSize]="'middle'"
   ></app-button>
-</mat-dialog-actions>
+</div>

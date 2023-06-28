@@ -7,13 +7,8 @@
   .header {
     display: flex;
     width: 100%;
-    justify-content: space-evenly;
-  }
-
-  .footer {
-    display: flex;
-    width: 100%;
     justify-content: space-between;
+    padding-top: 5px;
 
     .buttons {
       display: flex;
@@ -27,6 +22,10 @@
 
     .min-with {
       width: 120px;
+    }
+
+    .middle-with {
+      width: 180px;
     }
   }
 

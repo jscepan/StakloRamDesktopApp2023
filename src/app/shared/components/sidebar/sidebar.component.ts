@@ -70,7 +70,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           false,
           this.translateService.instant('sevenDigitsNumber')
         )
-        .subscribe((obj: { value: string; nextOperation: boolean }) => {
+        .subscribe((obj: { value: number; nextOperation: boolean }) => {
           if (obj?.value) {
             if (this.router.url.startsWith('/invoice-create-edit')) {
               this.router.navigate(['invoice-create-edit', 'edit', obj.value]);

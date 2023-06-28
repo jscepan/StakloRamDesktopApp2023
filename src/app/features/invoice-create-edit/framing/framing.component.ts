@@ -1,5 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SelectionComponentService } from '@features/selection-popup/selection-component.service';
@@ -100,7 +104,9 @@ export class FramingComponent implements OnInit, OnDestroy {
       (invoiceItem: InvoiceItemModel) => {
         this.invoiceItemForm = new UntypedFormGroup({
           oid: new UntypedFormControl(invoiceItem.oid, [Validators.required]),
-          title: new UntypedFormControl(invoiceItem.title, [Validators.required]),
+          title: new UntypedFormControl(invoiceItem.title, [
+            Validators.required,
+          ]),
           serviceType: new UntypedFormControl(SERVICE_TYPE.FRAMING, [
             Validators.required,
           ]),
@@ -108,10 +114,10 @@ export class FramingComponent implements OnInit, OnDestroy {
             Validators.required,
             Validators.min(1),
           ]),
-          dimensionsHeight: new UntypedFormControl(invoiceItem.dimensionsHeight, [
-            Validators.required,
-            Validators.min(1),
-          ]),
+          dimensionsHeight: new UntypedFormControl(
+            invoiceItem.dimensionsHeight,
+            [Validators.required, Validators.min(1)]
+          ),
           dimensionsUom: new UntypedFormControl(invoiceItem.dimensionsUom, [
             Validators.required,
           ]),
@@ -122,14 +128,28 @@ export class FramingComponent implements OnInit, OnDestroy {
             invoiceItem.dimensionsOutterHeight
           ),
           glass: new UntypedFormControl(invoiceItem.glass, []),
-          passpartuWidth: new UntypedFormControl(invoiceItem.passpartuWidth, []),
-          passpartuWidthUom: new UntypedFormControl(invoiceItem.passpartuWidthUom, []),
-          passpartuColor: new UntypedFormControl(invoiceItem.passpartuColor, []),
+          passpartuWidth: new UntypedFormControl(
+            invoiceItem.passpartuWidth,
+            []
+          ),
+          passpartuWidthUom: new UntypedFormControl(
+            invoiceItem.passpartuWidthUom,
+            []
+          ),
+          passpartuColor: new UntypedFormControl(
+            invoiceItem.passpartuColor,
+            []
+          ),
           mirror: new UntypedFormControl(invoiceItem.mirror, []),
           faceting: new UntypedFormControl(invoiceItem.faceting, []),
           sanding: new UntypedFormControl(invoiceItem.sanding, []),
-          selectedFrames: new UntypedFormControl(invoiceItem.selectedFrames, []),
-          amount: new UntypedFormControl(invoiceItem.amount, [Validators.required]),
+          selectedFrames: new UntypedFormControl(
+            invoiceItem.selectedFrames,
+            []
+          ),
+          amount: new UntypedFormControl(invoiceItem.amount, [
+            Validators.required,
+          ]),
         });
       }
     );
@@ -239,9 +259,7 @@ export class FramingComponent implements OnInit, OnDestroy {
       )
       .subscribe((data) => {
         if (data?.value) {
-          this.invoiceItemForm
-            .get('dimensionsWidth')
-            ?.setValue(parseFloat(data.value));
+          this.invoiceItemForm.get('dimensionsWidth')?.setValue(data.value);
         }
         if (data?.nextOperation) {
           this.insertHeight();
@@ -260,9 +278,7 @@ export class FramingComponent implements OnInit, OnDestroy {
       )
       .subscribe((data) => {
         if (data?.value) {
-          this.invoiceItemForm
-            .get('dimensionsHeight')
-            ?.setValue(parseFloat(data.value));
+          this.invoiceItemForm.get('dimensionsHeight')?.setValue(data.value);
         }
       });
   }
@@ -280,7 +296,7 @@ export class FramingComponent implements OnInit, OnDestroy {
         if (data?.value) {
           this.invoiceItemForm
             .get('dimensionsOutterWidth')
-            ?.setValue(parseFloat(data.value));
+            ?.setValue(data.value);
         }
         if (data?.nextOperation) {
           this.insertOutterHeight();
@@ -301,7 +317,7 @@ export class FramingComponent implements OnInit, OnDestroy {
         if (data?.value) {
           this.invoiceItemForm
             .get('dimensionsOutterHeight')
-            ?.setValue(parseFloat(data.value));
+            ?.setValue(data.value);
         }
       });
   }
@@ -317,7 +333,7 @@ export class FramingComponent implements OnInit, OnDestroy {
       )
       .subscribe((data) => {
         if (data?.value) {
-          this.countOfItems = parseFloat(data.value);
+          this.countOfItems = data.value;
         }
       });
   }
@@ -401,7 +417,7 @@ export class FramingComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         if (data?.value) {
           this.invoiceItemForm.patchValue({
-            passpartuWidth: parseFloat(data.value),
+            passpartuWidth: data.value,
             passpartuWidthUom: UOM.CENTIMETER,
           });
         }
@@ -498,11 +514,11 @@ export class FramingComponent implements OnInit, OnDestroy {
             0,
             true
           )
-          .subscribe((code: { value: string; nextOperation: boolean }) => {
+          .subscribe((code: { value: number; nextOperation: boolean }) => {
             if (code && code.value) {
-              if (code.value.length === 4) {
-                const c = code.value.substring(0, 2);
-                const colorCode = code.value.substring(2, 4);
+              if (code.value >= 1000 && code.value <= 9999) {
+                const c = code.value.toString().substring(0, 2);
+                const colorCode = code.value.toString().substring(2, 4);
                 const frame = frames.find((f) => f.code === c);
                 if (frame) {
                   const selectedFrames =

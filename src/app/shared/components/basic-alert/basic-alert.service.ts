@@ -21,6 +21,7 @@ export class BasicAlertService {
       this.snackBar.openFromComponent(BasicAlertComponent, {
         ...this.basicAlertConfiguration,
         data,
+        duration: closeAfter,
       });
 
     barRef.instance.eventOccurs
@@ -30,8 +31,5 @@ export class BasicAlertService {
           this.snackBar.dismiss();
         }
       });
-    setTimeout(() => {
-      this.snackBar.dismiss();
-    }, closeAfter);
   }
 }

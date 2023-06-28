@@ -11,6 +11,7 @@ import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatDatepickerModule,
     MatSelectModule,
     ScrollToBottomModule,
+    MatNativeDateModule,
   ],
   exports: [SearchComponent],
   declarations: [SearchComponent],
