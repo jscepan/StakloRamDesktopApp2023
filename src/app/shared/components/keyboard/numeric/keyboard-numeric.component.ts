@@ -79,7 +79,7 @@ export class KeyboardNumericComponent implements OnInit, AfterViewInit {
 
   public saveSelection(nextOperation: boolean = false): void {
     this.dialogRef.close({
-      value: this.valueForm.value.value,
+      value: +this.valueForm.value.value,
       nextOperation,
     });
   }
