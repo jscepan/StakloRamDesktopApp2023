@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
-import { Entity } from 'src/app/shared/components/form/form.component';
 import {
   DateFormat,
   QRCodeErrorCorrectionLevel,
@@ -22,9 +22,19 @@ import { SubscriptionManager } from 'src/app/shared/services/subscription.manage
 export class AppSettingsComponent implements OnInit, OnDestroy {
   private subs = new SubscriptionManager();
 
-  items: Entity[] = [];
   settings?: AppSettings;
   printers: string[] = [];
+
+  appSettingsForm?: FormGroup;
+
+  decimalNumberSignOptions: { key: string; value: string }[] = [
+    { key: '.', value: '.' },
+    { key: ',', value: ',' },
+  ];
+  dateFormatOptions!: { key: string; value: string }[];
+  qrCodeErrorCorrectionLevelOptions!: { key: string; value: string }[];
+  languageOptions!: { key: string; value: string }[];
+  printerOptions!: { key: string; value: string }[];
 
   constructor(
     private appSettingsService: SettingsStoreService,
@@ -47,6 +57,10 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
     );
   }
 
+  insertText(controlName: string): void {}
+
+  insertNumber(controlName: string): void {}
+
   cancel(): void {
     this.route.navigate(['settings']);
   }
@@ -66,227 +80,87 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
 
   mapFormData(settings?: AppSettings): void {
     if (settings) {
-      this.items = [];
-      this.items.push(
-        {
-          type: 'select',
-          required: true,
-          errorMessage: 'string',
-          value: settings.decimalNumberSign,
-          optionalValues: [
-            { key: '.', value: '.' },
-            { key: ',', value: ',' },
-          ],
-          label: {
-            key: 'decimalNumberSign',
-            value: this.translateService.instant('decimalNumberSign'),
-          },
-        },
-        {
-          type: 'select',
-          required: true,
-          errorMessage: 'string',
-          value: settings.thousandsNumberSign,
-          optionalValues: [
-            { key: '.', value: '.' },
-            { key: ',', value: ',' },
-          ],
-          label: {
-            key: 'thousandsNumberSign',
-            value: this.translateService.instant('thousandsNumberSign'),
-          },
-        },
-        {
-          type: 'select',
-          required: true,
-          errorMessage: 'string',
-          value: settings.dateFormat,
-          optionalValues: Object.keys(DateFormat).map((key) => ({
-            key,
-            value: this.translateService.instant(
-              DateFormat[key as keyof typeof DateFormat]
-            ),
-          })),
-          label: {
-            key: 'dateFormat',
-            value: this.translateService.instant('dateFormat'),
-          },
-        },
-        {
-          type: 'string',
-          required: true,
-          errorMessage: 'string',
-          value: settings.currencyFormat,
-          label: {
-            key: 'currencyFormat',
-            value: this.translateService.instant('currencyFormat'),
-          },
-        },
-        {
-          type: 'string',
-          required: true,
-          errorMessage: 'string',
-          value: settings.currencyDisplayValue,
-          label: {
-            key: 'currencyDisplayValue',
-            value: this.translateService.instant('currencyDisplayValue'),
-          },
-        },
-        {
-          type: 'number',
-          required: true,
-          errorMessage: 'string',
-          value: settings.qrCodeSizeInPixel,
-          label: {
-            key: 'qrCodeSizeInPixel',
-            value: this.translateService.instant('qrCodeSizeInPixel'),
-          },
-        },
-        {
-          type: 'select',
-          required: true,
-          errorMessage: 'string',
-          value: settings.qrCodeErrorCorrectionLevel,
-          optionalValues: Object.keys(QRCodeErrorCorrectionLevel).map(
-            (value) => ({
-              key: value,
-              value: this.translateService.instant(value),
-            })
-          ),
-          label: {
-            key: 'qrCodeErrorCorrectionLevel',
-            value: this.translateService.instant('qrCodeErrorCorrectionLevel'),
-          },
-        },
-        {
-          type: 'select',
-          required: true,
-          errorMessage: 'string',
-          value: settings.language,
-          optionalValues: [
-            { key: 'rs', value: 'Srpski' },
-            { key: 'en', value: 'Engleski' },
-          ],
-          label: {
-            key: 'language',
-            value: this.translateService.instant('language'),
-          },
-        },
-        {
-          type: 'number',
-          required: true,
-          errorMessage: 'string',
-          value: settings.minGlassSurface,
-          label: {
-            key: 'minGlassSurface',
-            value: this.translateService.instant('minGlassSurface'),
-          },
-        },
-        {
-          type: 'number',
-          required: true,
-          errorMessage: 'string',
-          value: settings.copies,
-          label: {
-            key: 'copies',
-            value: this.translateService.instant('copies'),
-          },
-        },
-        {
-          type: 'number',
-          required: true,
-          errorMessage: 'string',
-          value: settings.defaultDimensionsWidth,
-          label: {
-            key: 'defaultDimensionsWidth',
-            value: this.translateService.instant('defaultDimensionsWidth'),
-          },
-        },
-        {
-          type: 'number',
-          required: true,
-          errorMessage: 'string',
-          value: settings.defaultDimensionsHeight,
-          label: {
-            key: 'defaultDimensionsHeight',
-            value: this.translateService.instant('defaultDimensionsHeight'),
-          },
-        },
-        {
-          type: 'number',
-          required: true,
-          errorMessage: 'string',
-          value: settings.increaseButtonOneValue,
-          label: {
-            key: 'increaseButtonOneValue',
-            value: this.translateService.instant('increaseButtonOneValue'),
-          },
-        },
-        {
-          type: 'number',
-          required: true,
-          errorMessage: 'string',
-          value: settings.increaseButtonTwoValue,
-          label: {
-            key: 'increaseButtonTwoValue',
-            value: this.translateService.instant('increaseButtonTwoValue'),
-          },
-        },
-        {
-          type: 'number',
-          required: true,
-          errorMessage: 'string',
-          value: settings.increaseButtonThreeValue,
-          label: {
-            key: 'increaseButtonThreeValue',
-            value: this.translateService.instant('increaseButtonThreeValue'),
-          },
-        },
-        {
-          type: 'string',
-          required: true,
-          errorMessage: 'string',
-          value: settings.footer,
-          label: {
-            key: 'footer',
-            value: this.translateService.instant('footer'),
-          },
-        },
-        {
-          type: 'string',
-          required: true,
-          errorMessage: 'string',
-          value: settings.header,
-          label: {
-            key: 'header',
-            value: this.translateService.instant('header'),
-          },
-        },
-        {
-          type: 'select',
-          required: true,
-          errorMessage: 'string',
-          value: settings.printer,
-          optionalValues: this.printers.map((value) => {
-            return { key: value, value: value };
-          }),
-          label: {
-            key: 'printer',
-            value: this.translateService.instant('printer'),
-          },
-        }
+      this.dateFormatOptions = Object.keys(DateFormat).map((key) => ({
+        key,
+        value: this.translateService.instant(
+          DateFormat[key as keyof typeof DateFormat]
+        ),
+      }));
+      this.qrCodeErrorCorrectionLevelOptions = Object.keys(
+        QRCodeErrorCorrectionLevel
+      ).map((value) => ({
+        key: value,
+        value: this.translateService.instant(value),
+      }));
+      this.languageOptions = [
+        { key: 'rs', value: this.translateService.instant('rs') },
+        { key: 'en', value: this.translateService.instant('en') },
+      ];
+      this.printerOptions = this.printers.map((value) => {
+        return { key: value, value: value };
+      });
 
-        // {
-        //   type: 'string',
-        //   required: true,
-        //   errorMessage: 'string',
-        //   value: settings.printer,
-        //   label: {
-        //     key: 'printer',
-        //     value: this.translateService.instant('printer'),
-        //   },
-        // }
-      );
+      this.appSettingsForm = new FormGroup({
+        decimalNumberSign: new FormControl(this.settings?.decimalNumberSign, [
+          Validators.required,
+        ]),
+        dateFormat: new FormControl(this.settings?.dateFormat, [
+          Validators.required,
+        ]),
+        currencyFormat: new FormControl(this.settings?.currencyFormat, [
+          Validators.required,
+        ]),
+        currencyDisplayValue: new FormControl(
+          this.settings?.currencyDisplayValue || '',
+          [Validators.required]
+        ),
+        qrCodeSizeInPixel: new FormControl(
+          this.settings?.qrCodeSizeInPixel || '',
+          [Validators.required]
+        ),
+        qrCodeErrorCorrectionLevel: new FormControl(
+          this.settings?.qrCodeErrorCorrectionLevel || '',
+          [Validators.required]
+        ),
+        language: new FormControl(this.settings?.language || '', [
+          Validators.required,
+        ]),
+        minGlassSurface: new FormControl(this.settings?.minGlassSurface || '', [
+          Validators.required,
+        ]),
+        copies: new FormControl(this.settings?.copies || '', [
+          Validators.required,
+        ]),
+        defaultDimensionsWidth: new FormControl(
+          this.settings?.defaultDimensionsWidth || '',
+          [Validators.required]
+        ),
+        defaultDimensionsHeight: new FormControl(
+          this.settings?.defaultDimensionsHeight || '',
+          [Validators.required]
+        ),
+        increaseButtonOneValue: new FormControl(
+          this.settings?.increaseButtonOneValue || '',
+          [Validators.required]
+        ),
+        increaseButtonTwoValue: new FormControl(
+          this.settings?.increaseButtonTwoValue || '',
+          [Validators.required]
+        ),
+        increaseButtonThreeValue: new FormControl(
+          this.settings?.increaseButtonThreeValue || '',
+          [Validators.required]
+        ),
+        header: new FormControl(this.settings?.header || '', [
+          Validators.required,
+        ]),
+        footer: new FormControl(this.settings?.footer || '', [
+          Validators.required,
+        ]),
+        printer: new FormControl(this.settings?.printer || '', [
+          Validators.required,
+        ]),
+      });
     }
   }
 
