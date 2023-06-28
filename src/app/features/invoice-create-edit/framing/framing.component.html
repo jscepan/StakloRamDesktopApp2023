@@ -138,19 +138,19 @@
                   <div class="grid-item">
                     <div
                       class="object-name"
-                      [ngClass]="invoiceItemForm?.value.glass?.name"
+                      [ngClass]="invoiceItemForm.value.glass?.name"
                     >
                       <i-feather
                         [name]="
-                          invoiceItemForm?.value.glass?.name
+                          invoiceItemForm.value.glass?.name
                             ? 'check'
                             : 'alert-triangle'
                         "
-                        [class.success]="invoiceItemForm?.value.glass?.name"
-                        [class.danger]="!invoiceItemForm?.value.glass?.name"
+                        [class.success]="invoiceItemForm.value.glass?.name"
+                        [class.danger]="!invoiceItemForm.value.glass?.name"
                       ></i-feather>
                       {{
-                        invoiceItemForm?.value.glass?.name || "glassNotSelected"
+                        invoiceItemForm.value.glass?.name || "glassNotSelected"
                           | translate
                       }}
                     </div>
@@ -179,28 +179,28 @@
                   <div
                     class="grid-item"
                     [class.red]="
-                      this.invoiceItemForm?.value?.dimensionsOutterWidth &&
-                      !invoiceItemForm?.value?.passpartuColor?.name
+                      this.invoiceItemForm.value?.dimensionsOutterWidth &&
+                      !invoiceItemForm.value?.passpartuColor?.name
                     "
                   >
                     <div class="object-name">
                       <i-feather
                         [name]="
-                          invoiceItemForm?.value?.passpartuColor?.name
+                          invoiceItemForm.value?.passpartuColor?.name
                             ? 'check'
                             : 'alert-triangle'
                         "
                         [class.success]="
-                          invoiceItemForm?.value?.passpartuColor?.name
+                          invoiceItemForm.value?.passpartuColor?.name
                         "
                         [class.danger]="
-                          !invoiceItemForm?.value?.passpartuColor?.name
+                          !invoiceItemForm.value?.passpartuColor?.name
                         "
                       ></i-feather>
                       {{
-                        invoiceItemForm?.value?.passpartuColor?.name
-                          ? invoiceItemForm?.value?.passpartuColor?.name
-                          : this.invoiceItemForm?.value?.dimensionsOutterWidth
+                        invoiceItemForm.value?.passpartuColor?.name
+                          ? invoiceItemForm.value?.passpartuColor?.name
+                          : this.invoiceItemForm.value?.dimensionsOutterWidth
                           ? ("passpartuSelectionObligated" | translate)
                           : ("passpartuNotSelected" | translate)
                       }}
@@ -210,8 +210,8 @@
                           " " +
                             ("width" | translate) +
                             ": " +
-                            invoiceItemForm?.value?.passpartuWidth +
-                            invoiceItemForm?.value?.passpartuWidthUom
+                            invoiceItemForm.value?.passpartuWidth +
+                            invoiceItemForm.value?.passpartuWidthUom
                         }}
                       </span>
                     </div>
@@ -299,7 +299,7 @@
               (clickEvent)="stepper.next()"
               [disabled]="
                 ((isOutterDimension | async) &&
-                  !invoiceItemForm?.value?.passpartuColor?.name) ||
+                  !invoiceItemForm.value?.passpartuColor?.name) ||
                 false
               "
             ></app-button>
