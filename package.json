@@ -24,7 +24,7 @@
     "@ngx-translate/http-loader": "^7.0.0",
     "angular-feather": "6.0.10",
     "class-transformer": "^0.5.1",
-    "ng-mat-select-infinite-scroll": "^3.0.1",
+    "ng-mat-select-infinite-scroll": "^4.0.0",
     "ngx-mat-select-search": "^4.0.0",
     "rxjs": "~6.6.0",
     "safe-pipe": "^1.0.3",
