@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -42,7 +42,7 @@ export class PrintInvoicePopupComponent
 {
   private subs: SubscriptionManager = new SubscriptionManager();
 
-  invoiceForm!: FormGroup;
+  invoiceForm!: UntypedFormGroup;
   users!: Observable<UserModel[]>;
   currentUser!: UserModel | undefined;
   invoice: InvoiceModel;
@@ -79,13 +79,13 @@ export class PrintInvoicePopupComponent
   }
 
   ngOnInit(): void {
-    this.invoiceForm = new FormGroup({
-      buyerName: new FormControl(this.invoice.buyerName, []),
-      advancePayment: new FormControl(
+    this.invoiceForm = new UntypedFormGroup({
+      buyerName: new UntypedFormControl(this.invoice.buyerName, []),
+      advancePayment: new UntypedFormControl(
         isNaN(+this.invoice.advancePayment) ? 0 : +this.invoice.advancePayment,
         [Validators.max(this.invoice.amount)]
       ),
-      user: new FormControl(this.invoice.user, []),
+      user: new UntypedFormControl(this.invoice.user, []),
     });
     this.users = this.userDataStoreService.entities;
     this.subs.sink.getCurrentUser =

@@ -8,7 +8,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { Button, KeyboardButtons } from './all-buttons';
@@ -87,7 +87,7 @@ export class KeyboardAlphabetComponent
   title: string = '';
   inputFieldTitle: string = '';
   @ViewChild('inputValue') inputValue!: ElementRef;
-  valueForm: FormGroup;
+  valueForm: UntypedFormGroup;
   initialLoad: boolean = true;
 
   capsLockActive: boolean = false;
@@ -100,8 +100,8 @@ export class KeyboardAlphabetComponent
     private cdRef: ChangeDetectorRef
   ) {
     this.title = data?.title || '';
-    this.valueForm = new FormGroup({
-      value: new FormControl(data?.value ? data.value : '', []),
+    this.valueForm = new UntypedFormGroup({
+      value: new UntypedFormControl(data?.value ? data.value : '', []),
     });
   }
 

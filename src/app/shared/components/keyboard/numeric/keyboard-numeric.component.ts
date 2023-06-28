@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -38,7 +38,7 @@ export class KeyboardNumericComponent implements OnInit, AfterViewInit {
   showNextOperationButton: boolean = false;
   inputFieldTitle: string = '';
   @ViewChild('inputValue') inputValue!: ElementRef;
-  valueForm!: FormGroup;
+  valueForm!: UntypedFormGroup;
   initialLoad: boolean = false;
   codeInput: boolean = false;
 
@@ -53,8 +53,8 @@ export class KeyboardNumericComponent implements OnInit, AfterViewInit {
     this.uom = data.uom;
     this.showNextOperationButton = data.showNextOperationButton;
     this.inputFieldTitle = data.inputFieldTitle;
-    this.valueForm = new FormGroup({
-      value: new FormControl(data.value ? data.value + '' : '0', [
+    this.valueForm = new UntypedFormGroup({
+      value: new UntypedFormControl(data.value ? data.value + '' : '0', [
         Validators.min(0),
       ]),
     });

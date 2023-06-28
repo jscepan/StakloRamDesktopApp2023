@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SelectionComponentService } from '@features/selection-popup/selection-component.service';
@@ -44,7 +44,7 @@ export class FramingComponent implements OnInit, OnDestroy {
   componentMode: 'CREATE_NEW' | 'ADD_DRAFT' | 'EDIT_DRAFT' | 'EDIT' =
     'CREATE_NEW';
   @ViewChild('stepper') stepper!: MatStepper;
-  invoiceItemForm!: FormGroup;
+  invoiceItemForm!: UntypedFormGroup;
   countOfItems: number = 1;
 
   invoiceOid: string | undefined;
@@ -98,38 +98,38 @@ export class FramingComponent implements OnInit, OnDestroy {
 
     this.subs.sink = this.generateInvoiceItem().subscribe(
       (invoiceItem: InvoiceItemModel) => {
-        this.invoiceItemForm = new FormGroup({
-          oid: new FormControl(invoiceItem.oid, [Validators.required]),
-          title: new FormControl(invoiceItem.title, [Validators.required]),
-          serviceType: new FormControl(SERVICE_TYPE.FRAMING, [
+        this.invoiceItemForm = new UntypedFormGroup({
+          oid: new UntypedFormControl(invoiceItem.oid, [Validators.required]),
+          title: new UntypedFormControl(invoiceItem.title, [Validators.required]),
+          serviceType: new UntypedFormControl(SERVICE_TYPE.FRAMING, [
             Validators.required,
           ]),
-          dimensionsWidth: new FormControl(invoiceItem.dimensionsWidth, [
-            Validators.required,
-            Validators.min(1),
-          ]),
-          dimensionsHeight: new FormControl(invoiceItem.dimensionsHeight, [
+          dimensionsWidth: new UntypedFormControl(invoiceItem.dimensionsWidth, [
             Validators.required,
             Validators.min(1),
           ]),
-          dimensionsUom: new FormControl(invoiceItem.dimensionsUom, [
+          dimensionsHeight: new UntypedFormControl(invoiceItem.dimensionsHeight, [
+            Validators.required,
+            Validators.min(1),
+          ]),
+          dimensionsUom: new UntypedFormControl(invoiceItem.dimensionsUom, [
             Validators.required,
           ]),
-          dimensionsOutterWidth: new FormControl(
+          dimensionsOutterWidth: new UntypedFormControl(
             invoiceItem.dimensionsOutterWidth
           ),
-          dimensionsOutterHeight: new FormControl(
+          dimensionsOutterHeight: new UntypedFormControl(
             invoiceItem.dimensionsOutterHeight
           ),
-          glass: new FormControl(invoiceItem.glass, []),
-          passpartuWidth: new FormControl(invoiceItem.passpartuWidth, []),
-          passpartuWidthUom: new FormControl(invoiceItem.passpartuWidthUom, []),
-          passpartuColor: new FormControl(invoiceItem.passpartuColor, []),
-          mirror: new FormControl(invoiceItem.mirror, []),
-          faceting: new FormControl(invoiceItem.faceting, []),
-          sanding: new FormControl(invoiceItem.sanding, []),
-          selectedFrames: new FormControl(invoiceItem.selectedFrames, []),
-          amount: new FormControl(invoiceItem.amount, [Validators.required]),
+          glass: new UntypedFormControl(invoiceItem.glass, []),
+          passpartuWidth: new UntypedFormControl(invoiceItem.passpartuWidth, []),
+          passpartuWidthUom: new UntypedFormControl(invoiceItem.passpartuWidthUom, []),
+          passpartuColor: new UntypedFormControl(invoiceItem.passpartuColor, []),
+          mirror: new UntypedFormControl(invoiceItem.mirror, []),
+          faceting: new UntypedFormControl(invoiceItem.faceting, []),
+          sanding: new UntypedFormControl(invoiceItem.sanding, []),
+          selectedFrames: new UntypedFormControl(invoiceItem.selectedFrames, []),
+          amount: new UntypedFormControl(invoiceItem.amount, [Validators.required]),
         });
       }
     );

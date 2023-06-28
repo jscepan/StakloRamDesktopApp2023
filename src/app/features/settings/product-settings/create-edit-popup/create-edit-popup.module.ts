@@ -7,15 +7,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FormModule } from 'src/app/shared/components/form/form.module';
 
 @NgModule({
-  declarations: [CreateEditPopupComponent],
-  imports: [
-    CommonModule,
-    ButtonModule,
-    MatDialogModule,
-    TranslateModule,
-    FormModule,
-  ],
-  exports: [CreateEditPopupComponent],
-  entryComponents: [CreateEditPopupComponent],
+    declarations: [CreateEditPopupComponent],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        MatDialogModule,
+        TranslateModule,
+        FormModule,
+    ],
+    exports: [CreateEditPopupComponent]
 })
 export class CreateEditPopupModule {}

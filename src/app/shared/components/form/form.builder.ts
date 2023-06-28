@@ -1,23 +1,23 @@
 import { Inject } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Entity } from './form.component';
 
 export class FormBuilder {
-  public objectForm!: FormGroup;
-  public formControls: { entity: Entity; formControl: FormControl }[] = [];
+  public objectForm!: UntypedFormGroup;
+  public formControls: { entity: Entity; formControl: UntypedFormControl }[] = [];
 
   constructor(@Inject('') items: Entity[]) {
     this.init(items);
   }
 
   private init(items: Entity[]): void {
-    this.objectForm = new FormGroup({});
+    this.objectForm = new UntypedFormGroup({});
 
     this.formControls = [];
 
     items.forEach((item) => {
       // TODO set validators logic...
-      let formControl = new FormControl(item.value, []);
+      let formControl = new UntypedFormControl(item.value, []);
       if (item.disabled) {
         formControl.disable();
       }

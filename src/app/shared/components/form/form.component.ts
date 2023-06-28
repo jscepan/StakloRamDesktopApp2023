@@ -1,8 +1,8 @@
 import { KeyValue } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgForm,
 } from '@angular/forms';
@@ -26,13 +26,13 @@ export class Entity {
 
 export class EntityFormControl {
   entity!: Entity;
-  formControl!: FormControl;
+  formControl!: UntypedFormControl;
 }
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
-    control: FormControl | null,
+    control: UntypedFormControl | null,
     form: FormGroupDirective | NgForm | null
   ): boolean {
     const isSubmitted = form && form.submitted;
@@ -57,7 +57,7 @@ export class FormComponent implements OnInit, OnDestroy {
   private subs = new SubscriptionManager();
 
   @Input() items: Entity[] = [];
-  public objectForm!: FormGroup;
+  public objectForm!: UntypedFormGroup;
   formControls: EntityFormControl[] = [];
   matcher = new MyErrorStateMatcher();
   constructor(

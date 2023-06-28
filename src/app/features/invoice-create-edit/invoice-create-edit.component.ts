@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
@@ -26,7 +26,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   componentMode: 'DRAFT' | 'EDIT' = 'DRAFT';
   currency: string = '';
 
-  invoiceForm!: FormGroup;
+  invoiceForm!: UntypedFormGroup;
   invoice: InvoiceModel = new InvoiceModel();
 
   constructor(
