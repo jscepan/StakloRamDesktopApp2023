@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MatSnackBarConfig } from '@angular/material/snack-bar';
 import { BasicAlertModule } from '../shared/components/basic-alert/basic-alert.module';
 import { throwIfAlreadyLoaded } from './guards/module-import.guard';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { SweetAlertModule } from '../shared/components/sweet-alert/sweet-alert.module';
 import { ErrorHandlerInterceptor } from './interceptors/error-handler.interceptor';
+import { MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [],

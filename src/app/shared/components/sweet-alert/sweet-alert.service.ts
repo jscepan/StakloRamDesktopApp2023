@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { Observable, Subject } from 'rxjs';
 
 import { SweetAlertI } from './sweet-alert.interface';
 import { SweetAlertComponent } from './sweet-alert.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Injectable()
 export class SweetAlertService {

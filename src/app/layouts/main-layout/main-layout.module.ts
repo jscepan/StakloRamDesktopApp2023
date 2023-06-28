@@ -3,10 +3,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MainLayoutComponent } from './main-layout.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MainRoutingModule } from './main-routing.module';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { SidebarModule } from 'src/app/shared/components/sidebar/sidebar.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [MainLayoutComponent],

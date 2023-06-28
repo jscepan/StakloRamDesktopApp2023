@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { BasicAlertComponent } from './basic-alert.component';
+
+import { BasicAlertEventsTypes, BasicAlertI } from './basic-alert.interface';
 import {
   MatSnackBar,
   MatSnackBarConfig,
   MatSnackBarRef,
 } from '@angular/material/snack-bar';
-import { takeUntil } from 'rxjs/operators';
-import { BasicAlertComponent } from './basic-alert.component';
-
-import { BasicAlertEventsTypes, BasicAlertI } from './basic-alert.interface';
 
 @Injectable()
 export class BasicAlertService {

@@ -6,7 +6,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Entity } from 'src/app/shared/components/form/form.component';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 

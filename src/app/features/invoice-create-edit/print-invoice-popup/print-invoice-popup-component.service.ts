@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable, Subscriber } from 'rxjs';
 import { InvoiceModel } from 'src/app/shared/models/invoice-model';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { PrintInvoicePopupComponent } from './print-invoice-popup.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 @Injectable()
 export class PrintInvoicePopupService {

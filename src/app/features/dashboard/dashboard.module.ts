@@ -4,8 +4,8 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
-import { MatDialogModule } from '@angular/material/dialog';
 import { LogoModule } from 'src/app/shared/components/logo/logo.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [DashboardComponent],

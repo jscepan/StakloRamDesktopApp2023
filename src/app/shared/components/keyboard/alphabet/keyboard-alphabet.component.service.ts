@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable, Subscriber } from 'rxjs';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { KeyboardAlphabetComponent } from './keyboard-alphabet.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 @Injectable()
 export class KeyboardAlphabetComponentService {

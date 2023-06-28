@@ -7,7 +7,6 @@ import { LanguageService } from './language.service';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CoreModule } from './core/core.module';
-import { MatMenuModule } from '@angular/material/menu';
 import { SettingsStoreService } from './shared/services/settings-store.service';
 import {
   HashLocationStrategy,
@@ -15,6 +14,7 @@ import {
   registerLocaleData,
 } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import { MatMenuModule } from '@angular/material/menu';
 registerLocaleData(localeDe);
 
 // required for AOT compilation

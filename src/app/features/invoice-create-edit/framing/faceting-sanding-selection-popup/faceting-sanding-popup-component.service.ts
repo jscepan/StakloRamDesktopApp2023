@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable, Subscriber } from 'rxjs';
 import { ProductModel } from 'src/app/shared/models/product-model';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { FacetingSandingPopupComponent } from './faceting-sanding-popup.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 @Injectable()
 export class FacetingSandingPopupService {

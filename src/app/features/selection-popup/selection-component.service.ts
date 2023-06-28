@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable, Subscriber } from 'rxjs';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { SelectionItem } from './selection-item/selection-item.interface';
 import { SelectionPopupComponent } from './selection-popup.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 @Injectable()
 export class SelectionComponentService {

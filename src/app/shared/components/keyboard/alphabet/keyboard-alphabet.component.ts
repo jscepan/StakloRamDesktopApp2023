@@ -8,10 +8,14 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { AbstractControl, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  AbstractControl,
+  UntypedFormControl,
+  UntypedFormGroup,
+} from '@angular/forms';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { Button, KeyboardButtons } from './all-buttons';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface DialogData {
   title: string;

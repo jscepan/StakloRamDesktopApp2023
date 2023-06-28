@@ -5,9 +5,9 @@ import {
   OnDestroy,
   Output,
 } from '@angular/core';
-import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 
 import { BasicAlertEventsTypes, BasicAlertI } from './basic-alert.interface';
+import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-basic-alert',

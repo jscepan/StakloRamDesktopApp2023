@@ -6,11 +6,11 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IconsModule } from 'src/app/shared/modules/icons/icons.module';
+import { FacetingSandingPopupModule } from './faceting-sanding-selection-popup/faceting-sanding-popup.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { IconsModule } from 'src/app/shared/modules/icons/icons.module';
-import { FacetingSandingPopupModule } from './faceting-sanding-selection-popup/faceting-sanding-popup.module';
 
 @NgModule({
   declarations: [FramingComponent],

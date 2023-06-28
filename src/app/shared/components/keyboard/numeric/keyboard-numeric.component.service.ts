@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable, Subscriber } from 'rxjs';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { KeyboardNumericComponent } from './keyboard-numeric.component';
 import { UOM } from 'src/app/shared/constants';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 @Injectable()
 export class KeyboardNumericComponentService {
