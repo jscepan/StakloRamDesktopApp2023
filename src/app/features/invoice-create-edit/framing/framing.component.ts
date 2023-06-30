@@ -149,6 +149,10 @@ export class FramingComponent implements OnInit, OnDestroy {
             invoiceItem.selectedFrames,
             []
           ),
+          selectedPasspartuColors: new UntypedFormControl(
+            invoiceItem.selectedPasspartuColors,
+            []
+          ),
           amount: new UntypedFormControl(invoiceItem.amount, [
             Validators.required,
           ]),
@@ -524,9 +528,6 @@ export class FramingComponent implements OnInit, OnDestroy {
   addNewFrameToInvoiceItem(): void {
     this.subs.sink.addNewFrameToInvoice =
       this.frameStoreService.entities.subscribe((frames) => {
-        if (!this.touchScreenKeyboardEnabled) {
-          return;
-        }
         this.keyboardNumericComponentService
           .openDialog(
             this.translateService.instant('insertFrameCode'),
