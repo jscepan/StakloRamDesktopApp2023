@@ -20,5 +20,10 @@ export class InvoiceItemModel extends BaseModel {
   faceting?: ProductModel;
   sanding?: ProductModel;
   selectedFrames: { frame: FrameModel; colorCode?: string }[] = [];
+  selectedPasspartuColors?: {
+    passpartuColor?: PasspartuColorModel;
+    passpartuWidth?: number;
+    passpartuWidthUom?: UOM;
+  }[] = [];
   amount: number = 0;
 }
