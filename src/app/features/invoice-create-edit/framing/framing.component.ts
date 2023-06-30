@@ -30,6 +30,7 @@ import { InvoiceItemCalculatorService } from 'src/app/shared/services/invoice-it
 import { DraftInvoicesService } from 'src/app/shared/services/data-store-services/draft-invoice-items-store.service';
 import { roundOnDigits } from 'src/app/shared/utils';
 import { InvoiceItemModel } from 'src/app/shared/models/invoice-item.model';
+import { PasspartuColorModel } from 'src/app/shared/models/passpartu-color-model';
 
 @Component({
   selector: 'app-framing',
@@ -150,7 +151,7 @@ export class FramingComponent implements OnInit, OnDestroy {
             []
           ),
           selectedPasspartuColors: new UntypedFormControl(
-            invoiceItem.selectedPasspartuColors,
+            invoiceItem.selectedPasspartuColors ?? [],
             []
           ),
           amount: new UntypedFormControl(invoiceItem.amount, [
@@ -404,17 +405,26 @@ export class FramingComponent implements OnInit, OnDestroy {
                 pricePerUom: passpartu.passpartu.pricePerUom,
                 uom: passpartu.passpartu.uom,
                 cashRegisterNumber: passpartu.passpartu.cashRegisterNumber,
-                selected:
-                  this.invoiceItemForm.value?.passpartuColor?.oid ===
-                  passpartu.oid,
+                selected: false,
                 thumbnailUrl: THUMBNAIL_PASSPARTU,
               };
             })
           )
           .subscribe((oid: string) => {
             if (oid) {
+              const selectedPasspartu: PasspartuColorModel = passpartues.filter(
+                (g) => g.oid === oid
+              )[0];
+              const selectedPasspartuColors: {
+                passpartuColor?: PasspartuColorModel;
+                passpartuWidth?: number;
+                passpartuWidthUom?: UOM;
+              }[] = this.invoiceItemForm.get('selectedPasspartuColors')?.value;
+              selectedPasspartuColors.push({
+                passpartuColor: selectedPasspartu,
+              });
               this.invoiceItemForm.patchValue({
-                passpartuColor: passpartues.filter((g) => g.oid === oid)[0],
+                selectedPasspartuColors,
                 mirror: undefined,
                 faceting: undefined,
                 sanding: undefined,
@@ -438,18 +448,43 @@ export class FramingComponent implements OnInit, OnDestroy {
       )
       .subscribe((data) => {
         if (data?.value) {
-          this.invoiceItemForm.patchValue({
-            passpartuWidth: data.value,
+          const selectedPasspartuColors: {
+            passpartuColor?: PasspartuColorModel;
+            passpartuWidth?: number;
+            passpartuWidthUom?: UOM;
+          }[] = this.invoiceItemForm.get('selectedPasspartuColors')?.value;
+
+          let lastElement =
+            selectedPasspartuColors[selectedPasspartuColors.length - 1];
+          lastElement = {
+            ...lastElement,
+            passpartuWidth: data?.value,
             passpartuWidthUom: UOM.CENTIMETER,
+          };
+          const updatedSelectedPasspartuColors = selectedPasspartuColors.map(
+            (element, index) => {
+              if (index === selectedPasspartuColors.length - 1) {
+                // Ako je poslednji element, izvršite promene
+                return lastElement;
+              } else {
+                // Inače zadržite nepromenjeni element
+                return element;
+              }
+            }
+          );
+
+          this.invoiceItemForm.patchValue({
+            selectedPasspartuColors: updatedSelectedPasspartuColors,
           });
-        }
-        if (!this.invoiceItemForm.value.passpartuWidth) {
+        } else {
+          // if (!this.invoiceItemForm.get('selectedPasspartuColors')?.value.passpartuWidth) {
           this.globalService.showBasicAlert(
             MODE.error,
             this.translateService.instant('missingData'),
             this.translateService.instant('passpartuWidthIsRequiredField')
           );
           this.selectPasspartuWidth();
+          // }
         }
       });
   }
@@ -510,6 +545,7 @@ export class FramingComponent implements OnInit, OnDestroy {
         break;
       case 'passpartu':
         this.invoiceItemForm.patchValue({
+          selectedPasspartuColors: [],
           passpartuColor: undefined,
           passpartuWidth: undefined,
         });

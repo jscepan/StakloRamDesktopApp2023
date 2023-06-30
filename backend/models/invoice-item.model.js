@@ -12,13 +12,11 @@ const InvoiceItem = function (invoiceItem) {
   this.dimensionsOutterWidth = invoiceItem.dimensionsOutterWidth;
   this.dimensionsOutterHeight = invoiceItem.dimensionsOutterHeight;
   this.selectedFrames = invoiceItem.selectedFrames;
+  this.selectedPasspartuColors = invoiceItem.selectedPasspartuColors;
   this.glass = invoiceItem.glass;
   this.mirror = invoiceItem.mirror;
   this.faceting = invoiceItem.faceting;
   this.sanding = invoiceItem.sanding;
-  this.passpartuWidth = invoiceItem.passpartuWidth;
-  this.passpartuWidthUom = invoiceItem.passpartuWidthUom;
-  this.passpartuColor = invoiceItem.passpartuColor;
 };
 
 InvoiceItem.create = (newInvoiceItem, invoiceOid, result) => {
@@ -36,12 +34,9 @@ InvoiceItem.create = (newInvoiceItem, invoiceOid, result) => {
     newInvoiceItem.mirror ? newInvoiceItem.mirror.oid : null,
     newInvoiceItem.faceting ? newInvoiceItem.faceting.oid : null,
     newInvoiceItem.sanding ? newInvoiceItem.sanding.oid : null,
-    newInvoiceItem.passpartuWidth,
-    newInvoiceItem.passpartuWidthUom,
-    newInvoiceItem.passpartuColor ? newInvoiceItem.passpartuColor.oid : null,
   ];
   sql.run(
-    "INSERT INTO invoiceItem (invoiceitem_title,invoiceitem_serviceType,invoiceitem_amount,invoiceitem_dimensionsWidth,invoiceitem_dimensionsHeight,invoiceitem_dimensionsUom,invoiceitem_outterWidth,invoiceitem_outterHeight,invoice_invoice_oid,glass_glass_oid,mirror_mirror_oid,faceting_faceting_oid,sanding_sanding_oid,invoiceitem_passpartuWidth,invoiceitem_passpartuWidthUom,passpartucolor_passpartuColor_oid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    "INSERT INTO invoiceItem (invoiceitem_title,invoiceitem_serviceType,invoiceitem_amount,invoiceitem_dimensionsWidth,invoiceitem_dimensionsHeight,invoiceitem_dimensionsUom,invoiceitem_outterWidth,invoiceitem_outterHeight,invoice_invoice_oid,glass_glass_oid,mirror_mirror_oid,faceting_faceting_oid,sanding_sanding_oid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
     params,
     function (err) {
       if (err) {
@@ -50,8 +45,10 @@ InvoiceItem.create = (newInvoiceItem, invoiceOid, result) => {
         return;
       }
       if (
-        newInvoiceItem.selectedFrames &&
-        newInvoiceItem.selectedFrames.length > 0
+        (newInvoiceItem.selectedFrames &&
+          newInvoiceItem.selectedFrames.length > 0) ||
+        (newInvoiceItem.selectedPasspartuColors &&
+          newInvoiceItem.selectedPasspartuColors.length > 0)
       ) {
         function resolvePromisesSequentially(promises, index) {
           if (index === promises.length) {
@@ -78,6 +75,30 @@ InvoiceItem.create = (newInvoiceItem, invoiceOid, result) => {
               new Promise((resolve, reject) => {
                 const frameParams = [this.lastID, f.frame.oid, f.colorCode];
                 sql.run(frameQuery, frameParams, (err) => {
+                  if (err) {
+                    console.log("error invoiceitem_has_frame: ", err);
+                    reject(err);
+                  } else {
+                    resolve();
+                  }
+                });
+              })
+          );
+        });
+
+        newInvoiceItem.selectedPasspartuColors.forEach((f) => {
+          const pcQuery =
+            "INSERT INTO invoiceitem_has_passpartucolor (invoiceItem_invoiceItem_oid, passpartucolor_passpartuColor_oid, passpartuWidth, passpartuWidthUom) VALUES (?,?,?,?)";
+          promises.push(
+            () =>
+              new Promise((resolve, reject) => {
+                const pcParams = [
+                  this.lastID,
+                  f.passpartuColor.oid,
+                  f.passpartuWidth,
+                  f.passpartuWidthUom,
+                ];
+                sql.run(pcQuery, pcParams, (err) => {
                   if (err) {
                     console.log("error invoiceitem_has_frame: ", err);
                     reject(err);

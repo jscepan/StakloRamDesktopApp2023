@@ -34,6 +34,7 @@ exports.create = (req, res) => {
     dimensionsOutterWidth: req.body.dimensionsOutterWidth,
     dimensionsOutterHeight: req.body.dimensionsOutterHeight,
     selectedFrames: req.body.selectedFrames,
+    selectedPasspartuColors: req.body.selectedPasspartuColors,
     glass: req.body.glass,
   });
 
