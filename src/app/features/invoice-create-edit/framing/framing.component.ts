@@ -409,8 +409,7 @@ export class FramingComponent implements OnInit, OnDestroy {
                   passpartu.oid,
                 thumbnailUrl: THUMBNAIL_PASSPARTU,
               };
-            }),
-            'middle'
+            })
           )
           .subscribe((oid: string) => {
             if (oid) {
