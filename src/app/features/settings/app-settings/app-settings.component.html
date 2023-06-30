@@ -1,250 +1,287 @@
 <div class="main-container">
   <div class="content">
     <form [formGroup]="appSettingsForm" class="form" *ngIf="appSettingsForm">
-      <div class="form-grid">
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "decimalNumberSign" | translate }}</mat-label
-          >
-          <mat-select formControlName="decimalNumberSign">
-            <mat-option
-              *ngFor="let item of decimalNumberSignOptions"
-              [value]="item.key"
-              >{{ item.value }}</mat-option
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{
+              "framingSettings" | translate
+            }}</mat-panel-title>
+            <mat-panel-description>{{
+              "framingSettingsDescription" | translate
+            }}</mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "defaultDimensionsWidth" | translate }}</mat-label
             >
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "dateFormat" | translate }}</mat-label
-          >
-          <mat-select formControlName="dateFormat">
-            <mat-option
-              *ngFor="let item of dateFormatOptions"
-              [value]="item.key"
-              >{{ item.value }}</mat-option
+            <input
+              matInput
+              type="number"
+              formControlName="defaultDimensionsWidth"
+              (click)="insertNumber('defaultDimensionsWidth')"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "defaultDimensionsHeight" | translate }}</mat-label
             >
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "currencyFormat" | translate }}</mat-label
-          >
-          <input
-            matInput
-            type="text"
-            formControlName="currencyFormat"
-            (click)="insertText('currencyFormat')"
-          />
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "currencyDisplayValue" | translate }}</mat-label
-          >
-          <input
-            matInput
-            type="text"
-            formControlName="currencyDisplayValue"
-            (click)="insertText('currencyDisplayValue')"
-          />
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "qrCodeSizeInPixel" | translate }}</mat-label
-          >
-          <input
-            matInput
-            type="number"
-            formControlName="qrCodeSizeInPixel"
-            (click)="insertNumber('qrCodeSizeInPixel')"
-          />
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "qrCodeErrorCorrectionLevel" | translate }}</mat-label
-          >
-          <mat-select formControlName="qrCodeErrorCorrectionLevel">
-            <mat-option
-              *ngFor="let item of qrCodeErrorCorrectionLevelOptions"
-              [value]="item.key"
-              >{{ item.value }}</mat-option
+            <input
+              matInput
+              type="number"
+              formControlName="defaultDimensionsHeight"
+              (click)="insertNumber('defaultDimensionsHeight')"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "minGlassSurface" | translate }}</mat-label
             >
-          </mat-select>
-        </mat-form-field>
+            <input
+              matInput
+              type="number"
+              formControlName="minGlassSurface"
+              (click)="insertNumber('minGlassSurface')"
+            />
+          </mat-form-field>
+        </mat-expansion-panel>
 
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "language" | translate }}</mat-label
-          >
-          <mat-select formControlName="language">
-            <mat-option
-              *ngFor="let item of languageOptions"
-              [value]="item.key"
-              >{{ item.value }}</mat-option
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{
+              "glassingSettings" | translate
+            }}</mat-panel-title>
+            <mat-panel-description>{{
+              "glassingSettingsDescription" | translate
+            }}</mat-panel-description>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{
+              "invoiceSettings" | translate
+            }}</mat-panel-title>
+            <mat-panel-description>{{
+              "invoiceSettingsDescription" | translate
+            }}</mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "decimalNumberSign" | translate }}</mat-label
             >
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "minGlassSurface" | translate }}</mat-label
-          >
-          <input
-            matInput
-            type="number"
-            formControlName="minGlassSurface"
-            (click)="insertNumber('minGlassSurface')"
-          />
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "copies" | translate }}</mat-label
-          >
-          <input
-            matInput
-            type="number"
-            formControlName="copies"
-            (click)="insertNumber('copies')"
-          />
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "defaultDimensionsWidth" | translate }}</mat-label
-          >
-          <input
-            matInput
-            type="number"
-            formControlName="defaultDimensionsWidth"
-            (click)="insertNumber('defaultDimensionsWidth')"
-          />
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "defaultDimensionsHeight" | translate }}</mat-label
-          >
-          <input
-            matInput
-            type="number"
-            formControlName="defaultDimensionsHeight"
-            (click)="insertNumber('defaultDimensionsHeight')"
-          />
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "increaseButtonOneValue" | translate }}</mat-label
-          >
-          <input
-            matInput
-            type="number"
-            formControlName="increaseButtonOneValue"
-            (click)="insertNumber('increaseButtonOneValue')"
-          />
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "increaseButtonTwoValue" | translate }}</mat-label
-          >
-          <input
-            matInput
-            type="number"
-            formControlName="increaseButtonTwoValue"
-            (click)="insertNumber('increaseButtonTwoValue')"
-          />
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "increaseButtonThreeValue" | translate }}</mat-label
-          >
-          <input
-            matInput
-            type="text"
-            formControlName="increaseButtonThreeValue"
-            (click)="insertNumber('increaseButtonThreeValue')"
-          />
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "header" | translate }}</mat-label
-          >
-          <input
-            matInput
-            type="text"
-            formControlName="header"
-            (click)="insertText('header')"
-          />
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "footer" | translate }}</mat-label
-          >
-          <input
-            matInput
-            type="text"
-            formControlName="footer"
-            (click)="insertText('footer')"
-          />
-        </mat-form-field>
-
-        <mat-form-field class="grid-item">
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-            >{{ "printer" | translate }}</mat-label
-          >
-          <mat-select formControlName="printer">
-            <mat-option
-              *ngFor="let item of printerOptions"
-              [value]="item.key"
-              >{{ item.value }}</mat-option
+            <mat-select formControlName="decimalNumberSign">
+              <mat-option
+                *ngFor="let item of decimalNumberSignOptions"
+                [value]="item.key"
+                >{{ item.value }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "dateFormat" | translate }}</mat-label
             >
-          </mat-select>
-        </mat-form-field>
-      </div>
+            <mat-select formControlName="dateFormat">
+              <mat-option
+                *ngFor="let item of dateFormatOptions"
+                [value]="item.key"
+                >{{ item.value }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "currencyDisplayValue" | translate }}</mat-label
+            >
+            <input
+              matInput
+              type="text"
+              formControlName="currencyDisplayValue"
+              (click)="insertText('currencyDisplayValue')"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "header" | translate }}</mat-label
+            >
+            <input
+              matInput
+              type="text"
+              formControlName="header"
+              (click)="insertText('header')"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "footer" | translate }}</mat-label
+            >
+            <input
+              matInput
+              type="text"
+              formControlName="footer"
+              (click)="insertText('footer')"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "increaseButtonOneValue" | translate }}</mat-label
+            >
+            <input
+              matInput
+              type="number"
+              formControlName="increaseButtonOneValue"
+              (click)="insertNumber('increaseButtonOneValue')"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "increaseButtonTwoValue" | translate }}</mat-label
+            >
+            <input
+              matInput
+              type="number"
+              formControlName="increaseButtonTwoValue"
+              (click)="insertNumber('increaseButtonTwoValue')"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "increaseButtonThreeValue" | translate }}</mat-label
+            >
+            <input
+              matInput
+              type="number"
+              formControlName="increaseButtonThreeValue"
+              (click)="insertNumber('increaseButtonThreeValue')"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "qrCodeSizeInPixel" | translate }}</mat-label
+            >
+            <input
+              matInput
+              type="number"
+              formControlName="qrCodeSizeInPixel"
+              (click)="insertNumber('qrCodeSizeInPixel')"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "qrCodeErrorCorrectionLevel" | translate }}</mat-label
+            >
+            <mat-select formControlName="qrCodeErrorCorrectionLevel">
+              <mat-option
+                *ngFor="let item of qrCodeErrorCorrectionLevelOptions"
+                [value]="item.key"
+                >{{ item.value }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{ "printSettings" | translate }}</mat-panel-title>
+            <mat-panel-description>{{
+              "printSettingsDescription" | translate
+            }}</mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "printer" | translate }}</mat-label
+            >
+            <mat-select formControlName="printer">
+              <mat-option
+                *ngFor="let item of printerOptions"
+                [value]="item.key"
+                >{{ item.value }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "copies" | translate }}</mat-label
+            >
+            <input
+              matInput
+              type="number"
+              formControlName="copies"
+              (click)="insertNumber('copies')"
+            />
+          </mat-form-field>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{
+              "applicationSettings" | translate
+            }}</mat-panel-title>
+            <mat-panel-description>{{
+              "applicationSettingsDescription" | translate
+            }}</mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+              >{{ "language" | translate }}</mat-label
+            >
+            <mat-select formControlName="language">
+              <mat-option
+                *ngFor="let item of languageOptions"
+                [value]="item.key"
+                >{{ item.value }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <div class="keyboard">
+            <mat-checkbox
+              formControlName="touchScreenKeyboardEnabled"
+              color="primary"
+              >{{ "touchScreenKeyboardEnabled" | translate }}</mat-checkbox
+            >
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
     </form>
     <div class="buttons">
       <app-button

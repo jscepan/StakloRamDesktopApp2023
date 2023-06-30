@@ -3,9 +3,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
+import { KeyboardAlphabetComponentService } from 'src/app/shared/components/keyboard/alphabet/keyboard-alphabet.component.service';
+import { KeyboardNumericComponentService } from 'src/app/shared/components/keyboard/numeric/keyboard-numeric.component.service';
 import {
   DateFormat,
   QRCodeErrorCorrectionLevel,
+  UOM,
 } from 'src/app/shared/constants';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import {
@@ -18,6 +21,10 @@ import { SubscriptionManager } from 'src/app/shared/services/subscription.manage
   selector: 'app-settings',
   templateUrl: './app-settings.component.html',
   styleUrls: ['./app-settings.component.scss'],
+  providers: [
+    KeyboardAlphabetComponentService,
+    KeyboardNumericComponentService,
+  ],
 })
 export class AppSettingsComponent implements OnInit, OnDestroy {
   private subs = new SubscriptionManager();
@@ -40,6 +47,8 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
     private appSettingsService: SettingsStoreService,
     private route: Router,
     private globalService: GlobalService,
+    private keyboardNumericComponentService: KeyboardNumericComponentService,
+    private keyboardAlphabetComponentService: KeyboardAlphabetComponentService,
     private translateService: TranslateService
   ) {}
 
@@ -57,9 +66,36 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
     );
   }
 
-  insertText(controlName: string): void {}
+  insertText(controlName: string): void {
+    this.subs.sink.edit = this.keyboardAlphabetComponentService
+      .openDialog(
+        this.appSettingsForm?.get(controlName)?.value,
+        this.translateService.instant(controlName)
+      )
+      .subscribe((inputText: string) => {
+        if (inputText && inputText.trim().length > 0) {
+          this.appSettingsForm?.get(controlName)?.setValue(inputText);
+          this.appSettingsForm?.markAsDirty();
+        }
+      });
+  }
 
-  insertNumber(controlName: string): void {}
+  insertNumber(controlName: string): void {
+    this.subs.sink.insertHeight = this.keyboardNumericComponentService
+      .openDialog(
+        this.translateService.instant(controlName),
+        UOM.NUMBER,
+        false,
+        this.translateService.instant(controlName),
+        this.appSettingsForm?.get(controlName)?.value ?? 0
+      )
+      .subscribe((data) => {
+        if (data?.value) {
+          this.appSettingsForm?.get(controlName)?.setValue(data.value);
+          this.appSettingsForm?.markAsDirty();
+        }
+      });
+  }
 
   cancel(): void {
     this.route.navigate(['settings']);
@@ -101,42 +137,26 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
       });
 
       this.appSettingsForm = new FormGroup({
-        decimalNumberSign: new FormControl(this.settings?.decimalNumberSign, [
-          Validators.required,
-        ]),
-        dateFormat: new FormControl(this.settings?.dateFormat, [
-          Validators.required,
-        ]),
-        currencyFormat: new FormControl(this.settings?.currencyFormat, [
-          Validators.required,
-        ]),
-        currencyDisplayValue: new FormControl(
-          this.settings?.currencyDisplayValue || '',
-          [Validators.required]
-        ),
-        qrCodeSizeInPixel: new FormControl(
-          this.settings?.qrCodeSizeInPixel || '',
-          [Validators.required]
-        ),
-        qrCodeErrorCorrectionLevel: new FormControl(
-          this.settings?.qrCodeErrorCorrectionLevel || '',
-          [Validators.required]
-        ),
-        language: new FormControl(this.settings?.language || '', [
-          Validators.required,
-        ]),
-        minGlassSurface: new FormControl(this.settings?.minGlassSurface || '', [
-          Validators.required,
-        ]),
-        copies: new FormControl(this.settings?.copies || '', [
-          Validators.required,
-        ]),
         defaultDimensionsWidth: new FormControl(
           this.settings?.defaultDimensionsWidth || '',
           [Validators.required]
         ),
         defaultDimensionsHeight: new FormControl(
           this.settings?.defaultDimensionsHeight || '',
+          [Validators.required]
+        ),
+        minGlassSurface: new FormControl(this.settings?.minGlassSurface || '', [
+          Validators.required,
+        ]),
+
+        decimalNumberSign: new FormControl(this.settings?.decimalNumberSign, [
+          Validators.required,
+        ]),
+        dateFormat: new FormControl(this.settings?.dateFormat, [
+          Validators.required,
+        ]),
+        currencyDisplayValue: new FormControl(
+          this.settings?.currencyDisplayValue || '',
           [Validators.required]
         ),
         increaseButtonOneValue: new FormControl(
@@ -157,9 +177,29 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
         footer: new FormControl(this.settings?.footer || '', [
           Validators.required,
         ]),
+        qrCodeSizeInPixel: new FormControl(
+          this.settings?.qrCodeSizeInPixel || '',
+          [Validators.required]
+        ),
+        qrCodeErrorCorrectionLevel: new FormControl(
+          this.settings?.qrCodeErrorCorrectionLevel || '',
+          [Validators.required]
+        ),
+
         printer: new FormControl(this.settings?.printer || '', [
           Validators.required,
         ]),
+        copies: new FormControl(this.settings?.copies || '', [
+          Validators.required,
+        ]),
+
+        language: new FormControl(this.settings?.language || '', [
+          Validators.required,
+        ]),
+        touchScreenKeyboardEnabled: new FormControl(
+          this.settings?.touchScreenKeyboardEnabled ?? true,
+          [Validators.required]
+        ),
       });
     }
   }

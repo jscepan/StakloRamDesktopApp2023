@@ -8,6 +8,8 @@ import { AppSettingsComponent } from './app-settings.component';
 import { FormModule } from 'src/app/shared/components/form/form.module';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   imports: [
@@ -20,6 +22,8 @@ import { MatSelectModule } from '@angular/material/select';
     FormsModule,
     ReactiveFormsModule,
     FormModule,
+    MatExpansionModule,
+    MatCheckboxModule,
   ],
   exports: [AppSettingsComponent],
   declarations: [AppSettingsComponent],

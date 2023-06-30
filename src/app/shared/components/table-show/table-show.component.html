@@ -43,5 +43,8 @@
         </div>
       </ng-container>
     </ng-container>
+    <ng-container *ngIf="dataModel?.rowData?.length === 0">
+      {{ "noResults" | translate }}
+    </ng-container>
   </div>
 </div>

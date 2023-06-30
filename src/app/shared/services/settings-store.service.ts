@@ -10,25 +10,33 @@ import { AppSettingsWebService } from './web-services/app-settings.service';
 import { finalize } from 'rxjs/operators';
 
 export class AppSettings {
-  decimalNumberSign: '.' | ',' = ',';
-  thousandsNumberSign: '.' | ',' = '.';
-  dateFormat: DateFormat = DateFormat.DAY_MONTH_YEAR_DOT;
-  currencyFormat: string = 'din';
-  currencyDisplayValue: string = 'Din';
-  qrCodeSizeInPixel: number = 130;
-  qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel =
-    QRCodeErrorCorrectionLevel.EXTRALARGE_levelH;
-  language: 'rs' | 'en' = 'rs';
-  minGlassSurface: number = 0.1;
-  copies: number = 1;
+  // framing
   defaultDimensionsWidth: number = 20;
   defaultDimensionsHeight: number = 30;
+  minGlassSurface: number = 0.1;
+
+  // glassing
+
+  // invoice
+  decimalNumberSign: '.' | ',' = ',';
+  dateFormat: DateFormat = DateFormat.DAY_MONTH_YEAR_DOT;
+  currencyDisplayValue: string = 'Din';
   increaseButtonOneValue: number = 1000;
   increaseButtonTwoValue: number = 200;
   increaseButtonThreeValue: number = 100;
-  footer: string = 'Hvala Vam na poverenju';
   header: string = 'STAKLO RAM';
+  footer: string = 'Hvala Vam na poverenju';
+  qrCodeSizeInPixel: number = 130;
+  qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel =
+    QRCodeErrorCorrectionLevel.EXTRALARGE_levelH;
+
+  // printer
   printer: string = 'Neki';
+  copies: number = 1;
+
+  // app
+  language: 'rs' | 'en' = 'rs';
+  touchScreenKeyboardEnabled: boolean = true;
 }
 
 @Injectable({

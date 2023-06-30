@@ -1,0 +1,8 @@
+Passpartu treba omoguciti sve cetiri dimenzije da se podese, ali prvenstveno uz pomoc jedne, ostalo po potrebi...
+Treba omoguciti unos vise passpartua kao kod ramova. 
+Racunanje: prvi na primer 5 cm, drugi na primer 1 cm to znaci da je prozorcic za 1 cm veci od prvog a povrsinom je isti kao i prvi a napomena od 1 cm je potrebna radniku da bi znao kako da napravi...
+
+Na popup-u Kada se unese 0 za avans ne ponisti ga... Tamo takodje ne radi i vrdnost kao number
+
+
+

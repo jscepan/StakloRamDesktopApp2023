@@ -151,7 +151,7 @@ export class PrintInvoicePopupComponent
         payField?.value
       )
       .subscribe((result) => {
-        if (result && result.value) {
+        if (result && result.value >= 0) {
           payField?.setValue(result.value);
         }
       });

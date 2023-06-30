@@ -14,24 +14,26 @@ exports.findPrinters = (req, res) => {};
 const path = require("path");
 
 const Setting = function (settings) {
-  this.decimalNumberSign = settings.decimalNumberSign;
-  this.thousandsNumberSign = settings.thousandsNumberSign;
-  this.dateFormat = settings.dateFormat;
-  this.currencyFormat = settings.currencyFormat;
-  this.currencyDisplayValue = settings.currencyDisplayValue;
-  this.qrCodeSizeInPixel = settings.qrCodeSizeInPixel;
-  this.qrCodeErrorCorrectionLevel = settings.qrCodeErrorCorrectionLevel;
-  this.language = settings.language;
-  this.minGlassSurface = settings.minGlassSurface;
-  this.copies = settings.copies;
   this.defaultDimensionsWidth = settings.defaultDimensionsWidth;
   this.defaultDimensionsHeight = settings.defaultDimensionsHeight;
+  this.minGlassSurface = settings.minGlassSurface;
+
+  this.decimalNumberSign = settings.decimalNumberSign;
+  this.dateFormat = settings.dateFormat;
+  this.currencyDisplayValue = settings.currencyDisplayValue;
   this.increaseButtonOneValue = settings.increaseButtonOneValue;
   this.increaseButtonTwoValue = settings.increaseButtonTwoValue;
   this.increaseButtonThreeValue = settings.increaseButtonThreeValue;
-  this.footer = settings.footer;
   this.header = settings.header;
+  this.footer = settings.footer;
+  this.qrCodeSizeInPixel = settings.qrCodeSizeInPixel;
+  this.qrCodeErrorCorrectionLevel = settings.qrCodeErrorCorrectionLevel;
+
   this.printer = settings.printer;
+  this.copies = settings.copies;
+
+  this.language = settings.language;
+  this.touchScreenKeyboardEnabled = settings.touchScreenKeyboardEnabled;
 };
 
 exports.find = (req, res) => {

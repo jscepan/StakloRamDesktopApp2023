@@ -35,7 +35,7 @@ export class MapProductService implements ProductSettings<ProductModel> {
         {
           label: {
             key: 'pricePerUom',
-            value: this.translateService.instant('ppUOM'),
+            value: this.translateService.instant('ppUom'),
           },
           type: 'number',
           value: 0,
@@ -71,7 +71,7 @@ export class MapProductService implements ProductSettings<ProductModel> {
           required: true,
         },
         {
-          label: { key: 'uom', value: this.translateService.instant('UOM') },
+          label: { key: 'uom', value: this.translateService.instant('uom') },
           type: 'select',
           value: entity.uom,
           optionalValues: [

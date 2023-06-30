@@ -7,7 +7,6 @@ import { MapProductService } from './map-product.service';
 import { getDisplayNumberAsString } from 'src/app/shared/utils';
 
 @Injectable()
-// implements ProductSettings<FrameModel>
 export class MapFrameService extends MapProductService {
   createEmptyEntity(): Observable<Entity[]> {
     return new Observable((subscriber) => {
@@ -38,7 +37,7 @@ export class MapFrameService extends MapProductService {
         {
           label: {
             key: 'pricePerUom',
-            value: this.translateService.instant('ppUOM'),
+            value: this.translateService.instant('ppUom'),
           },
           type: 'number',
           value: 0,
@@ -88,7 +87,7 @@ export class MapFrameService extends MapProductService {
           required: true,
         },
         {
-          label: { key: 'uom', value: this.translateService.instant('UOM') },
+          label: { key: 'uom', value: this.translateService.instant('uom') },
           type: 'select',
           value: entity.uom,
           optionalValues: [

@@ -59,6 +59,8 @@ export class FramingComponent implements OnInit, OnDestroy {
   isOutterDimension: Observable<boolean> =
     this.$isOutterDimension.asObservable();
 
+  touchScreenKeyboardEnabled: boolean = true;
+
   constructor(
     private route: Router,
     private _activeRoute: ActivatedRoute,
@@ -181,6 +183,8 @@ export class FramingComponent implements OnInit, OnDestroy {
     return new Observable((subscriber) => {
       this.subs.sink = this.appSettingsService.settings.subscribe(
         (settings) => {
+          this.touchScreenKeyboardEnabled =
+            settings?.touchScreenKeyboardEnabled ?? true;
           let invoiceItem: InvoiceItemModel = {
             oid: '',
             title: '',
@@ -249,6 +253,9 @@ export class FramingComponent implements OnInit, OnDestroy {
   }
 
   insertWidthAndHeight(): void {
+    if (!this.touchScreenKeyboardEnabled) {
+      return;
+    }
     this.subs.sink.insertWidth = this.keyboardNumericComponentService
       .openDialog(
         this.translateService.instant('insertDimensions'),
@@ -268,6 +275,9 @@ export class FramingComponent implements OnInit, OnDestroy {
   }
 
   insertHeight(): void {
+    if (!this.touchScreenKeyboardEnabled) {
+      return;
+    }
     this.subs.sink.insertHeight = this.keyboardNumericComponentService
       .openDialog(
         this.translateService.instant('insertDimensions'),
@@ -284,6 +294,9 @@ export class FramingComponent implements OnInit, OnDestroy {
   }
 
   insertOutterWidthAndHeight(): void {
+    if (!this.touchScreenKeyboardEnabled) {
+      return;
+    }
     this.subs.sink.insertWidth = this.keyboardNumericComponentService
       .openDialog(
         this.translateService.instant('insertDimensions'),
@@ -305,6 +318,9 @@ export class FramingComponent implements OnInit, OnDestroy {
   }
 
   insertOutterHeight(): void {
+    if (!this.touchScreenKeyboardEnabled) {
+      return;
+    }
     this.subs.sink.insertHeight = this.keyboardNumericComponentService
       .openDialog(
         this.translateService.instant('insertDimensions'),
@@ -323,6 +339,9 @@ export class FramingComponent implements OnInit, OnDestroy {
   }
 
   insertCount(): void {
+    if (!this.touchScreenKeyboardEnabled) {
+      return;
+    }
     this.subs.sink.insertCount = this.keyboardNumericComponentService
       .openDialog(
         this.translateService.instant('insertCount'),
@@ -505,6 +524,9 @@ export class FramingComponent implements OnInit, OnDestroy {
   addNewFrameToInvoiceItem(): void {
     this.subs.sink.addNewFrameToInvoice =
       this.frameStoreService.entities.subscribe((frames) => {
+        if (!this.touchScreenKeyboardEnabled) {
+          return;
+        }
         this.keyboardNumericComponentService
           .openDialog(
             this.translateService.instant('insertFrameCode'),

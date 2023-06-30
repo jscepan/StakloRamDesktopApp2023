@@ -42,8 +42,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   advancePaymentFrom!: number;
   advancePaymentTo!: number;
 
+  touchScreenKeyboardEnabled: boolean = true;
+
   constructor(
     private router: Router,
+    private appSettingsService: SettingsStoreService,
     private webService: InvoiceWebService,
     private keyboardAlphabetComponentService: KeyboardAlphabetComponentService,
     private keyboardNumericComponentService: KeyboardNumericComponentService,
@@ -52,6 +55,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.subs.sink = this.appSettingsService.settings.subscribe((settings) => {
+      this.touchScreenKeyboardEnabled =
+        settings?.touchScreenKeyboardEnabled ?? true;
+    });
+
     this.invoices$.asObservable().subscribe((invoices) => {
       let table: TableShow = {
         header: [
@@ -94,6 +102,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   insertBuyerName(): void {
+    if (!this.touchScreenKeyboardEnabled) {
+      return;
+    }
     this.subs.sink = this.keyboardAlphabetComponentService
       .openDialog(
         this.buyerName ?? '',
@@ -157,6 +168,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   insertAdvancePayment(type: 'from' | 'to'): void {
+    if (!this.touchScreenKeyboardEnabled) {
+      return;
+    }
     this.subs.sink = this.keyboardNumericComponentService
       .openDialog(
         this.translateService.instant('insertValue'),
