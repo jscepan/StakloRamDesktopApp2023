@@ -100,7 +100,7 @@ InvoiceItem.create = (newInvoiceItem, invoiceOid, result) => {
                 ];
                 sql.run(pcQuery, pcParams, (err) => {
                   if (err) {
-                    console.log("error invoiceitem_has_frame: ", err);
+                    console.log("error invoiceitem_has_passpartucolor: ", err);
                     reject(err);
                   } else {
                     resolve();
@@ -157,8 +157,6 @@ InvoiceItem.getAll = (invoiceOid, result) => {
     LEFT JOIN mirror on invoiceitem.mirror_mirror_oid=mirror.mirror_oid
     LEFT JOIN faceting on invoiceitem.faceting_faceting_oid=faceting.faceting_oid
     LEFT JOIN sanding on invoiceitem.sanding_sanding_oid=sanding.sanding_oid
-    LEFT JOIN passpartucolor on invoiceitem.passpartucolor_passpartuColor_oid=passpartucolor.passpartuColor_oid
-    LEFT JOIN passpartu on passpartucolor.passpartu_passpartu_oid=passpartu.passpartu_oid
     WHERE invoice_invoice_oid=?`,
     [invoiceOid],
     (err, res) => {
@@ -179,21 +177,22 @@ InvoiceItem.getAll = (invoiceOid, result) => {
           dimensionsOutterWidth: i.invoiceitem_outterWidth,
           dimensionsOutterHeight: i.invoiceitem_outterHeight,
           selectedFrames: [],
-          passpartuWidth: i.invoiceitem_passpartuWidth,
-          passpartuWidthUom: i.invoiceitem_passpartuWidthUom,
-          passpartuColor: i.passpartucolor_passpartuColor_oid
-            ? {
-                oid: i.passpartuColor_oid,
-                name: i.passpartuColor_name,
-                passpartu: {
-                  oid: i.passpartu_oid,
-                  name: i.passpartu_name,
-                  uom: i.passpartu_uom,
-                  pricePerUom: i.passpartu_pricePerUom,
-                  cashRegisterNumber: i.passpartu_cashRegisterNumber,
-                },
-              }
-            : null,
+          selectedPasspartuColors: [],
+          // passpartuWidth: i.invoiceitem_passpartuWidth,
+          // passpartuWidthUom: i.invoiceitem_passpartuWidthUom,
+          // passpartuColor: i.passpartucolor_passpartuColor_oid
+          //   ? {
+          //       oid: i.passpartuColor_oid,
+          //       name: i.passpartuColor_name,
+          //       passpartu: {
+          //         oid: i.passpartu_oid,
+          //         name: i.passpartu_name,
+          //         uom: i.passpartu_uom,
+          //         pricePerUom: i.passpartu_pricePerUom,
+          //         cashRegisterNumber: i.passpartu_cashRegisterNumber,
+          //       },
+          //     }
+          //   : null,
           glass: i.glass_oid
             ? {
                 oid: i.glass_oid,
@@ -233,41 +232,129 @@ InvoiceItem.getAll = (invoiceOid, result) => {
         };
       });
       if (ii.length) {
+        let promises = [];
+
         let condition = "";
         const par = [];
         for (i = 0; i < ii.length; i++) {
-          // i === 0
-          //   ?
           par.push(ii[i].oid);
-          // :
           if (i > 0)
             condition +=
               " OR invoiceitem_has_frame.invoiceItem_invoiceItem_oid=?";
         }
         const query =
-          `SELECT * FROM invoiceitem_has_frame JOIN frame on invoiceitem_has_frame.frame_frame_oid=frame.frame_oid WHERE invoiceitem_has_frame.invoiceItem_invoiceItem_oid=?` +
+          `SELECT * FROM invoiceitem_has_frame JOIN frame ON invoiceitem_has_frame.frame_frame_oid=frame.frame_oid WHERE invoiceitem_has_frame.invoiceItem_invoiceItem_oid=?` +
           condition;
-        sql.all(query, par, (errFrame, resFrame) => {
-          ii.forEach((item) => {
-            resFrame.forEach((frame) => {
-              if (item.oid === frame.invoiceItem_invoiceItem_oid) {
-                item.selectedFrames.push({
-                  frame: {
-                    oid: frame.frame_frame_oid,
-                    name: frame.frame_name,
-                    uom: frame.frame_uom,
-                    pricePerUom: frame.frame_pricePerUom,
-                    cashRegisterNumber: frame.frame_cashRegisterNumber,
-                    code: frame.frame_code,
-                    frameWidthMM: frame.frame_frameWidthMM,
-                  },
-                  colorCode: frame.colorCode,
+
+        promises.push(
+          () =>
+            new Promise((resolve, reject) => {
+              sql.all(query, par, (errFrame, resFrame) => {
+                ii.forEach((item) => {
+                  resFrame.forEach((frame) => {
+                    if (item.oid === frame.invoiceItem_invoiceItem_oid) {
+                      item.selectedFrames.push({
+                        frame: {
+                          oid: frame.frame_frame_oid,
+                          name: frame.frame_name,
+                          uom: frame.frame_uom,
+                          pricePerUom: frame.frame_pricePerUom,
+                          cashRegisterNumber: frame.frame_cashRegisterNumber,
+                          code: frame.frame_code,
+                          frameWidthMM: frame.frame_frameWidthMM,
+                        },
+                        colorCode: frame.colorCode,
+                      });
+                    }
+                  });
                 });
-              }
+                if (errFrame) {
+                  console.log(
+                    "error InvoiceItem.getAll-invoiceitem_has_frame: ",
+                    err
+                  );
+                  reject(err);
+                } else {
+                  resolve();
+                }
+              });
+            })
+        );
+
+        const parPasspartuColor = [];
+        let conditionPasspartuColor = "";
+        for (i = 0; i < ii.length; i++) {
+          parPasspartuColor.push(ii[i].oid);
+          if (i > 0)
+            conditionPasspartuColor +=
+              " OR invoiceitem_has_passpartucolor.invoiceItem_invoiceItem_oid=?";
+        }
+
+        const queryPasspartuColor =
+          `SELECT * FROM invoiceitem_has_passpartucolor JOIN passpartucolor ON invoiceitem_has_passpartucolor.passpartucolor_passpartuColor_oid=passpartucolor.passpartuColor_oid JOIN passpartu ON passpartucolor.passpartu_passpartu_oid=passpartu.passpartu_oid WHERE invoiceitem_has_passpartucolor.invoiceItem_invoiceItem_oid=?` +
+          conditionPasspartuColor;
+        promises.push(
+          () =>
+            new Promise((resolve, reject) => {
+              sql.all(
+                queryPasspartuColor,
+                parPasspartuColor,
+                (errPasspartuColor, resPasspartuColor) => {
+                  ii.forEach((item) => {
+                    resPasspartuColor.forEach((pc) => {
+                      if (item.oid === pc.invoiceItem_invoiceItem_oid) {
+                        item.selectedPasspartuColors.push({
+                          passpartuColor: {
+                            oid: pc.passpartuColor_oid,
+                            name: pc.passpartuColor_name,
+                            isActive: pc.passpartucolor_isActive,
+                            passpartu: {
+                              oid: pc.passpartu_oid,
+                              name: pc.passpartu_name,
+                              uom: pc.passpartu_uom,
+                              pricePerUom: pc.passpartu_pricePerUom,
+                              cashRegisterNumber:
+                                pc.passpartu_cashRegisterNumber,
+                              isActive: pc.passpartu_isActive,
+                            },
+                          },
+                          passpartuWidth: pc.passpartuWidth,
+                          passpartuWidthUom: pc.passpartuWidthUom,
+                        });
+                      }
+                    });
+                  });
+                  if (errPasspartuColor) {
+                    console.log(
+                      "error InvoiceItem.getAll-invoiceitem_has_passpartucolor: ",
+                      err
+                    );
+                    reject(err);
+                  } else {
+                    resolve();
+                  }
+                }
+              );
+            })
+        );
+
+        function resolvePromisesSequentially(promises, index) {
+          if (index === promises.length) {
+            // Svi promisi su razrešeni, izvršavamo željenu logiku
+            result(ii);
+            return;
+          }
+
+          promises[index]()
+            .then(() => {
+              resolvePromisesSequentially(promises, index + 1);
+            })
+            .catch((err) => {
+              result(err, null);
             });
-          });
-          result(ii);
-        });
+        }
+        // Razrešavamo promisi redom
+        resolvePromisesSequentially(promises, 0);
       } else {
         result(ii);
       }
