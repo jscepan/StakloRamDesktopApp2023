@@ -1,0 +1,74 @@
+<mat-dialog-content>
+  <div class="container">
+    <div class="row-top">
+      <app-number-increase-decrease
+        [value]="passpartuWidthMargins?.top"
+        (changeEvent)="changeValue('top', $event)"
+      ></app-number-increase-decrease>
+      <i-feather [name]="'chevron-up'" class="icon"></i-feather>
+    </div>
+    <div class="row-middle">
+      <app-number-increase-decrease
+        [value]="passpartuWidthMargins?.left"
+        [direction]="'vertical'"
+        (changeEvent)="changeValue('left', $event)"
+      ></app-number-increase-decrease>
+      <i-feather [name]="'chevron-left'" class="icon"></i-feather>
+      <div
+        class="picture"
+        [style.background-image]="'url(' + thumbnailUrl + ')'"
+        [style.width]="'100%'"
+        [style.height]="'100%'"
+        [style.background-position]="'center'"
+        [style.background-size]="'cover'"
+        [style.background-repeat]="'no-repeat'"
+      ></div>
+      <div class="all-buttons">
+        <app-button
+          [iconName]="'minus'"
+          [buttonSize]="'big'"
+          [isSquare]="true"
+          [isTransparentMode]="true"
+          (clickEvent)="changeValue('all', 'decrease')"
+          class="button"
+        ></app-button>
+        <app-button
+          [iconName]="'plus'"
+          [buttonSize]="'big'"
+          [isSquare]="true"
+          [isTransparentMode]="true"
+          (clickEvent)="changeValue('all', 'increase')"
+          class="button"
+        ></app-button>
+      </div>
+
+      <i-feather [name]="'chevron-right'" class="icon"></i-feather>
+      <app-number-increase-decrease
+        [value]="passpartuWidthMargins?.right"
+        [direction]="'vertical'"
+        (changeEvent)="changeValue('right', $event)"
+      ></app-number-increase-decrease>
+    </div>
+    <div class="row-bottom">
+      <i-feather [name]="'chevron-down'" class="icon"></i-feather>
+      <app-number-increase-decrease
+        [value]="passpartuWidthMargins?.down"
+        (changeEvent)="changeValue('down', $event)"
+      ></app-number-increase-decrease>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <app-button
+    [text]="'cancel' | translate"
+    color="secondary"
+    [buttonSize]="'middle'"
+    (clickEvent)="cancelSaveSelection()"
+  ></app-button>
+  <app-button
+    [text]="'ok' | translate"
+    color="success"
+    [buttonSize]="'middle'"
+    (clickEvent)="saveSelection()"
+  ></app-button>
+</mat-dialog-actions>

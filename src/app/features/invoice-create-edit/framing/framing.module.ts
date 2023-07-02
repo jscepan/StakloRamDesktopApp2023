@@ -11,6 +11,7 @@ import { FacetingSandingPopupModule } from './faceting-sanding-selection-popup/f
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { PasspartuWidthPopupModule } from './passpartu-width-popup/passpartu-width-popup.module';
 
 @NgModule({
   declarations: [FramingComponent],
@@ -27,6 +28,7 @@ import { MatSelectModule } from '@angular/material/select';
     IconsModule,
     MatFormFieldModule,
     FacetingSandingPopupModule,
+    PasspartuWidthPopupModule,
   ],
   exports: [FramingComponent],
 })

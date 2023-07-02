@@ -1,0 +1,22 @@
+<div
+  class="number-increase-container"
+  [ngClass]="{ vertical: direction === 'vertical' }"
+>
+  <div class="icon">
+    <i-feather
+      [name]="'plus'"
+      class="icon-small"
+      (click)="clickEvent('increase')"
+    ></i-feather>
+  </div>
+  <div class="value">
+    {{ value || 0 }}
+  </div>
+  <div class="icon">
+    <i-feather
+      [name]="'minus'"
+      class="icon-small"
+      (click)="clickEvent('decrease')"
+    ></i-feather>
+  </div>
+</div>

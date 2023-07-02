@@ -1,0 +1,27 @@
+.number-increase-container {
+  display: flex;
+  text-align: center;
+  align-items: center;
+
+  &.vertical {
+    flex-direction: column;
+  }
+
+  .icon {
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    margin: 20px;
+
+    i-feather {
+      height: 40px;
+      width: 40px;
+    }
+  }
+
+  .value {
+    font-size: 60px;
+    font-weight: 600;
+    line-height: 60px;
+  }
+}
