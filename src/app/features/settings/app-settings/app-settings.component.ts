@@ -43,6 +43,8 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
   languageOptions!: { key: string; value: string }[];
   printerOptions!: { key: string; value: string }[];
 
+  touchScreenKeyboardEnabled: boolean = true;
+
   constructor(
     private appSettingsService: SettingsStoreService,
     private route: Router,
@@ -61,12 +63,17 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
     this.subs.sink.settings = this.appSettingsService.settings.subscribe(
       (settings) => {
         this.settings = settings;
+        this.touchScreenKeyboardEnabled =
+          settings?.touchScreenKeyboardEnabled ?? true;
         this.mapFormData(settings);
       }
     );
   }
 
   insertText(controlName: string): void {
+    if (!this.touchScreenKeyboardEnabled) {
+      return;
+    }
     this.subs.sink.edit = this.keyboardAlphabetComponentService
       .openDialog(
         this.appSettingsForm?.get(controlName)?.value,
@@ -81,6 +88,9 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
   }
 
   insertNumber(controlName: string): void {
+    if (!this.touchScreenKeyboardEnabled) {
+      return;
+    }
     this.subs.sink.insertHeight = this.keyboardNumericComponentService
       .openDialog(
         this.translateService.instant(controlName),
