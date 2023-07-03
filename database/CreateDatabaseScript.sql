@@ -51,14 +51,10 @@ CREATE TABLE IF NOT EXISTS `invoiceitem` (
   `mirror_mirror_oid` INTEGER,
   `faceting_faceting_oid` INTEGER,
   `sanding_sanding_oid` INTEGER,
-  `invoiceitem_passpartuWidth` REAL,
-  `invoiceitem_passpartuWidthUom` TEXT,
-  `passpartucolor_passpartuColor_oid` INTEGER,
   FOREIGN KEY (`faceting_faceting_oid`) REFERENCES `faceting` (`faceting_oid`),
   FOREIGN KEY (`glass_glass_oid`) REFERENCES `glass` (`glass_oid`),
   FOREIGN KEY (`invoice_invoice_oid`) REFERENCES `invoice` (`invoice_oid`),
   FOREIGN KEY (`mirror_mirror_oid`) REFERENCES `mirror` (`mirror_oid`),
-  FOREIGN KEY (`passpartucolor_passpartuColor_oid`) REFERENCES `passpartucolor` (`passpartuColor_oid`),
   FOREIGN KEY (`sanding_sanding_oid`) REFERENCES `sanding` (`sanding_oid`)
 );
 CREATE TABLE IF NOT EXISTS `invoiceitem_has_frame` (
@@ -69,15 +65,6 @@ CREATE TABLE IF NOT EXISTS `invoiceitem_has_frame` (
   FOREIGN KEY (`frame_frame_oid`) REFERENCES `frame` (`frame_oid`),
   FOREIGN KEY (`invoiceItem_invoiceItem_oid`) REFERENCES `invoiceitem` (`invoiceitem_oid`)
 );
-CREATE TABLE IF NOT EXISTS `mirror` (
-  `mirror_oid` INTEGER PRIMARY KEY AUTOINCREMENT,
-  `mirror_name` TEXT,
-  `mirror_uom` TEXT,
-  `mirror_pricePerUom` REAL,
-  `mirror_cashRegisterNumber` INTEGER,
-  `mirror_isActive` INTEGER
-);
-INSERT INTO `mirror` VALUES (1,'OGLEDALO 3 mm','m2',3367.000,52,1),(2,'OGLEDALO 4 mm','m2',4212.000,53,1),(3,'KUPČEVO','m2',0.000,NULL,1);
 CREATE TABLE IF NOT EXISTS `passpartu` (
   `passpartu_oid` INTEGER PRIMARY KEY AUTOINCREMENT,
   `passpartu_name` TEXT,
@@ -102,6 +89,27 @@ CREATE TABLE IF NOT EXISTS `sanding` (
   `sanding_cashRegisterNumber` INTEGER,
   `sanding_isActive` INTEGER
 );
+CREATE TABLE IF NOT EXISTS `invoiceitem_has_passpartucolor` (
+  `invoiceitem_has_passpartucolor_oid` INTEGER PRIMARY KEY AUTOINCREMENT,
+  `invoiceItem_invoiceItem_oid` INTEGER NOT NULL,
+  `passpartucolor_passpartuColor_oid` INTEGER NOT NULL,
+  `passpartuTop` REAL,
+  `passpartuDown` REAL,
+  `passpartuLeft` REAL,
+  `passpartuRight` REAL,
+  `passpartuWidthUom` TEXT,
+  FOREIGN KEY (`passpartucolor_passpartuColor_oid`) REFERENCES `passpartucolor` (`passpartuColor_oid`),
+  FOREIGN KEY (`invoiceItem_invoiceItem_oid`) REFERENCES `invoiceitem` (`invoiceitem_oid`)
+);
+CREATE TABLE IF NOT EXISTS `mirror` (
+  `mirror_oid` INTEGER PRIMARY KEY AUTOINCREMENT,
+  `mirror_name` TEXT,
+  `mirror_uom` TEXT,
+  `mirror_pricePerUom` REAL,
+  `mirror_cashRegisterNumber` INTEGER,
+  `mirror_isActive` INTEGER
+);
+INSERT INTO `mirror` VALUES (1,'OGLEDALO 3 mm','m2',3367.000,52,1),(2,'OGLEDALO 4 mm','m2',4212.000,53,1),(3,'KUPČEVO','m2',0.000,NULL,1);
 INSERT INTO `sanding` VALUES (1,'PESKARENJE SA MOTIVOM','m2',2880.000,124,1);
 CREATE TABLE IF NOT EXISTS `user` (
   `user_oid` INTEGER PRIMARY KEY AUTOINCREMENT,

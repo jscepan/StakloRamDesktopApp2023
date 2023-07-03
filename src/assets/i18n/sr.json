@@ -1,4 +1,8 @@
 {
+  "top": "Gore",
+  "down": "Dole",
+  "left": "Levo",
+  "right": "Desno",
   "applicationSettings": "Podešavanja aplikacije",
   "applicationSettingsDescription": "Sva neophodna podešavanja aplikacije",
   "framingSettings": "Podešavanja uramljivanja",

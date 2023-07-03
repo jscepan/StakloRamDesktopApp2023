@@ -15,14 +15,14 @@
   <span>{{ countOfItems || 1 }}</span> -->
 </div>
 <div class="item-container" [class.inOneRow]="inOneRow">
-  <ng-container *ngIf="dataModel.passpartuColor?.oid">
+  <!-- <ng-container *ngIf="dataModel.passpartuColor?.oid">
     <span [class.description]="!inOneRow">{{ "passpartu" | translate }}</span>
     :&nbsp;{{ dataModel.passpartuColor?.name
     }}<span *ngIf="dataModel.passpartuWidth && dataModel.passpartuWidthUom"
       >/</span
     >{{ dataModel.passpartuWidth | customNumber
     }}{{ dataModel.passpartuWidthUom }},&nbsp;
-  </ng-container>
+  </ng-container> -->
   <ng-container *ngIf="dataModel.glass?.oid">
     <span [class.description]="!inOneRow">{{ "glass" | translate }}</span>
     :&nbsp;{{ dataModel.glass?.name }},&nbsp;

@@ -22,7 +22,10 @@ export class InvoiceItemModel extends BaseModel {
   selectedFrames: { frame: FrameModel; colorCode?: string }[] = [];
   selectedPasspartuColors?: {
     passpartuColor?: PasspartuColorModel;
-    passpartuWidth?: number;
+    passpartuTop?: number;
+    passpartuDown?: number;
+    passpartuLeft?: number;
+    passpartuRight?: number;
     passpartuWidthUom?: UOM;
   }[] = [];
   amount: number = 0;

@@ -88,14 +88,17 @@ InvoiceItem.create = (newInvoiceItem, invoiceOid, result) => {
 
         newInvoiceItem.selectedPasspartuColors.forEach((f) => {
           const pcQuery =
-            "INSERT INTO invoiceitem_has_passpartucolor (invoiceItem_invoiceItem_oid, passpartucolor_passpartuColor_oid, passpartuWidth, passpartuWidthUom) VALUES (?,?,?,?)";
+            "INSERT INTO invoiceitem_has_passpartucolor (invoiceItem_invoiceItem_oid, passpartucolor_passpartuColor_oid, passpartuTop, passpartuDown, passpartuLeft, passpartuRight, passpartuWidthUom) VALUES (?,?,?,?,?,?,?)";
           promises.push(
             () =>
               new Promise((resolve, reject) => {
                 const pcParams = [
                   this.lastID,
                   f.passpartuColor.oid,
-                  f.passpartuWidth,
+                  f.passpartuTop,
+                  f.passpartuDown,
+                  f.passpartuLeft,
+                  f.passpartuRight,
                   f.passpartuWidthUom,
                 ];
                 sql.run(pcQuery, pcParams, (err) => {
@@ -178,21 +181,6 @@ InvoiceItem.getAll = (invoiceOid, result) => {
           dimensionsOutterHeight: i.invoiceitem_outterHeight,
           selectedFrames: [],
           selectedPasspartuColors: [],
-          // passpartuWidth: i.invoiceitem_passpartuWidth,
-          // passpartuWidthUom: i.invoiceitem_passpartuWidthUom,
-          // passpartuColor: i.passpartucolor_passpartuColor_oid
-          //   ? {
-          //       oid: i.passpartuColor_oid,
-          //       name: i.passpartuColor_name,
-          //       passpartu: {
-          //         oid: i.passpartu_oid,
-          //         name: i.passpartu_name,
-          //         uom: i.passpartu_uom,
-          //         pricePerUom: i.passpartu_pricePerUom,
-          //         cashRegisterNumber: i.passpartu_cashRegisterNumber,
-          //       },
-          //     }
-          //   : null,
           glass: i.glass_oid
             ? {
                 oid: i.glass_oid,
@@ -318,7 +306,10 @@ InvoiceItem.getAll = (invoiceOid, result) => {
                               isActive: pc.passpartu_isActive,
                             },
                           },
-                          passpartuWidth: pc.passpartuWidth,
+                          passpartuTop: pc.passpartuTop,
+                          passpartuDown: pc.passpartuDown,
+                          passpartuLeft: pc.passpartuLeft,
+                          passpartuRight: pc.passpartuRight,
                           passpartuWidthUom: pc.passpartuWidthUom,
                         });
                       }

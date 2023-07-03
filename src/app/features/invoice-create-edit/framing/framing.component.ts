@@ -31,6 +31,7 @@ import { DraftInvoicesService } from 'src/app/shared/services/data-store-service
 import { roundOnDigits } from 'src/app/shared/utils';
 import { InvoiceItemModel } from 'src/app/shared/models/invoice-item.model';
 import { PasspartuColorModel } from 'src/app/shared/models/passpartu-color-model';
+import { PasspartuWidthPopupPopupService } from './passpartu-width-popup/passpartu-width-popup-component.service';
 
 @Component({
   selector: 'app-framing',
@@ -41,6 +42,7 @@ import { PasspartuColorModel } from 'src/app/shared/models/passpartu-color-model
     SelectionComponentService,
     FacetingSandingPopupService,
     InvoiceItemCalculatorService,
+    PasspartuWidthPopupPopupService,
   ],
 })
 export class FramingComponent implements OnInit, OnDestroy {
@@ -76,6 +78,7 @@ export class FramingComponent implements OnInit, OnDestroy {
     private globalService: GlobalService,
     private invoiceItemCalculatorService: InvoiceItemCalculatorService,
     private draftInvoicesStoreService: DraftInvoicesService,
+    private passpartuWidthPopupPopupService: PasspartuWidthPopupPopupService,
     private translateService: TranslateService
   ) {}
 
@@ -131,10 +134,6 @@ export class FramingComponent implements OnInit, OnDestroy {
             invoiceItem.dimensionsOutterHeight
           ),
           glass: new UntypedFormControl(invoiceItem.glass, []),
-          passpartuWidth: new UntypedFormControl(
-            invoiceItem.passpartuWidth,
-            []
-          ),
           passpartuWidthUom: new UntypedFormControl(
             invoiceItem.passpartuWidthUom,
             []
@@ -172,7 +171,10 @@ export class FramingComponent implements OnInit, OnDestroy {
             .dimensionsOutterHeight
             ? this.invoiceItemForm.value.dimensionsOutterHeight
             : this.invoiceItemForm.value.dimensionsHeight,
-          passpartuWidth: undefined,
+          passpartuTop: undefined,
+          passpartuDown: undefined,
+          passpartuLeft: undefined,
+          passpartuRight: undefined,
           passpartuWidthUom: undefined,
         });
       } else {
@@ -200,7 +202,6 @@ export class FramingComponent implements OnInit, OnDestroy {
             dimensionsOutterWidth: 0,
             dimensionsOutterHeight: 0,
             glass: undefined,
-            passpartuWidth: undefined,
             passpartuWidthUom: undefined,
             passpartuColor: undefined,
             mirror: undefined,
@@ -250,7 +251,10 @@ export class FramingComponent implements OnInit, OnDestroy {
     if (
       this.$isOutterDimension.getValue() &&
       this.invoiceItemForm.value.passpartuColor &&
-      !this.invoiceItemForm.value.passpartuWidth
+      !this.invoiceItemForm.value.passpartuTop &&
+      !this.invoiceItemForm.value.passpartuDown &&
+      !this.invoiceItemForm.value.passpartuLeft &&
+      !this.invoiceItemForm.value.passpartuRight
     ) {
       this.selectPasspartuWidth();
     }
@@ -417,7 +421,10 @@ export class FramingComponent implements OnInit, OnDestroy {
               )[0];
               const selectedPasspartuColors: {
                 passpartuColor?: PasspartuColorModel;
-                passpartuWidth?: number;
+                passpartuTop?: number;
+                passpartuDown?: number;
+                passpartuLeft?: number;
+                passpartuRight?: number;
                 passpartuWidthUom?: UOM;
               }[] = this.invoiceItemForm.get('selectedPasspartuColors')?.value;
               selectedPasspartuColors.push({
@@ -438,6 +445,61 @@ export class FramingComponent implements OnInit, OnDestroy {
   }
 
   selectPasspartuWidth(): void {
+    this.subs.sink.passInputWidth = this.passpartuWidthPopupPopupService
+      .openDialog()
+      .subscribe((margins) => {
+        if (
+          margins &&
+          ((margins.top !== undefined && margins.top > 0) ||
+            (margins.down !== undefined && margins.down > 0) ||
+            (margins.left !== undefined && margins.left > 0) ||
+            (margins.right !== undefined && margins.right > 0))
+        ) {
+          const selectedPasspartuColors: {
+            passpartuColor?: PasspartuColorModel;
+            passpartuTop: number;
+            passpartuDown: number;
+            passpartuLeft: number;
+            passpartuRight: number;
+            passpartuWidthUom?: UOM;
+          }[] = this.invoiceItemForm.get('selectedPasspartuColors')?.value;
+
+          let lastElement =
+            selectedPasspartuColors[selectedPasspartuColors.length - 1];
+          lastElement = {
+            ...lastElement,
+            passpartuTop: margins.top || 0,
+            passpartuDown: margins.down || 0,
+            passpartuLeft: margins.left || 0,
+            passpartuRight: margins.right || 0,
+            passpartuWidthUom: UOM.CENTIMETER,
+          };
+          const updatedSelectedPasspartuColors = selectedPasspartuColors.map(
+            (element, index) => {
+              if (index === selectedPasspartuColors.length - 1) {
+                // Ako je poslednji element, izvršite promene
+                return lastElement;
+              } else {
+                // Inače zadržite nepromenjeni element
+                return element;
+              }
+            }
+          );
+
+          this.invoiceItemForm.patchValue({
+            selectedPasspartuColors: updatedSelectedPasspartuColors,
+          });
+        } else {
+          this.globalService.showBasicAlert(
+            MODE.error,
+            this.translateService.instant('missingData'),
+            this.translateService.instant('passpartuWidthIsRequiredField')
+          );
+          this.selectPasspartuWidth();
+        }
+      });
+
+    /*
     this.subs.sink.passInputWidth = this.keyboardNumericComponentService
       .openDialog(
         this.translateService.instant('passpartuWidth'),
@@ -487,6 +549,7 @@ export class FramingComponent implements OnInit, OnDestroy {
           // }
         }
       });
+      */
   }
 
   selectMirror(): void {
@@ -547,7 +610,10 @@ export class FramingComponent implements OnInit, OnDestroy {
         this.invoiceItemForm.patchValue({
           selectedPasspartuColors: [],
           passpartuColor: undefined,
-          passpartuWidth: undefined,
+          passpartuTop: undefined,
+          passpartuDown: undefined,
+          passpartuLeft: undefined,
+          passpartuRight: undefined,
         });
         break;
       case 'mirror':

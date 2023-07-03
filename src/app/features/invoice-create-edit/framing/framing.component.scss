@@ -85,6 +85,11 @@
             color: var(--color-danger);
           }
         }
+
+        .passpartu-names {
+          display: flex;
+          flex-direction: column;
+        }
       }
       &.red {
         background-color: rgb(221, 117, 117);

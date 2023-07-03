@@ -49,11 +49,7 @@ export class PasspartuWidthPopupComponent
   }
 
   public saveSelection(): void {
-    this.dialogRef
-      .close
-      //
-      //
-      ();
+    this.dialogRef.close(this.passpartuWidthMargins);
   }
 
   public cancelSaveSelection(): void {

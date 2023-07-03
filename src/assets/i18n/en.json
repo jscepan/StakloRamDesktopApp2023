@@ -1,4 +1,8 @@
 {
+  "top": "Top",
+  "down": "Down",
+  "left": "Left",
+  "right": "Right",
   "applicationSettings": "Application settings",
   "applicationSettingsDescription": "Change settings of this application",
   "framingSettings": "Framing settings",

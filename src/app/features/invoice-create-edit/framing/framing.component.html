@@ -204,42 +204,90 @@
                           [class.success]="true"
                         ></i-feather>
                       </ng-container>
-                      <ng-container
-                        *ngIf="
-                          !invoiceItemForm.value.selectedPasspartuColors.length
-                        "
-                      >
-                        {{
-                          this.invoiceItemForm.value?.dimensionsOutterWidth
-                            ? ("passpartuSelectionObligated" | translate)
-                            : ("passpartuNotSelected" | translate)
-                        }}
-                      </ng-container>
-                      <ng-container
-                        *ngIf="
-                          invoiceItemForm.value.selectedPasspartuColors.length
-                        "
-                      >
-                        <span
-                          *ngFor="
-                            let pcItem of invoiceItemForm.value
-                              .selectedPasspartuColors;
-                            let i = index
+                      <div class="passpartu-names">
+                        <ng-container
+                          *ngIf="
+                            !invoiceItemForm.value.selectedPasspartuColors
+                              .length
                           "
                         >
-                          {{ pcItem?.passpartuColor.name }}
-                          <span *ngIf="pcItem?.passpartuWidth">
-                            =>
-                            {{
-                              " " +
-                                ("width" | translate) +
-                                ": " +
-                                pcItem?.passpartuWidth +
-                                pcItem?.passpartuWidthUom
-                            }},&nbsp;
+                          {{
+                            this.invoiceItemForm.value?.dimensionsOutterWidth
+                              ? ("passpartuSelectionObligated" | translate)
+                              : ("passpartuNotSelected" | translate)
+                          }}
+                        </ng-container>
+                        <ng-container
+                          *ngIf="
+                            invoiceItemForm.value.selectedPasspartuColors.length
+                          "
+                        >
+                          <span
+                            *ngFor="
+                              let pcItem of invoiceItemForm.value
+                                .selectedPasspartuColors;
+                              let i = index
+                            "
+                          >
+                            {{ pcItem?.passpartuColor.name }}
+                            <span
+                              *ngIf="
+                                pcItem &&
+                                pcItem.passpartuTop === pcItem.passpartuDown &&
+                                pcItem.passpartuTop === pcItem.passpartuLeft &&
+                                pcItem.passpartuTop === pcItem.passpartuRight
+                              "
+                            >
+                              =>
+                              {{
+                                " " +
+                                  ("width" | translate) +
+                                  ": " +
+                                  pcItem?.passpartuTop +
+                                  pcItem?.passpartuWidthUom
+                              }},&nbsp;
+                            </span>
+                            <ng-container
+                              *ngIf="
+                                pcItem &&
+                                (pcItem.passpartuTop !== pcItem.passpartuDown ||
+                                  pcItem.passpartuTop !==
+                                    pcItem.passpartuLeft ||
+                                  pcItem.passpartuTop !== pcItem.passpartuRight)
+                              "
+                            >
+                              <span>
+                                =>
+                                {{
+                                  " " +
+                                    ("top" | translate) +
+                                    ": " +
+                                    pcItem.passpartuTop +
+                                    pcItem.passpartuWidthUom +
+                                    "," +
+                                    " " +
+                                    ("down" | translate) +
+                                    ": " +
+                                    pcItem.passpartuDown +
+                                    pcItem.passpartuWidthUom +
+                                    "," +
+                                    " " +
+                                    ("left" | translate) +
+                                    ": " +
+                                    pcItem.passpartuLeft +
+                                    pcItem.passpartuWidthUom +
+                                    "," +
+                                    " " +
+                                    ("right" | translate) +
+                                    ": " +
+                                    pcItem.passpartuRight +
+                                    pcItem.passpartuWidthUom
+                                }},&nbsp;
+                              </span>
+                            </ng-container>
                           </span>
-                        </span>
-                      </ng-container>
+                        </ng-container>
+                      </div>
                     </div>
                   </div>
                   <div class="grid-item">
