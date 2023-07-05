@@ -134,14 +134,6 @@ export class FramingComponent implements OnInit, OnDestroy {
             invoiceItem.dimensionsOutterHeight
           ),
           glass: new UntypedFormControl(invoiceItem.glass, []),
-          passpartuWidthUom: new UntypedFormControl(
-            invoiceItem.passpartuWidthUom,
-            []
-          ),
-          passpartuColor: new UntypedFormControl(
-            invoiceItem.passpartuColor,
-            []
-          ),
           mirror: new UntypedFormControl(invoiceItem.mirror, []),
           faceting: new UntypedFormControl(invoiceItem.faceting, []),
           sanding: new UntypedFormControl(invoiceItem.sanding, []),
@@ -202,8 +194,6 @@ export class FramingComponent implements OnInit, OnDestroy {
             dimensionsOutterWidth: 0,
             dimensionsOutterHeight: 0,
             glass: undefined,
-            passpartuWidthUom: undefined,
-            passpartuColor: undefined,
             mirror: undefined,
             faceting: undefined,
             sanding: undefined,
