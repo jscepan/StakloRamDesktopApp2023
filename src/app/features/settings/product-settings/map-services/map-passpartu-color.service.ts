@@ -49,6 +49,7 @@ export class MapPasspartuColorService
               type: 'string',
               value: '',
               required: true,
+              fullWidth: true,
             },
             {
               label: {
@@ -59,6 +60,7 @@ export class MapPasspartuColorService
               value: passpartues[0].oid,
               optionalValues,
               required: true,
+              fullWidth: true,
             },
           ];
           subscriber.next(entities);
@@ -99,6 +101,7 @@ export class MapPasspartuColorService
               type: 'string',
               value: entity.oid,
               disabled: true,
+              fullWidth: true,
             },
             {
               label: {
@@ -108,6 +111,7 @@ export class MapPasspartuColorService
               type: 'string',
               value: entity.name,
               required: true,
+              fullWidth: true,
             },
             {
               label: {
@@ -118,6 +122,7 @@ export class MapPasspartuColorService
               value: passpartues[0].oid,
               optionalValues,
               required: true,
+              fullWidth: true,
             },
           ];
 

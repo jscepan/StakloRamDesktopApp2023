@@ -19,6 +19,7 @@ export class MapProductService implements ProductSettings<ProductModel> {
           type: 'string',
           value: '',
           required: true,
+          fullWidth: true,
         },
         {
           label: { key: 'uom', value: this.translateService.instant('uom') },
@@ -63,12 +64,14 @@ export class MapProductService implements ProductSettings<ProductModel> {
           type: 'string',
           value: entity.oid,
           disabled: true,
+          fullWidth: true,
         },
         {
           label: { key: 'name', value: this.translateService.instant('name') },
           type: 'string',
           value: entity.name,
           required: true,
+          fullWidth: true,
         },
         {
           label: { key: 'uom', value: this.translateService.instant('uom') },

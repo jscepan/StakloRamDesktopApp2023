@@ -85,6 +85,7 @@ export class MapFrameService extends MapProductService {
           type: 'string',
           value: entity.name,
           required: true,
+          fullWidth: true,
         },
         {
           label: { key: 'uom', value: this.translateService.instant('uom') },

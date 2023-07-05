@@ -4,48 +4,50 @@
     class="form"
   >
     <ng-container *ngFor="let item of formControls">
-      <ng-container *ngIf="item.entity.type === 'string'">
-        <mat-form-field>
-          <mat-label>{{ item.entity.label.value }}</mat-label>
-          <input
-            type="text"
-            matInput
-            [formControl]="item.formControl"
-            [errorStateMatcher]="matcher"
-            placeholder="{{ item.entity.label.value }}"
-            (click)="inputText(item)"
-          />
-        </mat-form-field>
-      </ng-container>
-      <ng-container *ngIf="item.entity.type === 'number'">
-        <mat-form-field>
-          <mat-label>{{ item.entity.label.value }}</mat-label>
-          <input
-            type="number"
-            matInput
-            [formControl]="item.formControl"
-            [errorStateMatcher]="matcher"
-            placeholder="{{ item.entity.label.value }}"
-            (click)="inputNumber(item)"
-          />
-        </mat-form-field>
-      </ng-container>
-      <ng-container *ngIf="item.entity.type === 'select'">
-        <mat-form-field>
-          <mat-label>{{ item.entity.label.value }}</mat-label>
-          <mat-select
-            [formControl]="item.formControl"
-            [errorStateMatcher]="matcher"
-          >
-            <mat-option
-              *ngFor="let option of item.entity.optionalValues"
-              [value]="option.key"
+      <div [ngClass]="{'half-width': !item.entity.fullWidth, 'full-width':item.entity.fullWidth}">
+        <ng-container *ngIf="item.entity.type === 'string'">
+          <mat-form-field>
+            <mat-label>{{ item.entity.label.value }}</mat-label>
+            <input
+              type="text"
+              matInput
+              [formControl]="item.formControl"
+              [errorStateMatcher]="matcher"
+              placeholder="{{ item.entity.label.value }}"
+              (click)="inputText(item)"
+            />
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="item.entity.type === 'number'">
+          <mat-form-field>
+            <mat-label>{{ item.entity.label.value }}</mat-label>
+            <input
+              type="number"
+              matInput
+              [formControl]="item.formControl"
+              [errorStateMatcher]="matcher"
+              placeholder="{{ item.entity.label.value }}"
+              (click)="inputNumber(item)"
+            />
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="item.entity.type === 'select'">
+          <mat-form-field>
+            <mat-label>{{ item.entity.label.value }}</mat-label>
+            <mat-select
+              [formControl]="item.formControl"
+              [errorStateMatcher]="matcher"
             >
-              {{ option.value }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </ng-container>
+              <mat-option
+                *ngFor="let option of item.entity.optionalValues"
+                [value]="option.key"
+              >
+                {{ option.value }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </ng-container>
+      </div>
     </ng-container>
   </form>
 </div>

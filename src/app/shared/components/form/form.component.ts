@@ -23,6 +23,7 @@ export class Entity {
   optionalValues?: KeyValue<string, string | number>[];
   label!: KeyValue<string, string>;
   disabled?: boolean = false;
+  fullWidth?: boolean = false;
 }
 
 export class EntityFormControl {
