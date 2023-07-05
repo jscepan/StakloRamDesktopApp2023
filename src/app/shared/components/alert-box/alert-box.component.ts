@@ -78,7 +78,7 @@ export class AlertBoxComponent implements OnInit, OnDestroy {
         timeOutId = setTimeout(() => {
           this._removeAlertBox(componentRef);
 
-          alertComponentEventSubscription.unsubscribe();
+          alertComponentEventSubscription?.unsubscribe();
         }, messageData.duration + this.ADD_ALERT_STYLES_DELAY * alertsCount);
 
         alertComponentEventSubscription =
@@ -89,7 +89,7 @@ export class AlertBoxComponent implements OnInit, OnDestroy {
                   clearTimeout(timeOutId);
                 });
 
-                alertComponentEventSubscription.unsubscribe();
+                alertComponentEventSubscription?.unsubscribe();
               }
             }
           );
@@ -152,6 +152,6 @@ export class AlertBoxComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.showMessageSubscription.unsubscribe();
+    this.showMessageSubscription?.unsubscribe();
   }
 }

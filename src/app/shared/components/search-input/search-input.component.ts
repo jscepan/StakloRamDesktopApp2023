@@ -80,6 +80,6 @@ export class SearchInputComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this.inputChangeSubscription.unsubscribe();
+    this.inputChangeSubscription?.unsubscribe();
   }
 }

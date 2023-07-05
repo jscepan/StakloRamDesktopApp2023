@@ -65,7 +65,7 @@ export class MapPasspartuColorService
           ];
           subscriber.next(entities);
           subscriber.complete();
-          this.passSubscription.unsubscribe();
+          this.passSubscription?.unsubscribe();
         }
       );
     });

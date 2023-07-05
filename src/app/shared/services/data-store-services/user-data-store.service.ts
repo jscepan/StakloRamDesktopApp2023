@@ -22,7 +22,7 @@ export class UserDataStoreService extends BaseDataStoreService<UserModel> {
       users.forEach((user) => {
         if (!this.currentUser$.getValue() && user.isActive) {
           this.selectUser(user);
-          this.entSubs.unsubscribe();
+          this.entSubs?.unsubscribe();
         }
       });
     });

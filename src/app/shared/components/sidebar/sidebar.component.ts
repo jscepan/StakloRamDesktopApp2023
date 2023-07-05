@@ -82,7 +82,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
             }
           }
           if (this.invoiceNumberSubs) {
-            this.invoiceNumberSubs.unsubscribe();
+            this.invoiceNumberSubs?.unsubscribe();
           }
         });
     } else {
