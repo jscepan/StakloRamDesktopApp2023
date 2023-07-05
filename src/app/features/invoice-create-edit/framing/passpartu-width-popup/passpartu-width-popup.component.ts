@@ -58,7 +58,8 @@ export class PasspartuWidthPopupComponent
 
   changeValue(
     control: 'top' | 'down' | 'left' | 'right' | 'all',
-    action: string
+    action: string,
+    value: number = 1
   ): void {
     if (control === 'all') {
       let biggestNumber: number = Math.max(
@@ -68,9 +69,9 @@ export class PasspartuWidthPopupComponent
         this.passpartuWidthMargins?.right ?? Number.MIN_VALUE
       );
       if (action === 'increase') {
-        biggestNumber++;
+        biggestNumber += value;
       } else {
-        biggestNumber--;
+        biggestNumber -= value;
         if (biggestNumber < 0) {
           biggestNumber = 0;
         }
@@ -90,13 +91,13 @@ export class PasspartuWidthPopupComponent
             if (oldValue > 0) {
               this.passpartuWidthMargins = {
                 ...this.passpartuWidthMargins,
-                [control]: oldValue - 1,
+                [control]: oldValue - value,
               };
             }
           } else {
             this.passpartuWidthMargins = {
               ...this.passpartuWidthMargins,
-              [control]: oldValue + 1,
+              [control]: oldValue + value,
             };
           }
         }

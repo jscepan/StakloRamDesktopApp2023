@@ -5,7 +5,10 @@
         [value]="passpartuWidthMargins?.top"
         (changeEvent)="changeValue('top', $event)"
       ></app-number-increase-decrease>
-      <i-feather [name]="'chevron-up'" class="icon"></i-feather>
+      <i-feather
+        [name]="'chevron-up'"
+        class="icon"
+      ></i-feather>
     </div>
     <div class="row-middle">
       <app-number-increase-decrease
@@ -13,7 +16,10 @@
         [direction]="'vertical'"
         (changeEvent)="changeValue('left', $event)"
       ></app-number-increase-decrease>
-      <i-feather [name]="'chevron-left'" class="icon"></i-feather>
+      <i-feather
+        [name]="'chevron-left'"
+        class="icon"
+      ></i-feather>
       <div
         class="picture"
         [style.background-image]="'url(' + thumbnailUrl + ')'"
@@ -24,25 +30,72 @@
         [style.background-repeat]="'no-repeat'"
       ></div>
       <div class="all-buttons">
-        <app-button
-          [iconName]="'minus'"
-          [buttonSize]="'big'"
-          [isSquare]="true"
-          [isTransparentMode]="true"
-          (clickEvent)="changeValue('all', 'decrease')"
-          class="button"
-        ></app-button>
-        <app-button
-          [iconName]="'plus'"
-          [buttonSize]="'big'"
-          [isSquare]="true"
-          [isTransparentMode]="true"
-          (clickEvent)="changeValue('all', 'increase')"
-          class="button"
-        ></app-button>
-      </div>
+        <div class="first-row">
+          <app-button
+            [iconName]="'minus'"
+            [buttonSize]="'big'"
+            [isSquare]="true"
+            [isTransparentMode]="true"
+            (clickEvent)="changeValue('all', 'decrease')"
+            class="button"
+          ></app-button>
+          <app-button
+            [iconName]="'plus'"
+            [buttonSize]="'big'"
+            [isSquare]="true"
+            [isTransparentMode]="true"
+            (clickEvent)="changeValue('all', 'increase')"
+            class="button"
+          ></app-button>
 
-      <i-feather [name]="'chevron-right'" class="icon"></i-feather>
+        </div>
+        <div class="second-row">
+          <app-button
+            [text]="'+2'"
+            [buttonSize]="'small'"
+            [isSquare]="true"
+            [isTransparentMode]="true"
+            (clickEvent)="changeValue('all', 'increase',2)"
+            class="small-button"
+          ></app-button>
+          <app-button
+            [text]="'+3'"
+            [buttonSize]="'small'"
+            [isSquare]="true"
+            [isTransparentMode]="true"
+            (clickEvent)="changeValue('all', 'increase',3)"
+            class="small-button"
+          ></app-button>
+          <app-button
+            [text]="'+4'"
+            [buttonSize]="'small'"
+            [isSquare]="true"
+            [isTransparentMode]="true"
+            (clickEvent)="changeValue('all', 'increase',4)"
+            class="small-button"
+          ></app-button>
+          <app-button
+            [text]="'+5'"
+            [buttonSize]="'small'"
+            [isSquare]="true"
+            [isTransparentMode]="true"
+            (clickEvent)="changeValue('all', 'increase',5)"
+            class="small-button"
+          ></app-button>
+          <app-button
+            [text]="'+6'"
+            [buttonSize]="'small'"
+            [isSquare]="true"
+            [isTransparentMode]="true"
+            (clickEvent)="changeValue('all', 'increase',6)"
+            class="small-button"
+          ></app-button>
+        </div>
+      </div>
+      <i-feather
+        [name]="'chevron-right'"
+        class="icon"
+      ></i-feather>
       <app-number-increase-decrease
         [value]="passpartuWidthMargins?.right"
         [direction]="'vertical'"
@@ -50,7 +103,10 @@
       ></app-number-increase-decrease>
     </div>
     <div class="row-bottom">
-      <i-feather [name]="'chevron-down'" class="icon"></i-feather>
+      <i-feather
+        [name]="'chevron-down'"
+        class="icon"
+      ></i-feather>
       <app-number-increase-decrease
         [value]="passpartuWidthMargins?.down"
         (changeEvent)="changeValue('down', $event)"

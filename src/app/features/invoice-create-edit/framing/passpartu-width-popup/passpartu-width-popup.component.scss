@@ -31,8 +31,7 @@ mat-dialog-actions {
     position: relative;
     height: 100%;
 
-    .picture {
-    }
+    .picture {}
 
     .all-buttons {
       position: absolute;
@@ -40,10 +39,26 @@ mat-dialog-actions {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      flex-direction: column;
 
       .button {
         margin: 20px;
       }
+
+      .first-row {
+        display: flex;
+      }
+
+      .second-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .small-button {
+          margin-right: 10px;
+        }
+      }
+
     }
   }
 
@@ -57,5 +72,5 @@ mat-dialog-actions {
 .icon {
   height: 60px;
   width: 60px;
-  cursor: pointer;
+  // cursor: pointer;
 }

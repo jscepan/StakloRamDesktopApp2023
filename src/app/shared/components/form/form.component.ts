@@ -12,6 +12,7 @@ import { KeyboardAlphabetComponentService } from '../keyboard/alphabet/keyboard-
 import { KeyboardNumericComponentService } from '../keyboard/numeric/keyboard-numeric.component.service';
 import { FormBuilder } from './form.builder';
 import { UOM } from '../../constants';
+import { SettingsStoreService } from '../../services/settings-store.service';
 
 export class Entity {
   // oid: string;
@@ -60,18 +61,29 @@ export class FormComponent implements OnInit, OnDestroy {
   public objectForm!: UntypedFormGroup;
   formControls: EntityFormControl[] = [];
   matcher = new MyErrorStateMatcher();
+
+  touchScreenKeyboardEnabled: boolean = true;
+
   constructor(
     private keyboardAlphabetComponentService: KeyboardAlphabetComponentService,
+    private appSettingsService: SettingsStoreService,
     private keyboardNumericComponentService: KeyboardNumericComponentService
   ) {}
 
   ngOnInit(): void {
+    this.subs.sink = this.appSettingsService.settings.subscribe((settings) => {
+      this.touchScreenKeyboardEnabled =
+        settings?.touchScreenKeyboardEnabled ?? true;
+    });
     const formBuilderService = new FormBuilder(this.items);
     this.objectForm = formBuilderService.objectForm;
     this.formControls = formBuilderService.formControls;
   }
 
   inputText(item: EntityFormControl): void {
+    if (!this.touchScreenKeyboardEnabled) {
+      return;
+    }
     this.subs.sink.inputText = this.keyboardAlphabetComponentService
       .openDialog(item.formControl.value, item.entity.label.value)
       .subscribe((value) => {
@@ -83,6 +95,9 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   inputNumber(item: EntityFormControl): void {
+    if (!this.touchScreenKeyboardEnabled) {
+      return;
+    }
     this.subs.sink.inputNumber = this.keyboardNumericComponentService
       .openDialog(
         item.entity.label.value,
