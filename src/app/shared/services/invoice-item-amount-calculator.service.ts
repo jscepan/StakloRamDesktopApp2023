@@ -430,13 +430,14 @@ export class InvoiceItemCalculatorService {
   private transformPasspartuWidth(passpartuWidth: number): number {
     if (passpartuWidth > 0 && passpartuWidth <= 5) {
       return 5;
-    } else if (passpartuWidth > 5 && passpartuWidth <= 10) {
-      return 10;
-    } else if (passpartuWidth > 10 && passpartuWidth <= 15) {
-      return 15;
-    } else if (passpartuWidth > 15 && passpartuWidth <= 20) {
-      return 20;
     }
+    // else if (passpartuWidth > 5 && passpartuWidth <= 10) {
+    //   return 10;
+    // } else if (passpartuWidth > 10 && passpartuWidth <= 15) {
+    //   return 15;
+    // } else if (passpartuWidth > 15 && passpartuWidth <= 20) {
+    //   return 20;
+    // }
     return passpartuWidth;
   }
 
