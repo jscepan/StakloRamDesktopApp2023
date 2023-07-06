@@ -125,9 +125,9 @@ export class InvoicePrintedComponent
               ' ' +
               item.uom +
               ' X ' +
-              item.passpartuColor.passpartu.cashRegisterNumber +
+              item.passpartuColor?.passpartu.cashRegisterNumber +
               ' (' +
-              item.passpartuColor.name +
+              item.passpartuColor?.name +
               ')'
           );
           num++;

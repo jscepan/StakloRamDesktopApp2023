@@ -31,7 +31,7 @@ export class InvoiceItemCalculatorService {
     if (invoiceItem.glass) {
       glassPrice = this.getGlassLengthForInvoiceItems([invoiceItem])[0].amount;
     }
-    if (invoiceItem.passpartuColor) {
+    if (invoiceItem.selectedPasspartuColors?.length) {
       passpartuPrice = this.getPasspartuLengthForInvoiceItems([invoiceItem])[0]
         .amount;
     }
@@ -338,37 +338,58 @@ export class InvoiceItemCalculatorService {
   }
 
   getPasspartuLengthForInvoiceItems(invoiceItems: InvoiceItemModel[]): {
-    passpartuColor: PasspartuColorModel;
-    uom: UOM;
+    passpartuColor?: PasspartuColorModel;
+    uom?: UOM;
     length: number;
     amount: number;
   }[] {
     const result: {
-      passpartuColor: PasspartuColorModel;
-      uom: UOM;
+      passpartuColor?: PasspartuColorModel;
+      uom?: UOM;
       length: number;
       amount: number;
     }[] = [];
     invoiceItems.forEach((item) => {
-      if (item.passpartuColor) {
+      if (item.selectedPasspartuColors?.length) {
         let width = item.dimensionsWidth;
         let height = item.dimensionsHeight;
-        if (item.passpartuColor) {
-          if (item.dimensionsUom === item.passpartuWidthUom) {
-            width +=
-              this.transformPasspartuWidth(item?.passpartuWidth || 1) * 2;
-            height +=
-              this.transformPasspartuWidth(item?.passpartuWidth || 1) * 2;
+        if (item.selectedPasspartuColors[0].passpartuColor) {
+          if (
+            item.dimensionsUom ===
+            item.selectedPasspartuColors[0].passpartuWidthUom
+          ) {
+            width += this.transformPasspartuWidth(
+              item.selectedPasspartuColors[0].passpartuLeft || 0
+            );
+            width += this.transformPasspartuWidth(
+              item.selectedPasspartuColors[0].passpartuRight || 0
+            );
+            height += this.transformPasspartuWidth(
+              item?.selectedPasspartuColors[0].passpartuTop || 0
+            );
+            height += this.transformPasspartuWidth(
+              item?.selectedPasspartuColors[0].passpartuDown || 0
+            );
           } else if (
             item.dimensionsUom === UOM.CENTIMETER &&
             item.passpartuWidthUom === UOM.MILIMETER
           ) {
             width +=
-              (this.transformPasspartuWidth(item?.passpartuWidth || 1) / 10) *
-              2;
+              this.transformPasspartuWidth(
+                item.selectedPasspartuColors[0].passpartuLeft || 0
+              ) / 10;
+            width +=
+              this.transformPasspartuWidth(
+                item.selectedPasspartuColors[0].passpartuRight || 0
+              ) / 10;
             height +=
-              (this.transformPasspartuWidth(item?.passpartuWidth || 1) / 10) *
-              2;
+              this.transformPasspartuWidth(
+                item?.selectedPasspartuColors[0].passpartuTop || 0
+              ) / 10;
+            height +=
+              this.transformPasspartuWidth(
+                item?.selectedPasspartuColors[0].passpartuDown || 0
+              ) / 10;
           }
         }
         let surface =
@@ -376,40 +397,43 @@ export class InvoiceItemCalculatorService {
           this.getConstructionMeasure(width);
         surface = roundOnDigits(surface);
 
-        let passpartuPrice =
-          (item?.passpartuColor?.passpartu?.pricePerUom || 1) *
-          this.transformMeasure(
-            surface,
-            UOM.CENTIMETER2,
-            item.passpartuColor.passpartu.uom
-          );
+        // let passpartuPrice =0;
+        item.selectedPasspartuColors.forEach((pass) => {
+          const passpartuPrice =
+            (pass?.passpartuColor?.passpartu?.pricePerUom || 1) *
+            this.transformMeasure(
+              surface,
+              UOM.CENTIMETER2,
+              pass?.passpartuColor?.passpartu?.uom || UOM.CENTIMETER2
+            );
 
-        let indexOf = result.findIndex(
-          (g) => g.passpartuColor.oid === item.passpartuColor?.oid
-        );
-        if (indexOf >= 0) {
-          let newElement = { ...result[indexOf] };
-          newElement.length = roundOnDigits(
-            (newElement.length += roundOnDigits(surface))
+          let indexOf = result.findIndex(
+            (g) => g.passpartuColor?.oid === pass.passpartuColor?.oid
           );
-          newElement.amount = roundOnDigits(
-            (newElement.amount += roundOnDigits(passpartuPrice))
-          );
-          result.splice(indexOf, 1, newElement);
-        } else {
-          result.push({
-            passpartuColor: item.passpartuColor,
-            uom: item.passpartuColor.passpartu.uom,
-            length: roundOnDigits(
-              this.transformMeasure(
-                surface,
-                UOM.CENTIMETER2,
-                item.passpartuColor.passpartu.uom
-              )
-            ),
-            amount: roundOnDigits(passpartuPrice),
-          });
-        }
+          if (indexOf >= 0) {
+            let newElement = { ...result[indexOf] };
+            newElement.length = roundOnDigits(
+              (newElement.length += roundOnDigits(surface))
+            );
+            newElement.amount = roundOnDigits(
+              (newElement.amount += roundOnDigits(passpartuPrice))
+            );
+            result.splice(indexOf, 1, newElement);
+          } else {
+            result.push({
+              passpartuColor: pass.passpartuColor,
+              uom: pass.passpartuColor?.passpartu.uom,
+              length: roundOnDigits(
+                this.transformMeasure(
+                  surface,
+                  UOM.CENTIMETER2,
+                  pass?.passpartuColor?.passpartu?.uom || UOM.CENTIMETER2
+                )
+              ),
+              amount: roundOnDigits(passpartuPrice),
+            });
+          }
+        });
       }
     });
     return result;
