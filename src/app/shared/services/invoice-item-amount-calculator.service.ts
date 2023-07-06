@@ -496,15 +496,56 @@ export class InvoiceItemCalculatorService {
 
   getInvoiceItemTitle(invoiceItem: InvoiceItemModel): string {
     let title = '';
-    if (invoiceItem.passpartuColor?.oid) {
-      title +=
-        this.translateService.instant('passpartu') +
-        ': ' +
-        invoiceItem.passpartuColor.name +
-        (invoiceItem.passpartuWidth && invoiceItem.passpartuWidthUom
-          ? '/' + invoiceItem.passpartuWidth + invoiceItem.passpartuWidthUom
-          : '');
-      (', ');
+    if (invoiceItem.selectedPasspartuColors?.length) {
+      title += this.translateService.instant('passpartu') + ': ';
+      invoiceItem.selectedPasspartuColors.forEach((pas, index) => {
+        if (index > 0) {
+          title += ', ';
+        }
+        title += pas.passpartuColor?.name;
+        if (
+          pas.passpartuTop === pas.passpartuDown &&
+          pas.passpartuTop === pas.passpartuLeft &&
+          pas.passpartuTop === pas.passpartuRight
+        ) {
+          title +=
+            '/' +
+            this.translateService.instant('width') +
+            ': ' +
+            pas.passpartuTop +
+            pas.passpartuWidthUom;
+        } else if (
+          pas.passpartuTop !== pas.passpartuDown ||
+          pas.passpartuTop !== pas.passpartuLeft ||
+          pas.passpartuTop !== pas.passpartuRight
+        ) {
+          title +=
+            '/' +
+            this.translateService.instant('top') +
+            ': ' +
+            pas.passpartuTop +
+            pas.passpartuWidthUom +
+            ', ';
+          title +=
+            this.translateService.instant('down') +
+            ': ' +
+            pas.passpartuDown +
+            pas.passpartuWidthUom +
+            ', ';
+          title +=
+            this.translateService.instant('left') +
+            ': ' +
+            pas.passpartuLeft +
+            pas.passpartuWidthUom +
+            ', ';
+          title +=
+            this.translateService.instant('right') +
+            ': ' +
+            pas.passpartuRight +
+            pas.passpartuWidthUom;
+        }
+      });
+      title += ', ';
     }
     if (invoiceItem.glass?.oid) {
       title +=
