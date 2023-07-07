@@ -184,6 +184,10 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     return header;
   }
 
+  printFiscalInvoice(): void {
+    // TODO
+  }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
