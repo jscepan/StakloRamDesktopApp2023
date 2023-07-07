@@ -204,7 +204,7 @@ export class InvoiceItemCalculatorService {
             );
           } else if (
             item.dimensionsUom === UOM.CENTIMETER &&
-            item.passpartuWidthUom === UOM.MILIMETER
+            item.selectedPasspartuColors[0].passpartuWidthUom === UOM.MILIMETER
           ) {
             width +=
               this.transformPasspartuWidth(
@@ -442,7 +442,7 @@ export class InvoiceItemCalculatorService {
             );
           } else if (
             item.dimensionsUom === UOM.CENTIMETER &&
-            item.passpartuWidthUom === UOM.MILIMETER
+            item.selectedPasspartuColors[0].passpartuWidthUom === UOM.MILIMETER
           ) {
             width +=
               this.transformPasspartuWidth(
