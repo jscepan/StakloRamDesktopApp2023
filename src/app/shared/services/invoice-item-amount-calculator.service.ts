@@ -185,23 +185,46 @@ export class InvoiceItemCalculatorService {
       if (item.glass) {
         let width = item.dimensionsWidth;
         let height = item.dimensionsHeight;
-        if (item.passpartuColor) {
-          if (item.dimensionsUom === item.passpartuWidthUom) {
-            width += this.transformPasspartuWidth(item.passpartuWidth || 1) * 2;
-            height +=
-              this.transformPasspartuWidth(item.passpartuWidth || 1) * 2;
+        if (item.selectedPasspartuColors?.length) {
+          if (
+            item.dimensionsUom ===
+            item.selectedPasspartuColors[0].passpartuWidthUom
+          ) {
+            width += this.transformPasspartuWidth(
+              item.selectedPasspartuColors[0].passpartuLeft || 0
+            );
+            width += this.transformPasspartuWidth(
+              item.selectedPasspartuColors[0].passpartuRight || 0
+            );
+            height += this.transformPasspartuWidth(
+              item.selectedPasspartuColors[0].passpartuTop || 0
+            );
+            height += this.transformPasspartuWidth(
+              item.selectedPasspartuColors[0].passpartuDown || 0
+            );
           } else if (
             item.dimensionsUom === UOM.CENTIMETER &&
             item.passpartuWidthUom === UOM.MILIMETER
           ) {
             width +=
-              (this.transformPasspartuWidth(item?.passpartuWidth || 1) / 10) *
-              2;
+              this.transformPasspartuWidth(
+                item.selectedPasspartuColors[0].passpartuLeft || 0
+              ) / 10;
+            width +=
+              this.transformPasspartuWidth(
+                item.selectedPasspartuColors[0].passpartuRight || 0
+              ) / 10;
             height +=
-              (this.transformPasspartuWidth(item?.passpartuWidth || 1) / 10) *
-              2;
+              this.transformPasspartuWidth(
+                item.selectedPasspartuColors[0].passpartuTop || 0
+              ) / 10;
+            height +=
+              this.transformPasspartuWidth(
+                item.selectedPasspartuColors[0].passpartuDown || 0
+              ) / 10;
           }
         }
+
         let surface =
           this.getConstructionMeasure(height) *
           this.getConstructionMeasure(width);
