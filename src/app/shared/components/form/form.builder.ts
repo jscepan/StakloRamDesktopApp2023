@@ -1,10 +1,15 @@
 import { Inject } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { Entity } from './form.component';
 
 export class FormBuilder {
   public objectForm!: UntypedFormGroup;
-  public formControls: { entity: Entity; formControl: UntypedFormControl }[] = [];
+  public formControls: { entity: Entity; formControl: UntypedFormControl }[] =
+    [];
 
   constructor(@Inject('') items: Entity[]) {
     this.init(items);
@@ -18,6 +23,10 @@ export class FormBuilder {
     items.forEach((item) => {
       // TODO set validators logic...
       let formControl = new UntypedFormControl(item.value, []);
+      if (item.required) {
+        formControl.setValidators(Validators.required);
+      }
+
       if (item.disabled) {
         formControl.disable();
       }

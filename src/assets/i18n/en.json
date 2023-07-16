@@ -10,6 +10,7 @@
   "glassingSettings": "Glassing settings",
   "glassingSettingsDescription": "Change settings of glassing section",
   "printSettings": "Print settings",
+  "printFiscalInvoice": "Print fiscal invoice",
   "printSettingsDescription": "Change and set all setting needed for printing",
   "invoiceSettings": "Invoice settings",
   "invoiceSettingsDescription": "Change all settings about invoice and QR code",

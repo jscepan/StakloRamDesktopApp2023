@@ -23,21 +23,6 @@ export class InvoiceWebService {
     return this.baseWebService.putRequest<InvoiceModel>('invoices', invoice);
   }
 
-  // searchEntities(data: InvoiceSearchModel): Observable<InvoiceModel[]> {
-  //   return this.baseWebService.postRequest<InvoiceModel[]>('invoices/search', [
-  //     new InvoiceModel(),
-  //   ]);
-  // }
-
-  // searchEntities(
-  //   data: InvoiceSearchModel
-  // ): Observable<ArrayResponseI<InvoiceModel>> {
-  //   return this.baseWebService.postRequest<ArrayResponseI<InvoiceModel>>(
-  //     'invoices/search',
-  //     { entities: [], nextID: 1, totalCount: 1 }
-  //   );
-  // }
-
   searchEntities = (
     data: InvoiceSearchModel,
     // SKIP - beggining of first row (0,50,100,150...)
@@ -51,6 +36,20 @@ export class InvoiceWebService {
       InvoiceSearchModel
     >(url, data, InvoiceModel);
   };
+
+  print(invoice: InvoiceModel): Observable<InvoiceModel> {
+    return this.baseWebService.postRequest<InvoiceModel>(
+      'invoices/print',
+      invoice
+    );
+  }
+
+  printFiscalInvoice(invoice: InvoiceModel): Observable<InvoiceModel> {
+    return this.baseWebService.postRequest<InvoiceModel>(
+      'invoices/printFiscalInvoice',
+      invoice
+    );
+  }
 }
 
 export class InvoiceSearchModel {

@@ -83,15 +83,62 @@ export class InvoiceItemCalculatorService {
               width += (item.selectedFrames[j - 1].frame.frameWidthMM * 2) / 10;
             }
           }
-          if (item.passpartuWidth && item.passpartuWidth > 0) {
-            const passLengthIncrease =
-              this.transformMeasure(
-                this.transformPasspartuWidth(item.passpartuWidth),
-                item?.passpartuWidthUom || UOM.CENTIMETER,
+          if (item.selectedPasspartuColors?.length) {
+            if (item.selectedPasspartuColors[0].passpartuLeft) {
+              const passLengthIncreaseWidth = this.transformMeasure(
+                this.transformPasspartuWidth(
+                  item.selectedPasspartuColors[0].passpartuLeft
+                ),
+                item.selectedPasspartuColors[0].passpartuWidthUom ||
+                  UOM.CENTIMETER,
                 item.dimensionsUom
-              ) * 2;
-            height += passLengthIncrease;
-            width += passLengthIncrease;
+              );
+              width += passLengthIncreaseWidth;
+            }
+            if (item.selectedPasspartuColors[0].passpartuRight) {
+              const passLengthIncreaseWidth = this.transformMeasure(
+                this.transformPasspartuWidth(
+                  item.selectedPasspartuColors[0].passpartuRight
+                ),
+                item.selectedPasspartuColors[0].passpartuWidthUom ||
+                  UOM.CENTIMETER,
+                item.dimensionsUom
+              );
+              width += passLengthIncreaseWidth;
+            }
+            if (item.selectedPasspartuColors[0].passpartuTop) {
+              const passLengthIncreaseHeight = this.transformMeasure(
+                this.transformPasspartuWidth(
+                  item.selectedPasspartuColors[0].passpartuTop
+                ),
+                item.selectedPasspartuColors[0]?.passpartuWidthUom ||
+                  UOM.CENTIMETER,
+                item.dimensionsUom
+              );
+              height += passLengthIncreaseHeight;
+            }
+            if (item.selectedPasspartuColors[0].passpartuTop) {
+              const passLengthIncreaseHeight = this.transformMeasure(
+                this.transformPasspartuWidth(
+                  item.selectedPasspartuColors[0].passpartuTop
+                ),
+                item.selectedPasspartuColors[0]?.passpartuWidthUom ||
+                  UOM.CENTIMETER,
+                item.dimensionsUom
+              );
+              height += passLengthIncreaseHeight;
+            }
+            if (item.selectedPasspartuColors[0].passpartuDown) {
+              const passLengthIncreaseHeight = this.transformMeasure(
+                this.transformPasspartuWidth(
+                  item.selectedPasspartuColors[0].passpartuDown
+                ),
+                item.selectedPasspartuColors[0]?.passpartuWidthUom ||
+                  UOM.CENTIMETER,
+                item.dimensionsUom
+              );
+              height += passLengthIncreaseHeight;
+            }
           }
           let length = height * 2 + width * 2;
           length += (item.selectedFrames[i].frame.frameWidthMM * 8) / 10;
@@ -138,23 +185,46 @@ export class InvoiceItemCalculatorService {
       if (item.glass) {
         let width = item.dimensionsWidth;
         let height = item.dimensionsHeight;
-        if (item.passpartuColor) {
-          if (item.dimensionsUom === item.passpartuWidthUom) {
-            width += this.transformPasspartuWidth(item.passpartuWidth || 1) * 2;
-            height +=
-              this.transformPasspartuWidth(item.passpartuWidth || 1) * 2;
+        if (item.selectedPasspartuColors?.length) {
+          if (
+            item.dimensionsUom ===
+            item.selectedPasspartuColors[0].passpartuWidthUom
+          ) {
+            width += this.transformPasspartuWidth(
+              item.selectedPasspartuColors[0].passpartuLeft || 0
+            );
+            width += this.transformPasspartuWidth(
+              item.selectedPasspartuColors[0].passpartuRight || 0
+            );
+            height += this.transformPasspartuWidth(
+              item.selectedPasspartuColors[0].passpartuTop || 0
+            );
+            height += this.transformPasspartuWidth(
+              item.selectedPasspartuColors[0].passpartuDown || 0
+            );
           } else if (
             item.dimensionsUom === UOM.CENTIMETER &&
-            item.passpartuWidthUom === UOM.MILIMETER
+            item.selectedPasspartuColors[0].passpartuWidthUom === UOM.MILIMETER
           ) {
             width +=
-              (this.transformPasspartuWidth(item?.passpartuWidth || 1) / 10) *
-              2;
+              this.transformPasspartuWidth(
+                item.selectedPasspartuColors[0].passpartuLeft || 0
+              ) / 10;
+            width +=
+              this.transformPasspartuWidth(
+                item.selectedPasspartuColors[0].passpartuRight || 0
+              ) / 10;
             height +=
-              (this.transformPasspartuWidth(item?.passpartuWidth || 1) / 10) *
-              2;
+              this.transformPasspartuWidth(
+                item.selectedPasspartuColors[0].passpartuTop || 0
+              ) / 10;
+            height +=
+              this.transformPasspartuWidth(
+                item.selectedPasspartuColors[0].passpartuDown || 0
+              ) / 10;
           }
         }
+
         let surface =
           this.getConstructionMeasure(height) *
           this.getConstructionMeasure(width);
@@ -372,7 +442,7 @@ export class InvoiceItemCalculatorService {
             );
           } else if (
             item.dimensionsUom === UOM.CENTIMETER &&
-            item.passpartuWidthUom === UOM.MILIMETER
+            item.selectedPasspartuColors[0].passpartuWidthUom === UOM.MILIMETER
           ) {
             width +=
               this.transformPasspartuWidth(
