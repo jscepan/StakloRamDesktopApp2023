@@ -71,7 +71,10 @@
     *ngIf="dataModel.amount - dataModel.advancePayment === 0"
   >
     <div class="title">{{ "cashRegisterReport" | translate }}:</div>
-    <div class="item-description" *ngFor="let item of getItemsDescription()">
+    <div
+      class="item-description"
+      *ngFor="let item of getItemsDescription(dataModel.invoiceItems)"
+    >
       {{ item }}
     </div>
   </div>

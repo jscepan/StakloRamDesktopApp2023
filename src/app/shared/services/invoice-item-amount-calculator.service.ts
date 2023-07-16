@@ -4,8 +4,8 @@ import { InvoiceItemModel } from 'src/app/shared/models/invoice-item.model';
 import { PasspartuColorModel } from '../models/passpartu-color-model';
 import { ProductModel } from '../models/product-model';
 import { SettingsStoreService } from './settings-store.service';
-import { UOM } from '../constants';
-import { roundOnDigits } from '../utils';
+import { SERVICE_TYPE, UOM } from '../constants';
+import { getDisplayNumberAsString, roundOnDigits } from '../utils';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
@@ -683,5 +683,129 @@ export class InvoiceItemCalculatorService {
       title += `${frame.frame.code}${frame.colorCode}`;
     });
     return title;
+  }
+
+  public getItemsDescription(invoiceItems: InvoiceItemModel[]): string[] {
+    let items: string[] = [];
+    let num = 1;
+    this.getFramesLengthAmountForInvoiceItems(invoiceItems).forEach((item) => {
+      if (item.amount && item.amount > 0) {
+        items.push(
+          num +
+            ') ' +
+            getDisplayNumberAsString(item.length) +
+            ' ' +
+            item.uom +
+            ' X ' +
+            item.frame.cashRegisterNumber +
+            ' (' +
+            item.frame.name +
+            ', ' +
+            item.frame.code.substring(0, 2) +
+            ')'
+        );
+        num++;
+      }
+    });
+    this.getPasspartuLengthForInvoiceItems(invoiceItems).forEach((item) => {
+      if (item.amount && item.amount > 0) {
+        items.push(
+          num +
+            ') ' +
+            getDisplayNumberAsString(item.length) +
+            ' ' +
+            item.uom +
+            ' X ' +
+            item.passpartuColor?.passpartu.cashRegisterNumber +
+            ' (' +
+            item.passpartuColor?.name +
+            ')'
+        );
+        num++;
+      }
+    });
+    this.getGlassLengthForInvoiceItems(invoiceItems).forEach((item) => {
+      if (item.amount && item.amount > 0) {
+        items.push(
+          num +
+            ') ' +
+            getDisplayNumberAsString(item.length) +
+            ' ' +
+            item.uom +
+            ' X ' +
+            item.glass.cashRegisterNumber +
+            ' (' +
+            item.glass.name +
+            ')'
+        );
+        num++;
+      }
+    });
+    this.getMirrorLengthForInvoiceItems(invoiceItems).forEach((item) => {
+      if (item.amount && item.amount > 0) {
+        items.push(
+          num +
+            ') ' +
+            getDisplayNumberAsString(item.length) +
+            ' ' +
+            item.uom +
+            ' X ' +
+            item.mirror.cashRegisterNumber +
+            ' (' +
+            item.mirror.name +
+            ')'
+        );
+        num++;
+      }
+    });
+    this.getSandingLengthForInvoiceItems(invoiceItems).forEach((item) => {
+      if (item.amount && item.amount > 0) {
+        items.push(
+          num +
+            ') ' +
+            getDisplayNumberAsString(item.length) +
+            ' ' +
+            item.uom +
+            ' X ' +
+            item.sanding.cashRegisterNumber +
+            ' (' +
+            item.sanding.name +
+            ')'
+        );
+        num++;
+      }
+    });
+    this.getFacetingLengthForInvoiceItems(invoiceItems).forEach((item) => {
+      if (item.amount && item.amount > 0) {
+        items.push(
+          num +
+            ') ' +
+            getDisplayNumberAsString(item.length) +
+            ' ' +
+            item.uom +
+            ' X ' +
+            item.faceting.cashRegisterNumber +
+            ' (' +
+            item.faceting.name +
+            ')'
+        );
+        num++;
+      }
+    });
+    return items;
+  }
+
+  getInvoiceItemHeader(item: InvoiceItemModel): string {
+    let header = '';
+    if (item.serviceType === SERVICE_TYPE.FRAMING) {
+      if (item.mirror?.oid) {
+        header += this.translateService.instant('mirror');
+      } else {
+        header += this.translateService.instant('picture');
+      }
+      header += `: ${item.dimensionsWidth} X ${item.dimensionsHeight} ${item.dimensionsUom}`;
+    }
+
+    return header;
   }
 }

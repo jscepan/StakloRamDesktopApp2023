@@ -4,6 +4,7 @@ import { InvoiceModel } from '../../models/invoice-model';
 import { BaseWebService } from './base-web.service';
 import { ArrayResponseI } from 'src/app/core/interfaces/array-response.interface';
 import { constructUrl } from '../../utils';
+import { InvoiceItemModel } from '../../models/invoice-item.model';
 
 @Injectable({
   providedIn: 'root',
@@ -37,9 +38,9 @@ export class InvoiceWebService {
     >(url, data, InvoiceModel);
   };
 
-  print(invoice: InvoiceModel): Observable<InvoiceModel> {
+  print(invoice: InvoicePrintModel): Observable<InvoiceModel> {
     return this.baseWebService.postRequest<InvoiceModel>(
-      `invoices/print/${invoice.oid}`,
+      `invoices/print`,
       invoice
     );
   }
@@ -60,4 +61,34 @@ export class InvoiceSearchModel {
   advancePaymentTo?: number;
   ordering: 'ASC' | 'DESC' = 'DESC';
   showPaidUnpaid: 'ALL' | 'PAID' | 'UNPAID' = 'ALL';
+}
+
+export class InvoicePrintModel extends InvoiceModel {
+  placeholders: {
+    invoiceNumber: string;
+    buyer: string;
+    createdBy: string;
+    date: string;
+    total: string;
+    advancePayment: string;
+    restPayment: string;
+    thisIsNotFiscalReceipt: string;
+    cashRegisterReport: string;
+  } = {
+    invoiceNumber: '',
+    buyer: '',
+    createdBy: '',
+    date: '',
+    total: '',
+    advancePayment: '',
+    restPayment: '',
+    thisIsNotFiscalReceipt: '',
+    cashRegisterReport: '',
+  };
+  fiscalReceiptDescription: string[] = [];
+  invoiceItems: InvoiceItemPrintModel[] = [];
+}
+
+export class InvoiceItemPrintModel extends InvoiceItemModel {
+  header: string = '';
 }

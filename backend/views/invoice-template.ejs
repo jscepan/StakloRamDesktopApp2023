@@ -4,7 +4,6 @@
       .invoice-printed-container {
         font-size: 14px;
         text-align: left;
-        padding: 20px;
       }
 
       .header {
@@ -96,20 +95,82 @@
       }
     </style>
   </head>
+
   <body>
-    <h1>Invoice <%= invoice.oid %></h1>
-    <p>Create Date: <%= invoice.createDate %></p>
-    <p>Amount: <%= invoice.amount %></p>
-    <p>Advance Payment: <%= invoice.advancePayment %></p>
-    <p>Buyer Name: <%= invoice.buyerName %></p>
+    <div
+      class="invoice-printed-container"
+      style="width: <%= settings.invoicePrintWidth %>cm"
+    >
+      <div class="header"><%= settings.header %></div>
+      <div class="invoice-title">
+        <div class="invoice-data-container">
+          <div class="invoice-number">
+            <%= invoice.placeholders.invoiceNumber %>: <%= invoice.oid %>
+          </div>
+          <% if (invoice.buyerName) { %>
+          <div class="buyer">
+            <%= invoice.placeholders.buyer %>: <%= invoice.buyerName %>
+          </div>
+          <% } %> <% if (invoice.user?.name) { %>
+          <div class="created-by">
+            <%= invoice.placeholders.createdBy %>: <%= invoice.user.name %>
+          </div>
+          <% } %>
+          <div class="date">
+            <%= invoice.placeholders.date %>: <%= invoice.createDate %>
+          </div>
+        </div>
+        <div class="qr-code">QR Code TODO</div>
+      </div>
+      <div class="invoice-items">
+        <% invoice.invoiceItems.forEach((item, i) => { %>
+        <div class="item">
+          <div class="item-content">
+            <div class="number"><%= i + 1 %>.&nbsp;<%= item.header %></div>
+            <div class="description"><%= item.title %></div>
+          </div>
+          <div class="amount">
+            <%= item.amount %> <%= settings.currencyDisplay %>
+          </div>
+        </div>
+        <% }); %>
+      </div>
 
-    <h2>Invoice Items</h2>
-    <ul>
-      <% invoice.invoiceItems.forEach(function(item) { %>
-      <li><%= item.name %>: <%= item.price %></li>
-      <% }); %>
-    </ul>
+      <div class="amounts">
+        <div class="gross-amount">
+          <%= invoice.placeholders.total %>: <%= invoice.amount %> <%=
+          settings.currencyDisplay %>
+        </div>
 
-    <p>User: <%= invoice.user.name %></p>
+        <% if (invoice.amount - invoice.advancePayment !== 0) { %>
+        <div class="advance-payment">
+          <%= invoice.placeholders.advancePayment %>: <%= invoice.advancePayment
+          %> <%= settings.currencyDisplay %>
+        </div>
+        <% } %> <% if (invoice.amount - invoice.advancePayment !== 0) { %>
+        <div class="rest-payment">
+          <%= invoice.placeholders.restPayment %>: <%= invoice.amount -
+          invoice.advancePayment %> <%= settings.currencyDisplay %>
+        </div>
+        <% } %>
+      </div>
+
+      <% if (invoice.amount - invoice.advancePayment === 0) { %>
+      <div class="cash-register-container">
+        <div class="title"><%= invoice.placeholders.cashRegisterReport %>:</div>
+        <% invoice.fiscalReceiptDescription.forEach((desc) => { %>
+        <div class="item-description"><%= desc %></div>
+        <% }); %>
+      </div>
+      <% } %>
+
+      <div class="notice">
+        <%= invoice.placeholders.thisIsNotFiscalReceipt %>
+      </div>
+
+      <% if (invoice.amount - invoice.advancePayment !== 0) { %>
+      <div class="footer"><%= settings.footer %></div>
+      <% } %>
+    </div>
   </body>
 </html>

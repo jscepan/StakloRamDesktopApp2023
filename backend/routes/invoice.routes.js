@@ -7,7 +7,7 @@ module.exports = (app) => {
   router.post("/", invoices.create);
 
   // Create a new Invoice
-  router.post("/print/:id", invoices.print);
+  router.post("/print", invoices.print);
 
   // Retrieve all Invoice
   router.post("/search", invoices.findAll);

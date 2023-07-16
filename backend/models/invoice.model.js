@@ -62,59 +62,24 @@ Invoice.create = (newInvoice, result) => {
   });
 };
 
-Invoice.print = (id, result) => {
-  sql.get(
-    `SELECT * FROM invoice JOIN user on invoice.user_user_oid=user.user_oid WHERE invoice_oid = ?`,
-    [id],
-    (err, rows) => {
-      if (err) {
-        console.log("error: ", err);
-        result(err, null);
-        return;
-      }
-      if (rows) {
-        invoiceItemService.getAll(id, (items) => {
-          const invoice = {
-            oid: rows.invoice_oid,
-            createDate: rows.invoice_createDate,
-            amount: rows.invoice_amount,
-            advancePayment: rows.invoice_advancePayment,
-            buyerName: rows.invoice_buyerName,
-            invoiceItems: items,
-            user: {
-              oid: rows.user_oid,
-              name: rows.user_name,
-              isActive: rows.user_isActive,
-            },
-          };
+Invoice.print = (invoice, result) => {
+  const filePath = path.join(__dirname, "../views/invoice-template.ejs");
 
-          const filePath = path.join(
-            __dirname,
-            "../views/invoice-template.ejs"
-          );
+  const settingsPath = path.join(__dirname, "../config/settings.json");
+  const settings = JSON.parse(fs.readFileSync(settingsPath));
 
-          ejs.renderFile(filePath, { invoice: invoice }, (err, html) => {
-            if (err) {
-              console.error(err);
-              return;
-            }
-
-            // HTML koji je generisan
-            // console.log(html);
-
-            // Snimanje HTML-a na disk (opciono)
-            const filePathSave = path.join(__dirname, "../views/invoice.html");
-            fs.writeFileSync(filePathSave, html);
-          });
-
-          result(null, invoice);
-        });
-      } else {
-        // not found Invoice with the id
-        result({ kind: "not_found" }, null);
-      }
+  ejs.renderFile(filePath, { invoice, settings }, (err, html) => {
+    if (err) {
+      console.error(err);
+      return;
     }
-  );
+
+    // Snimanje HTML-a na disk (opciono)
+    const filePathSave = path.join(__dirname, "../views/invoice.html");
+    fs.writeFileSync(filePathSave, html);
+  });
+
+  result(null, true);
 };
 
 Invoice.findById = (id, result) => {

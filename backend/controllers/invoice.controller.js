@@ -48,19 +48,49 @@ exports.create = (req, res) => {
 };
 
 exports.print = (req, res) => {
-  Invoice.print(req.params.id, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found Invoice with id ${req.params.id}.`,
-        });
-      } else {
-        res.status(500).send({
-          message: "Error retrieving Invoice with id " + req.params.id,
-        });
-      }
-    } else res.send(data);
+  // Validate request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!",
+    });
+  }
+
+  // Create a Invoice
+  const invoice = {
+    oid: req.body.oid,
+    createDate: req.body.createDate,
+    amount: req.body.amount,
+    advancePayment: req.body.advancePayment,
+    buyerName: req.body.buyerName,
+    invoiceItems: req.body.invoiceItems,
+    user: req.body.user,
+    fiscalReceiptDescription: req.body.fiscalReceiptDescription,
+    placeholders: req.body.placeholders,
+  };
+
+  // Print invoice
+  Invoice.print(invoice, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Invoice.",
+      });
+    else res.send(data);
   });
+
+  // Invoice.print(req.params.id, (err, data) => {
+  //   if (err) {
+  //     if (err.kind === "not_found") {
+  //       res.status(404).send({
+  //         message: `Not found Invoice with id ${req.params.id}.`,
+  //       });
+  //     } else {
+  //       res.status(500).send({
+  //         message: "Error retrieving Invoice with id " + req.params.id,
+  //       });
+  //     }
+  //   } else res.send(data);
+  // });
 };
 
 // Retrieve all Invoices from the database (with condition).

@@ -9,16 +9,24 @@ import { DraftInvoicesService } from 'src/app/shared/services/data-store-service
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { SettingsStoreService } from 'src/app/shared/services/settings-store.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
-import { InvoiceWebService } from 'src/app/shared/services/web-services/invoice.web.service';
+import {
+  InvoicePrintModel,
+  InvoiceWebService,
+} from 'src/app/shared/services/web-services/invoice.web.service';
 import { PrintInvoicePopupService } from './print-invoice-popup/print-invoice-popup-component.service';
 import { Location } from '@angular/common';
 import { SERVICE_TYPE } from 'src/app/shared/constants';
+import { InvoiceItemCalculatorService } from 'src/app/shared/services/invoice-item-amount-calculator.service';
 
 @Component({
   selector: 'app-invoice-create-edit',
   templateUrl: './invoice-create-edit.component.html',
   styleUrls: ['./invoice-create-edit.component.scss'],
-  providers: [InvoiceWebService, PrintInvoicePopupService],
+  providers: [
+    InvoiceWebService,
+    PrintInvoicePopupService,
+    InvoiceItemCalculatorService,
+  ],
 })
 export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   private subs = new SubscriptionManager();
@@ -38,6 +46,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private printInvoicePopupComponentService: PrintInvoicePopupService,
     private location: Location,
+    private invoiceItemCalculatorService: InvoiceItemCalculatorService,
     private appSettingsService: SettingsStoreService
   ) {}
 
@@ -187,7 +196,33 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   }
 
   printInvoice(): void {
-    this.invoiceWebService.print(this.invoice).subscribe((printed) => {
+    const invoice: InvoicePrintModel = {
+      ...this.invoice,
+      placeholders: {
+        invoiceNumber: this.translateService.instant('invoiceNumber'),
+        buyer: this.translateService.instant('buyer'),
+        createdBy: this.translateService.instant('createdBy'),
+        date: this.translateService.instant('date'),
+        total: this.translateService.instant('total'),
+        advancePayment: this.translateService.instant('advancePayment'),
+        restPayment: this.translateService.instant('restPayment'),
+        thisIsNotFiscalReceipt: this.translateService.instant(
+          'thisIsNotFiscalReceipt'
+        ),
+        cashRegisterReport: this.translateService.instant('cashRegisterReport'),
+      },
+      invoiceItems: this.invoice.invoiceItems.map((ii) => {
+        return {
+          ...ii,
+          header: this.invoiceItemCalculatorService.getInvoiceItemHeader(ii),
+        };
+      }),
+      fiscalReceiptDescription:
+        this.invoiceItemCalculatorService.getItemsDescription(
+          this.invoice.invoiceItems
+        ),
+    };
+    this.invoiceWebService.print(invoice).subscribe((printed) => {
       console.log('printedprintedprintedprinted');
       console.log(printed);
     });
