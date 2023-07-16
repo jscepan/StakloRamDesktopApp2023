@@ -125,7 +125,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     this.invoice.amount = amount;
   }
 
-  print(): void {
+  saveChangesAndPrint(): void {
     this.subs.sink.printInvoice = this.printInvoicePopupComponentService
       .openDialog(this.invoice)
       .subscribe((invoice: InvoiceModel) => {

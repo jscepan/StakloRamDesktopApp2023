@@ -3,6 +3,9 @@ const Invoice = require("../models/invoice.model.js");
 // Create and Save a new Invoice
 exports.create = (req, res) => {};
 
+// Print invoice
+exports.print = (req, res) => {};
+
 // Retrieve all Invoices from the database (with condition).
 exports.findAll = (req, res) => {};
 
@@ -42,6 +45,22 @@ exports.create = (req, res) => {
       });
     else res.send(data);
   });
+};
+
+exports.print = (req, res) => {
+  // Invoice.findById(req.params.id, (err, data) => {
+  //   if (err) {
+  //     if (err.kind === "not_found") {
+  //       res.status(404).send({
+  //         message: `Not found Invoice with id ${req.params.id}.`,
+  //       });
+  //     } else {
+  //       res.status(500).send({
+  //         message: "Error retrieving Invoice with id " + req.params.id,
+  //       });
+  //     }
+  //   } else res.send(data);
+  // });
 };
 
 // Retrieve all Invoices from the database (with condition).

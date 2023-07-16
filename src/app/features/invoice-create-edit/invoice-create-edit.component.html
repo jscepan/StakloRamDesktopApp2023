@@ -1,8 +1,5 @@
 <div class="container">
-  <div
-    class="invoice-header"
-    *ngIf="componentMode === 'DRAFT'"
-  >
+  <div class="invoice-header" *ngIf="componentMode === 'DRAFT'">
     <app-button
       [iconName]="'plus'"
       [iconPosition]="'left'"
@@ -24,10 +21,7 @@
       class="button"
     ></app-button>
   </div>
-  <div
-    class="invoice-header"
-    *ngIf="componentMode !== 'DRAFT'"
-  >
+  <div class="invoice-header" *ngIf="componentMode !== 'DRAFT'">
     <div
       class="info success"
       *ngIf="
@@ -57,7 +51,9 @@
       <div class="grid-item table-header">
         {{ "delete" | translate }}
       </div>
-      <ng-container *ngFor="let invoiceItem of invoice.invoiceItems; let i = index">
+      <ng-container
+        *ngFor="let invoiceItem of invoice.invoiceItems; let i = index"
+      >
         <div class="grid-item">
           <div class="item-content">
             <div class="number description">
@@ -120,7 +116,7 @@
       [text]="'print' | translate"
       color="success"
       [buttonSize]="'middle'"
-      (clickEvent)="print()"
+      (clickEvent)="saveChangesAndPrint()"
     ></app-button>
   </div>
 </div>

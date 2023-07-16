@@ -50,7 +50,7 @@ export class PrintInvoicePopupComponent
   increaseButtonTwoValue: number = 500;
   increaseButtonThreeValue: number = 100;
 
-  // public additionalInformation: AdditionalInformation;
+  touchScreenKeyboardEnabled: boolean = true;
 
   get buyerNameControl(): AbstractControl | null {
     return this.invoiceForm.get('buyerName');
@@ -72,6 +72,8 @@ export class PrintInvoicePopupComponent
   ) {
     this.invoice = data.invoice;
     this.subs.sink = this.appSettingsService.settings.subscribe((settings) => {
+      this.touchScreenKeyboardEnabled =
+        settings?.touchScreenKeyboardEnabled ?? true;
       this.increaseButtonOneValue = settings?.increaseButtonOneValue || 1;
       this.increaseButtonTwoValue = settings?.increaseButtonTwoValue || 1;
       this.increaseButtonThreeValue = settings?.increaseButtonThreeValue || 1;
@@ -141,6 +143,9 @@ export class PrintInvoicePopupComponent
   }
 
   insertAdvancePayment(): void {
+    if (!this.touchScreenKeyboardEnabled) {
+      return;
+    }
     const payField = this.invoiceForm.get('advancePayment');
     this.keyboardNumericComponentService
       .openDialog(
