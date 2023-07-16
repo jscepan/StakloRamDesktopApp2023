@@ -20,6 +20,7 @@ export class AppSettings {
   // invoice
   decimalNumberSign: '.' | ',' = ',';
   dateFormat: DateFormat = DateFormat.DAY_MONTH_YEAR_DOT;
+  invoicePrintWidth: number = 8;
   currencyDisplayValue: string = 'Din';
   increaseButtonOneValue: number = 1000;
   increaseButtonTwoValue: number = 200;

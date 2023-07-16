@@ -1,4 +1,4 @@
-<div class="invoice-printed-container">
+<div class="invoice-printed-container" [style.width]="invoicePrintWidth + 'cm'">
   <div class="header">
     {{ header }}
   </div>
@@ -74,6 +74,9 @@
     <div class="item-description" *ngFor="let item of getItemsDescription()">
       {{ item }}
     </div>
+  </div>
+  <div class="notice">
+    {{ "thisIsNotFiscalReceipt" | translate }}
   </div>
   <div class="footer" *ngIf="dataModel.amount - dataModel.advancePayment !== 0">
     {{ footer }}

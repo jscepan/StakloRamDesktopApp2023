@@ -165,6 +165,10 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
         dateFormat: new FormControl(this.settings?.dateFormat, [
           Validators.required,
         ]),
+        invoicePrintWidth: new FormControl(
+          this.settings?.invoicePrintWidth || '',
+          [Validators.required]
+        ),
         currencyDisplayValue: new FormControl(
           this.settings?.currencyDisplayValue || '',
           [Validators.required]

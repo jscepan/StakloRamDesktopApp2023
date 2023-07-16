@@ -35,6 +35,7 @@ export class InvoicePrintedComponent
   prefix: string = BARCODE_PREFIX;
 
   @Input() dataModel!: InvoiceModel;
+  invoicePrintWidth: number = 8;
   qrCodeSizeInPixel: number = 100;
   qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel =
     QRCodeErrorCorrectionLevel.EXTRALARGE_levelH;
@@ -56,6 +57,7 @@ export class InvoicePrintedComponent
     this.settingsService.settings.subscribe((settings) => {
       this.header = settings?.header ?? '';
       this.footer = settings?.footer ?? '';
+      this.invoicePrintWidth = settings?.invoicePrintWidth ?? 8;
       this.currencyDisplay = settings?.currencyDisplayValue ?? '';
       this.qrCodeSizeInPixel = settings?.qrCodeSizeInPixel ?? 130;
       this.qrCodeErrorCorrectionLevel =

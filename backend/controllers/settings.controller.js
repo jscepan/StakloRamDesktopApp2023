@@ -20,6 +20,7 @@ const Setting = function (settings) {
 
   this.decimalNumberSign = settings.decimalNumberSign;
   this.dateFormat = settings.dateFormat;
+  this.invoicePrintWidth = settings.invoicePrintWidth;
   this.currencyDisplayValue = settings.currencyDisplayValue;
   this.increaseButtonOneValue = settings.increaseButtonOneValue;
   this.increaseButtonTwoValue = settings.increaseButtonTwoValue;
