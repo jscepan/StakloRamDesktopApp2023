@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <style>
+      .invoice-printed-container {
+        font-size: 14px;
+        text-align: left;
+        padding: 20px;
+      }
+
+      .header {
+        border-bottom: 1px dotted black;
+        text-align: center;
+        font-weight: 600;
+        font-size: 18px;
+        padding: 15px 0;
+      }
+
+      .invoice-title {
+        display: flex;
+        border-bottom: 1px dotted black;
+        justify-content: space-between;
+      }
+
+      .invoice-data-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .invoice-number {
+        padding: 5px 0;
+      }
+
+      .buyer {
+        padding: 5px 0;
+      }
+
+      .created-by {
+        padding: 5px 0;
+      }
+
+      .date {
+        padding: 5px 0;
+      }
+
+      .qr-code {
+        display: flex;
+        justify-content: center;
+      }
+
+      .invoice-items {
+        border-bottom: 1px dotted black;
+      }
+
+      .item {
+        padding: 5px 0;
+      }
+
+      .item-content .number {
+        font-weight: 600;
+      }
+
+      .amount {
+        text-align: right;
+        font-weight: 600;
+      }
+
+      .amounts .gross-amount {
+        text-align: right;
+        font-weight: 600;
+      }
+
+      .amounts .advance-payment {
+        text-align: right;
+        font-weight: 600;
+      }
+
+      .amounts .rest-payment {
+        text-align: right;
+        font-weight: 600;
+      }
+
+      .cash-register-container .title {
+      }
+
+      .cash-register-container .item-description {
+      }
+
+      .notice {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .footer {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invoice-printed-container" style="width: 8cm">
+      <div class="header"><%= header %></div>
+    </div>
+  </body>
+</html>

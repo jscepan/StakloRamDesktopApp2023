@@ -39,7 +39,7 @@ export class InvoiceWebService {
 
   print(invoice: InvoiceModel): Observable<InvoiceModel> {
     return this.baseWebService.postRequest<InvoiceModel>(
-      'invoices/print',
+      `invoices/print/${invoice.oid}`,
       invoice
     );
   }

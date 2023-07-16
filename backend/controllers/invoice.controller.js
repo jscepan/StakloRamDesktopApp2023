@@ -48,19 +48,19 @@ exports.create = (req, res) => {
 };
 
 exports.print = (req, res) => {
-  // Invoice.findById(req.params.id, (err, data) => {
-  //   if (err) {
-  //     if (err.kind === "not_found") {
-  //       res.status(404).send({
-  //         message: `Not found Invoice with id ${req.params.id}.`,
-  //       });
-  //     } else {
-  //       res.status(500).send({
-  //         message: "Error retrieving Invoice with id " + req.params.id,
-  //       });
-  //     }
-  //   } else res.send(data);
-  // });
+  Invoice.print(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Invoice with id ${req.params.id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Invoice with id " + req.params.id,
+        });
+      }
+    } else res.send(data);
+  });
 };
 
 // Retrieve all Invoices from the database (with condition).

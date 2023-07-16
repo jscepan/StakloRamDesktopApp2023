@@ -144,6 +144,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
                     this.invoice.oid
                   );
                   this.invoice.oid = invoice.oid;
+                  this.printInvoice();
                   this.globalService.showBasicAlert(
                     MODE.success,
                     this.translateService.instant('invoiceCreated'),
@@ -158,11 +159,12 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
               .subscribe((invoice) => {
                 if (invoice) {
                   this.invoice.oid = invoice.oid;
-                  this.globalService.showBasicAlert(
-                    MODE.success,
-                    this.translateService.instant('invoiceUpdated'),
-                    this.translateService.instant('invoiceSuccessfullyUpdated')
-                  );
+                  // this.globalService.showBasicAlert(
+                  //   MODE.success,
+                  //   this.translateService.instant('invoiceUpdated'),
+                  //   this.translateService.instant('invoiceSuccessfullyUpdated')
+                  // );
+                  this.printInvoice();
                 }
               });
           }
@@ -182,6 +184,13 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     }
 
     return header;
+  }
+
+  printInvoice(): void {
+    this.invoiceWebService.print(this.invoice).subscribe((printed) => {
+      console.log('printedprintedprintedprinted');
+      console.log(printed);
+    });
   }
 
   printFiscalInvoice(): void {
