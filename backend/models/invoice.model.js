@@ -3,6 +3,7 @@ const invoiceItemService = require("./invoice-item.model");
 const ejs = require("ejs");
 const fs = require("fs");
 const path = require("path");
+const { formatDate, formatNumber } = require("./utils.ts");
 
 // constructor
 const Invoice = function (invoice) {
@@ -68,16 +69,50 @@ Invoice.print = (invoice, result) => {
   const settingsPath = path.join(__dirname, "../config/settings.json");
   const settings = JSON.parse(fs.readFileSync(settingsPath));
 
-  ejs.renderFile(filePath, { invoice, settings }, (err, html) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
+  const createDate = formatDate(
+    new Date(invoice.createDate),
+    settings.dateFormat
+  );
+  const amountShow = formatNumber(invoice.amount, settings.decimalNumberSign);
+  const restPaymentShow = formatNumber(
+    invoice.amount - invoice.advancePayment,
+    settings.decimalNumberSign
+  );
+  const advancePaymentShow = formatNumber(
+    invoice.advancePayment,
+    settings.decimalNumberSign
+  );
+  const invoiceItems = invoice.invoiceItems.map((ii) => ({
+    ...ii,
+    amountShow: formatNumber(ii.amount, settings.decimalNumberSign),
+  }));
+  ejs.renderFile(
+    filePath,
+    {
+      invoice: {
+        ...invoice,
+        createDate,
+        amountShow,
+        restPaymentShow,
+        advancePaymentShow,
+        invoiceItems,
+      },
+      settings,
+    },
+    (err, html) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
 
-    // Snimanje HTML-a na disk (opciono)
-    const filePathSave = path.join(__dirname, "../views/invoice.html");
-    fs.writeFileSync(filePathSave, html);
-  });
+      // Snimanje HTML-a na disk (opciono)
+      const filePathSave = path.join(__dirname, "../views/invoice.html");
+      fs.writeFileSync(filePathSave, html);
+
+      // Štampanje na odabranom štampaču
+      // TODO
+    }
+  );
 
   result(null, true);
 };

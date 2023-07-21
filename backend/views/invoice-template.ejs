@@ -130,7 +130,7 @@
             <div class="description"><%= item.title %></div>
           </div>
           <div class="amount">
-            <%= item.amount %> <%= settings.currencyDisplay %>
+            <%= item.amountShow %> <%= settings.currencyDisplay %>
           </div>
         </div>
         <% }); %>
@@ -138,19 +138,19 @@
 
       <div class="amounts">
         <div class="gross-amount">
-          <%= invoice.placeholders.total %>: <%= invoice.amount %> <%=
+          <%= invoice.placeholders.total %>: <%= invoice.amountShow %> <%=
           settings.currencyDisplay %>
         </div>
 
         <% if (invoice.amount - invoice.advancePayment !== 0) { %>
         <div class="advance-payment">
-          <%= invoice.placeholders.advancePayment %>: <%= invoice.advancePayment
-          %> <%= settings.currencyDisplay %>
+          <%= invoice.placeholders.advancePayment %>: <%=
+          invoice.advancePaymentShow %> <%= settings.currencyDisplay %>
         </div>
         <% } %> <% if (invoice.amount - invoice.advancePayment !== 0) { %>
         <div class="rest-payment">
-          <%= invoice.placeholders.restPayment %>: <%= invoice.amount -
-          invoice.advancePayment %> <%= settings.currencyDisplay %>
+          <%= invoice.placeholders.restPayment %>: <%= invoice.restPaymentShow
+          %> <%= settings.currencyDisplay %>
         </div>
         <% } %>
       </div>
