@@ -22,18 +22,31 @@ ELECTRON:
   u vrhu:
     "main": "main.js",
   u skriptama:
-    "electron": "electron .",
-    "electron-build": "ng build"
+    "electron": "ng build && electron ."
 
 ------------------------------------------------------------
 DEVELOPMENT:
 1. Pokrece se sa npm run electron
-2. Da bi se videle izmene mora da se pokrene npm run electron-build pa onda npm run electron
-
 
 
 ------------------------------------------------------------
 PRODUCTION:
-
-1. u root main.js zakomentarisati liniju koda koja otvara devTools
+1. Koristili smo electron-packager za EXE. Instalirali smo ga sa:
+npm install electron-packager -g
+2. u root main.js zakomentarisati liniju koda koja otvara devTools
   win.webContents.openDevTools();
+3. Odradimo build za ceo projekat - dosta je samo npm run electron
+4. Kada je build gotov, možete koristiti "electron-packager" da zapakujete vašu Electron aplikaciju u .exe fajl.
+    Otvorite terminal i uđite u root direktorijum vašeg projekta. Zatim pokrenite sledeću komandu:
+    Ja sam do sada koristio:
+    electron-packager . StakloRamPlusApp -- platform=win32 --arch=x64 --out=dist/StakloRamPlusApp/ --overwrite --icon=staklo-ram-icon.ico
+
+    electron-packager . MyAppName --platform=win32 --arch=x64 --out=dist/ --overwrite --icon=icon.ico
+Gde:
+.                 predstavlja putanju do root direktorijuma vaše aplikacije.
+MyAppName         zamenite ovim imenom koje želite da bude ime izvršnog fajla.
+--platform=win32  označava da želite da zapakujete za Windows platformu.
+--arch=x64        označava da želite da zapakujete za 64-bitnu verziju.
+--out=dist/       označava putanju gde će se izvršni fajl sačuvati.
+--overwrite       označava da želite da prepišete postojeće fajlove, ako postoje.
+--icon=icon.ico   označava putanju do ikonice koju želite da koristite za izvršni fajl (opciono).
