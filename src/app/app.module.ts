@@ -19,11 +19,7 @@ registerLocaleData(localeDe);
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(
-    http,
-    '/assets/i18n/',
-    `.json?${new Date().getTime()}`
-  );
+  return new TranslateHttpLoader(http, './assets/i18n/', `.json`);
 }
 
 @NgModule({
