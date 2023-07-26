@@ -46,9 +46,6 @@ export class InvoicePrintedComponent
 
   dateFormat: DateFormat = DateFormat.DAY_MONTH_YEAR_CROSS;
 
-  getItemsDescription = this.invoiceItemCalculatorService.getItemsDescription;
-  getInvoiceItemHeader = this.invoiceItemCalculatorService.getInvoiceItemHeader;
-
   constructor(
     private settingsService: SettingsStoreService,
     private cdRef: ChangeDetectorRef,
@@ -79,6 +76,14 @@ export class InvoicePrintedComponent
 
   getQrCodeDataForInvoice(): string {
     return this.prefix + this.dataModel.oid;
+  }
+
+  getItemsDescription(items: InvoiceItemModel[]): string[] {
+    return this.invoiceItemCalculatorService.getItemsDescription(items);
+  }
+
+  getInvoiceItemHeader(item: InvoiceItemModel): string {
+    return this.invoiceItemCalculatorService.getInvoiceItemHeader(item);
   }
 
   ngOnDestroy(): void {
