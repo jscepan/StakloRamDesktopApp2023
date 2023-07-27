@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 
 const apis = require("./backend/server.js");
 let win;
@@ -29,6 +29,10 @@ function createWindow() {
     win = null;
   });
 }
+
+ipcMain.on("exitApp", (event) => {
+  app.quit();
+});
 
 app.on("ready", createWindow);
 
