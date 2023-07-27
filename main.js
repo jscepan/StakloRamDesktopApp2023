@@ -23,7 +23,7 @@ function createWindow() {
   win.loadURL(`file://${__dirname}/dist/radnja/index.html`);
 
   // Uncomment below to open the DevTools
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.on("closed", () => {
     win = null;

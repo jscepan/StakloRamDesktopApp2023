@@ -132,6 +132,9 @@ export class PrintInvoicePopupComponent
   }
 
   insertName(): void {
+    if (!this.touchScreenKeyboardEnabled) {
+      return;
+    }
     const buyerField = this.invoiceForm.get('buyerName');
     this.keyboardAlphabetComponentService
       .openDialog(buyerField?.value, this.translateService.instant('buyerName'))
