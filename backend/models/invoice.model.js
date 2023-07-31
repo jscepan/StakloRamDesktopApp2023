@@ -4,6 +4,7 @@ const ejs = require("ejs");
 const fs = require("fs");
 const path = require("path");
 const { formatDate, formatNumber } = require("./utils.ts");
+const puppeteer = require("puppeteer");
 
 // constructor
 const Invoice = function (invoice) {
@@ -64,6 +65,7 @@ Invoice.create = (newInvoice, result) => {
 };
 
 Invoice.print = (invoice, result) => {
+  console.log("invoice.print");
   const filePath = path.join(__dirname, "../views/invoice-template.ejs");
 
   const settingsPath = path.join(__dirname, "../config/settings.json");
@@ -109,12 +111,38 @@ Invoice.print = (invoice, result) => {
       const filePathSave = path.join(__dirname, "../views/invoice.html");
       fs.writeFileSync(filePathSave, html);
 
-      // Štampanje na odabranom štampaču
-      // TODO
+      (async () => {
+        try {
+          const browser = await puppeteer.launch();
+          const page = await browser.newPage();
+
+          // Postavljamo HTML sadržaj na stranicu
+          await page.setContent(html);
+
+          // Dodajemo stil za simulaciju medijuma "print"
+          await page.addStyleTag({
+            content: "@media print { body { display: block !important; } }",
+          });
+
+          // Ako postoji izabrani štampač, postavimo ga za štampanje
+          if (settings.printer) {
+            await page.evaluate((printerName) => {
+              // Postavimo izabrani štampač
+              document.querySelector("#printer-name").value = printerName;
+              window.print();
+            }, settings.printer);
+          }
+
+          await browser.close();
+          console.log("Štampanje uspešno.");
+          result(null, "Štampanje uspešno.");
+        } catch (err) {
+          console.error("Greška pri štampanju:", err);
+          result(null, "Greška pri štampanju:" + err);
+        }
+      })();
     }
   );
-
-  result(null, true);
 };
 
 Invoice.findById = (id, result) => {
