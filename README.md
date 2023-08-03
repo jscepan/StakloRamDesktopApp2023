@@ -43,7 +43,9 @@ PRODUCTION:
 4.  Kada je build gotov, možete koristiti "electron-packager" da zapakujete vašu Electron aplikaciju u .exe fajl.
     Otvorite terminal i uđite u root direktorijum vašeg projekta. Zatim pokrenite sledeću komandu:
     Ja sam do sada koristio:
+
     electron-packager . StakloRamPlusApp -- platform=win32 --arch=x64 --out=dist/StakloRamPlusApp/ --overwrite --icon=staklo-ram-icon.ico
+    electron-packager . StakloRamPlusApp -- platform=win32 --arch=ia32 --out=dist/StakloRamPlusApp/ --overwrite --icon=staklo-ram-icon.ico
 
         electron-packager . MyAppName --platform=win32 --arch=x64 --out=dist/ --overwrite --icon=icon.ico
 
