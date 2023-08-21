@@ -135,10 +135,10 @@ Invoice.print = (invoice, result) => {
 
           await browser.close();
           console.log("Štampanje uspešno.");
-          result(null, "Štampanje uspešno.");
+          result(null, invoice);
         } catch (err) {
           console.error("Greška pri štampanju:", err);
-          result(null, "Greška pri štampanju:" + err);
+          result(null, {message: "Greška pri štampanju:" + err});
         }
       })();
     }

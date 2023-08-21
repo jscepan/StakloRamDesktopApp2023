@@ -11,6 +11,7 @@ import { PrintInvoicePopupModule } from './print-invoice-popup/print-invoice-pop
 import { CustomNumberPipeModule } from 'src/app/core/pipes/custom-number-pipe.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { PrintingPopupModule } from './printing/printing.module';
 
 @NgModule({
   declarations: [InvoiceCreateEditComponent],
@@ -27,6 +28,7 @@ import { MatInputModule } from '@angular/material/input';
     FramingDescriptionModule,
     PrintInvoicePopupModule,
     CustomNumberPipeModule,
+    PrintingPopupModule
   ],
   exports: [InvoiceCreateEditComponent],
   providers: [],

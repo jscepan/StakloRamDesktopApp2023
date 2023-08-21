@@ -17,6 +17,7 @@ import { PrintInvoicePopupService } from './print-invoice-popup/print-invoice-po
 import { Location } from '@angular/common';
 import { SERVICE_TYPE } from 'src/app/shared/constants';
 import { InvoiceItemCalculatorService } from 'src/app/shared/services/invoice-item-amount-calculator.service';
+import { PrintingService } from './printing/printing-component.service';
 
 @Component({
   selector: 'app-invoice-create-edit',
@@ -26,6 +27,7 @@ import { InvoiceItemCalculatorService } from 'src/app/shared/services/invoice-it
     InvoiceWebService,
     PrintInvoicePopupService,
     InvoiceItemCalculatorService,
+    PrintingService
   ],
 })
 export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
@@ -45,6 +47,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private globalService: GlobalService,
     private translateService: TranslateService,
     private printInvoicePopupComponentService: PrintInvoicePopupService,
+    private printingPopupService: PrintingService,
     private location: Location,
     private invoiceItemCalculatorService: InvoiceItemCalculatorService,
     private appSettingsService: SettingsStoreService
@@ -153,12 +156,12 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
                     this.invoice.oid
                   );
                   this.invoice.oid = invoice.oid;
-                  this.printInvoice();
                   this.globalService.showBasicAlert(
                     MODE.success,
                     this.translateService.instant('invoiceCreated'),
                     this.translateService.instant('invoiceSuccessfullyCreated')
                   );
+                  this.printingPopupService.print(this.invoice);
                   this.route.navigate(['/']);
                 }
               });
@@ -168,12 +171,12 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
               .subscribe((invoice) => {
                 if (invoice) {
                   this.invoice.oid = invoice.oid;
-                  // this.globalService.showBasicAlert(
-                  //   MODE.success,
-                  //   this.translateService.instant('invoiceUpdated'),
-                  //   this.translateService.instant('invoiceSuccessfullyUpdated')
-                  // );
-                  this.printInvoice();
+                  this.globalService.showBasicAlert(
+                    MODE.success,
+                    this.translateService.instant('invoiceUpdated'),
+                    this.translateService.instant('invoiceSuccessfullyUpdated')
+                  );
+                  this.printingPopupService.print(this.invoice);
                 }
               });
           }
@@ -222,10 +225,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
           this.invoice.invoiceItems
         ),
     };
-    this.invoiceWebService.print(invoice).subscribe((printed) => {
-      console.log('printedprintedprintedprinted');
-      console.log(printed);
-    });
+    this.printingPopupService.print(invoice);
   }
 
   printFiscalInvoice(): void {
