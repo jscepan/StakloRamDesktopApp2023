@@ -1,0 +1,23 @@
+<div class="printing-popup-container">
+  <div class="header">
+    {{'printing' | translate}}
+  </div>
+  <div class="printing-msg">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="footer">
+    <app-button
+      [text]="'cancel' | translate"
+      color="secondary"
+      [buttonSize]="'middle'"
+      (clickEvent)="cancel()"
+      class="button"
+    ></app-button>
+    <app-button
+      [text]="'close' | translate"
+      [buttonSize]="'middle'"
+      (clickEvent)="close()"
+      class="button"
+    ></app-button>
+  </div>
+</div>
