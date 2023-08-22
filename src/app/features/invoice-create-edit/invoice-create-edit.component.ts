@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import { InvoiceItemModel } from 'src/app/shared/models/invoice-item.model';
@@ -9,10 +9,7 @@ import { DraftInvoicesService } from 'src/app/shared/services/data-store-service
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { SettingsStoreService } from 'src/app/shared/services/settings-store.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
-import {
-  InvoicePrintModel,
-  InvoiceWebService,
-} from 'src/app/shared/services/web-services/invoice.web.service';
+import { InvoiceWebService } from 'src/app/shared/services/web-services/invoice.web.service';
 import { PrintInvoicePopupService } from './print-invoice-popup/print-invoice-popup-component.service';
 import { Location } from '@angular/common';
 import { SERVICE_TYPE } from 'src/app/shared/constants';
@@ -196,36 +193,6 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     }
 
     return header;
-  }
-
-  printInvoice(): void {
-    const invoice: InvoicePrintModel = {
-      ...this.invoice,
-      placeholders: {
-        invoiceNumber: this.translateService.instant('invoiceNumber'),
-        buyer: this.translateService.instant('buyer'),
-        createdBy: this.translateService.instant('createdBy'),
-        date: this.translateService.instant('date'),
-        total: this.translateService.instant('total'),
-        advancePayment: this.translateService.instant('advancePayment'),
-        restPayment: this.translateService.instant('restPayment'),
-        thisIsNotFiscalReceipt: this.translateService.instant(
-          'thisIsNotFiscalReceipt'
-        ),
-        cashRegisterReport: this.translateService.instant('cashRegisterReport'),
-      },
-      invoiceItems: this.invoice.invoiceItems.map((ii) => {
-        return {
-          ...ii,
-          header: this.invoiceItemCalculatorService.getInvoiceItemHeader(ii),
-        };
-      }),
-      fiscalReceiptDescription:
-        this.invoiceItemCalculatorService.getItemsDescription(
-          this.invoice.invoiceItems
-        ),
-    };
-    this.printingPopupService.print(invoice);
   }
 
   printFiscalInvoice(): void {
