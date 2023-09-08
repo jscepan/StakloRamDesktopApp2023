@@ -100,7 +100,7 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
         this.appSettingsForm?.get(controlName)?.value ?? 0
       )
       .subscribe((data) => {
-        if (data?.value) {
+        if (+data?.value >= 0) {
           this.appSettingsForm?.get(controlName)?.setValue(data.value);
           this.appSettingsForm?.markAsDirty();
         }
@@ -148,14 +148,14 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
 
       this.appSettingsForm = new FormGroup({
         defaultDimensionsWidth: new FormControl(
-          this.settings?.defaultDimensionsWidth || '',
+          this.settings?.defaultDimensionsWidth ?? '',
           [Validators.required]
         ),
         defaultDimensionsHeight: new FormControl(
-          this.settings?.defaultDimensionsHeight || '',
+          this.settings?.defaultDimensionsHeight ?? '',
           [Validators.required]
         ),
-        minGlassSurface: new FormControl(this.settings?.minGlassSurface || '', [
+        minGlassSurface: new FormControl(this.settings?.minGlassSurface ?? '', [
           Validators.required,
         ]),
 
@@ -166,7 +166,7 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
           Validators.required,
         ]),
         invoicePrintWidth: new FormControl(
-          this.settings?.invoicePrintWidth || '',
+          this.settings?.invoicePrintWidth ?? '',
           [Validators.required]
         ),
         currencyDisplayValue: new FormControl(
@@ -174,15 +174,15 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
           [Validators.required]
         ),
         increaseButtonOneValue: new FormControl(
-          this.settings?.increaseButtonOneValue || '',
+          this.settings?.increaseButtonOneValue ?? '',
           [Validators.required]
         ),
         increaseButtonTwoValue: new FormControl(
-          this.settings?.increaseButtonTwoValue || '',
+          this.settings?.increaseButtonTwoValue ?? '',
           [Validators.required]
         ),
         increaseButtonThreeValue: new FormControl(
-          this.settings?.increaseButtonThreeValue || '',
+          this.settings?.increaseButtonThreeValue ?? '',
           [Validators.required]
         ),
         header: new FormControl(this.settings?.header || '', [
@@ -192,7 +192,7 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
           Validators.required,
         ]),
         qrCodeSizeInPixel: new FormControl(
-          this.settings?.qrCodeSizeInPixel || '',
+          this.settings?.qrCodeSizeInPixel ?? '',
           [Validators.required]
         ),
         qrCodeErrorCorrectionLevel: new FormControl(
@@ -203,7 +203,7 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
         printer: new FormControl(this.settings?.printer || '', [
           Validators.required,
         ]),
-        copies: new FormControl(this.settings?.copies || '', [
+        copies: new FormControl(this.settings?.copies ?? '', [
           Validators.required,
         ]),
 
