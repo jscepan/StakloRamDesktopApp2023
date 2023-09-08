@@ -17,10 +17,11 @@ export class KeyboardNumericComponentService {
     showNextOperationButton: boolean,
     inputFieldTitle: string,
     value: number = 0,
-    codeInput: boolean = false
-  ): Observable<{ value: number; nextOperation: boolean }> {
+    codeInput: boolean = false,
+    firstIsZero: boolean = false
+  ): Observable<{ value: number | string; nextOperation: boolean }> {
     return new Observable(
-      (observer: Subscriber<{ value: number; nextOperation: boolean }>) => {
+      (observer: Subscriber<{ value: number | string; nextOperation: boolean }>) => {
         const config: MatDialogConfig = new MatDialogConfig();
 
         config.data = {
@@ -30,13 +31,14 @@ export class KeyboardNumericComponentService {
           showNextOperationButton,
           inputFieldTitle,
           codeInput,
+          firstIsZero
         };
 
         this.subs.sink.$openSelectPopup = this._matDialog
           .open(KeyboardNumericComponent, config)
           .afterClosed()
           .subscribe(
-            (data: { value: number; nextOperation: boolean }) => {
+            (data: { value: number | string; nextOperation: boolean }) => {
               observer.next(data);
               observer.complete();
             },

@@ -126,11 +126,14 @@ Invoice.print = (invoice, result) => {
 
           // Ako postoji izabrani štampač, postavimo ga za štampanje
           if (settings.printer) {
-            await page.evaluate((printerName) => {
-              // Postavimo izabrani štampač
-              document.querySelector("#printer-name").value = printerName;
-              window.print();
-            }, settings.printer);
+            const printerCounter = (settings.copies != undefined && settings.copies > 0) ? settings.copies : 1;
+            for (let i = 0; i < printerCounter; i++) { // Ovde postavite broj primeraka koji želite
+              await page.evaluate((printerName) => {
+                // Postavimo izabrani štampač
+                document.querySelector("#printer-name").value = printerName;
+                window.print();
+              }, settings.printer);
+            }
           }
 
           await browser.close();

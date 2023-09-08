@@ -21,10 +21,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export interface DialogData {
   title: string;
   uom: string;
-  value: number;
+  value: number | string;
   showNextOperationButton: boolean;
   inputFieldTitle: string;
   codeInput: boolean;
+  firstIsZero: boolean;
 }
 
 @Component({
@@ -41,6 +42,7 @@ export class KeyboardNumericComponent implements OnInit, AfterViewInit {
   valueForm!: UntypedFormGroup;
   initialLoad: boolean = false;
   codeInput: boolean = false;
+  firstIsZero: boolean = false
 
   constructor(
     private dialogRef: MatDialogRef<KeyboardNumericComponent>,
@@ -53,6 +55,7 @@ export class KeyboardNumericComponent implements OnInit, AfterViewInit {
     this.uom = data.uom;
     this.showNextOperationButton = data.showNextOperationButton;
     this.inputFieldTitle = data.inputFieldTitle;
+    this.firstIsZero = data.firstIsZero;
     this.valueForm = new UntypedFormGroup({
       value: new UntypedFormControl(data.value ? data.value + '' : '0', [
         Validators.min(0),
@@ -79,7 +82,7 @@ export class KeyboardNumericComponent implements OnInit, AfterViewInit {
 
   public saveSelection(nextOperation: boolean = false): void {
     this.dialogRef.close({
-      value: +this.valueForm.value.value,
+      value: this.firstIsZero ? this.valueForm.value.value : +this.valueForm.value.value,
       nextOperation,
     });
   }

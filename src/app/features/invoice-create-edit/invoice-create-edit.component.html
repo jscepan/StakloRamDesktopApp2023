@@ -18,6 +18,7 @@
       color="secondary"
       [buttonSize]="'middle'"
       (clickEvent)="create('glassing')"
+      [disabled]="true"
       class="button"
     ></app-button>
   </div>
@@ -110,6 +111,7 @@
       [text]="'printFiscalInvoice' | translate"
       color="warning"
       [buttonSize]="'middle'"
+      [disabled]="true"
       (clickEvent)="printFiscalInvoice()"
     ></app-button>
     <app-button

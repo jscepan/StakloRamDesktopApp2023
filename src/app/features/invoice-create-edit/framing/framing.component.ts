@@ -351,7 +351,7 @@ export class FramingComponent implements OnInit, OnDestroy {
       )
       .subscribe((data) => {
         if (data?.value) {
-          this.countOfItems = data.value;
+          this.countOfItems = +data.value;
         }
       });
   }
@@ -626,11 +626,12 @@ export class FramingComponent implements OnInit, OnDestroy {
             false,
             this.translateService.instant('fourDigitsForFrameForColor'),
             0,
+            true,
             true
           )
-          .subscribe((code: { value: number; nextOperation: boolean }) => {
+          .subscribe((code: { value: number | string; nextOperation: boolean }) => {
             if (code && code.value) {
-              if (code.value >= 1000 && code.value <= 9999) {
+              if (code.value.toString().length === 4 && +code.value >= 0 && +code.value <= 9999) {
                 const c = code.value.toString().substring(0, 2);
                 const colorCode = code.value.toString().substring(2, 4);
                 const frame = frames.find((f) => f.code === c);

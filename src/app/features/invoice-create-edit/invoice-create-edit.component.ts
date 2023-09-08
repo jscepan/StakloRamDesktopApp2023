@@ -13,7 +13,6 @@ import { InvoiceWebService } from 'src/app/shared/services/web-services/invoice.
 import { PrintInvoicePopupService } from './print-invoice-popup/print-invoice-popup-component.service';
 import { Location } from '@angular/common';
 import { SERVICE_TYPE } from 'src/app/shared/constants';
-import { InvoiceItemCalculatorService } from 'src/app/shared/services/invoice-item-amount-calculator.service';
 import { PrintingService } from './printing/printing-component.service';
 
 @Component({
@@ -23,7 +22,6 @@ import { PrintingService } from './printing/printing-component.service';
   providers: [
     InvoiceWebService,
     PrintInvoicePopupService,
-    InvoiceItemCalculatorService,
     PrintingService
   ],
 })
@@ -46,7 +44,6 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private printInvoicePopupComponentService: PrintInvoicePopupService,
     private printingPopupService: PrintingService,
     private location: Location,
-    private invoiceItemCalculatorService: InvoiceItemCalculatorService,
     private appSettingsService: SettingsStoreService
   ) {}
 
