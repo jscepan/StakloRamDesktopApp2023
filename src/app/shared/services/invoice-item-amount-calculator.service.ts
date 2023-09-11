@@ -22,6 +22,7 @@ export class InvoiceItemCalculatorService {
   }
 
   public getInvoiceItemAmount(invoiceItem: InvoiceItemModel): number {
+    console.log('---------- Racunam stavku za fakturu, '+invoiceItem.oid+' ---------------------');
     let glassPrice = 0;
     let passpartuPrice = 0;
     let mirrorPrice = 0;
@@ -29,27 +30,41 @@ export class InvoiceItemCalculatorService {
     let facetingPrice = 0;
     let sandingPrice = 0;
     if (invoiceItem.glass) {
+      console.log(' IMALI SMO STAKLO, pa racunamo cenu stakla:');
       glassPrice = this.getGlassLengthForInvoiceItems([invoiceItem])[0].amount;
+      console.log('ona je: '+glassPrice);
     }
     if (invoiceItem.selectedPasspartuColors?.length) {
+      console.log(' IMALI SMO PASSPARTU, pa racunamo cenu paspartua:');
       passpartuPrice = this.getPasspartuLengthForInvoiceItems([invoiceItem])[0]
         .amount;
+      console.log('ona je: '+passpartuPrice);
     }
     if (invoiceItem.mirror) {
+      console.log(' IMALI SMO OGLEDALO, pa racunamo cenu ogledala:');
       mirrorPrice = this.getMirrorLengthForInvoiceItems([invoiceItem])[0]
         .amount;
+      console.log('ona je: '+mirrorPrice);
     }
     if (invoiceItem.mirror && invoiceItem.faceting) {
+      console.log(' IMALI SMO FAZETIRANJE, pa racunamo cenu fazetiranja:');
       facetingPrice = this.getFacetingLengthForInvoiceItems([invoiceItem])[0]
         .amount;
+      console.log('ona je: '+facetingPrice);
       const surface =
         invoiceItem.dimensionsHeight * 2 + invoiceItem.dimensionsWidth * 2;
-    }
+      console.log('povrsina je: '+surface+', ali tu povrsinu trenutno ne koristimo nizasta');
+      }
     if (invoiceItem.mirror && invoiceItem.sanding) {
+      console.log(' IMALI SMO PESKARENJE, pa racunamo cenu peskarenja:');
       sandingPrice = this.getSandingLengthForInvoiceItems([invoiceItem])[0]
         .amount;
-    }
-    this.getFramesLengthAmountForInvoiceItems([invoiceItem]).forEach((f) => {
+      console.log('ona je: '+sandingPrice);
+      }
+
+    console.log('A sad da utvrdimo duzinu ramova za ovu stavku fakture');
+    this.getFramesLengthAmountForInvoiceItems([invoiceItem]).forEach((f, index) => {
+      console.log('cena rama broj ' + (index+1) + ' je: '+f.amount);
       framesPrice += f.amount;
     });
     let grossAmount =
@@ -59,7 +74,7 @@ export class InvoiceItemCalculatorService {
       framesPrice +
       facetingPrice +
       sandingPrice;
-    return roundOnDigits(grossAmount);
+      return roundOnDigits(grossAmount);
   }
 
   getFramesLengthAmountForInvoiceItems(
@@ -71,6 +86,7 @@ export class InvoiceItemCalculatorService {
       length: number;
       amount: number;
     }[] = [];
+    console.log('A sad da saberemo ram po ram');
     invoiceItems.forEach((item) => {
       if (item.selectedFrames) {
         let height = item.dimensionsHeight;
@@ -83,7 +99,11 @@ export class InvoiceItemCalculatorService {
               width += (item.selectedFrames[j - 1].frame.frameWidthMM * 2) / 10;
             }
           }
+          console.log('---------------------------------------');
+          console.log('Idemo sad za ram broj '+(i+1));
+          console.log('Visina: '+height+', a sirina: '+width);
           if (item.selectedPasspartuColors?.length) {
+            console.log('Ima passpartu pa cemo da korigujemo sirinu i visinu');
             if (item.selectedPasspartuColors[0].passpartuLeft) {
               const passLengthIncreaseWidth = this.transformMeasure(
                 this.transformPasspartuWidth(
@@ -117,17 +137,6 @@ export class InvoiceItemCalculatorService {
               );
               height += passLengthIncreaseHeight;
             }
-            if (item.selectedPasspartuColors[0].passpartuTop) {
-              const passLengthIncreaseHeight = this.transformMeasure(
-                this.transformPasspartuWidth(
-                  item.selectedPasspartuColors[0].passpartuTop
-                ),
-                item.selectedPasspartuColors[0]?.passpartuWidthUom ||
-                  UOM.CENTIMETER,
-                item.dimensionsUom
-              );
-              height += passLengthIncreaseHeight;
-            }
             if (item.selectedPasspartuColors[0].passpartuDown) {
               const passLengthIncreaseHeight = this.transformMeasure(
                 this.transformPasspartuWidth(
@@ -140,6 +149,7 @@ export class InvoiceItemCalculatorService {
               height += passLengthIncreaseHeight;
             }
           }
+          console.log('Posle promene visina: '+height+', a sirina: '+width);
           let length = height * 2 + width * 2;
           length += (item.selectedFrames[i].frame.frameWidthMM * 8) / 10;
           length = this.transformMeasure(
@@ -147,8 +157,12 @@ export class InvoiceItemCalculatorService {
             item.dimensionsUom,
             item.selectedFrames[i].frame.uom
           );
+          console.log('A sad i da izracunamo duzinu koja iznosi: '+length);
+          console.log('Dobili smo je ovako: sirina x 2 + visina x 2 = '+(height * 2 + width * 2)+'+ sirina rama u MM * 8/10, a sirina rama je: '+item.selectedFrames[i].frame.frameWidthMM);
           length = roundOnDigits(length);
+          console.log('a onda duzinu zaokruzimo na tri decimale pa iznosi: '+length);
           let amount = length * (item.selectedFrames[i].frame.pricePerUom || 1);
+          console.log('Cena rama iznosi: '+amount+', a zaokruzena na dve decimale: '+amount);
           amount = roundOnDigits(amount);
           let indexOf = result.findIndex(
             (r) => r.frame.oid === item.selectedFrames[i].frame.oid
