@@ -623,7 +623,7 @@ export class FramingComponent implements OnInit, OnDestroy {
           .openDialog(
             this.translateService.instant('insertFrameCode'),
             UOM.NUMBER,
-            false,
+            true,
             this.translateService.instant('fourDigitsForFrameForColor'),
             0,
             true,
@@ -642,6 +642,9 @@ export class FramingComponent implements OnInit, OnDestroy {
                   this.invoiceItemForm
                     .get('selectedFrames')
                     ?.setValue(selectedFrames);
+                    if (code.nextOperation) {
+                      this.addNewFrameToInvoiceItem();
+                    }
                   return;
                 }
                 this.globalService.showBasicAlert(
